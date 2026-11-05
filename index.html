@@ -320,7 +320,7 @@
                     <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">সাময়িক পরীক্ষা</span>
                 </h4>
                 
-                   <div class="space-y-2 text-xs">
+                  <div class="space-y-2 text-xs">
                     <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
                         <span class="text-slate-600">কুরআন তিলাওয়াত ও তাজবীদ:</span>
                         <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
@@ -487,7 +487,6 @@
                         showSection('adminDashboard');
                     } else {
                         currentUserRole = 'guardian';
-                        // Mapping email back to student id or direct use
                         currentUserId = user.email.includes('ann101') ? 'ANN101' : 'ANN102';
                         setupNavAfterLogin();
                         fetchStudentData(currentUserId);
@@ -560,7 +559,6 @@
             auth.signInWithEmailAndPassword(email, pass)
                 .then((userCredential) => {
                     errDiv.classList.add('hidden');
-                    // onAuthStateChanged will handle the rest navigation automatically
                 })
                 .catch((error) => {
                     errDiv.classList.remove('hidden');
@@ -662,7 +660,7 @@
             });
         }
 
-        fn addGalleryImage() {
+        function addGalleryImage() {
             const imgUrl = document.getElementById('adminGalleryImgUrl').value;
             if(!imgUrl) return alert('ছবির লিংক দিন');
             database.ref('gallery').push(imgUrl).then(() => {
@@ -672,4 +670,4 @@
         }
     </script>
 </body>
-                        </html>
+</html>
