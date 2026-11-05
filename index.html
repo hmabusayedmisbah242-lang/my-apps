@@ -70,7 +70,7 @@
                 <img src="1000053910.jpg" alt="An-Noor Logo" class="w-10 h-10 rounded-full border-2 border-gold-400 object-cover shadow" onerror="this.src='https://via.placeholder.com/40'">
                 <div>
                     <h1 class="font-bold text-base md:text-lg leading-tight text-amber-300">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</h1>
-                    <p class="text-[11px] text-emerald-200">৭ নং নিউটাউন, সদর, দিনাজপুর | হটলাইন: ০১৭৯৭১১১৫৪২-০১৭২২৯৮০৮৯৭</p>
+                    <p class="text-[11px] text-emerald-200">৭ নং নিউটাউন, সদর, দিনাজপুর | হটলাইন: ০১৭৯৭১১১৫৪২</p>
                 </div>
             </div>
 
@@ -85,15 +85,18 @@
         </div>
     </header>
 
-    <!-- Announcement Bar -->
-    <div class="bg-emerald-800 text-gold-300 text-xs py-1.5 px-4 overflow-hidden border-b border-emerald-700 shadow-inner">
-        <div class="max-w-4xl mx-auto flex items-center">
+    <!-- Live Digital Clock & Announcement Bar -->
+    <div class="bg-emerald-800 text-gold-300 text-xs py-2 px-4 border-b border-emerald-700 shadow-inner flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div class="flex items-center w-full overflow-hidden">
             <span class="bg-gold-500 text-emerald-950 px-2 py-0.5 font-bold rounded text-[10px] mr-2 flex-shrink-0">নোটিশ</span>
             <div class="overflow-hidden w-full relative">
                 <p id="liveNoticeBar" class="animate-marquee font-medium">
                     ২০২৭ শিক্ষাবর্ষে প্লে গ্রুপ হতে ৩য় শ্রেণি পর্যন্ত ভর্তি চলছে! আপনার সন্তানকে দ্বীনি ও আধুনিক শিক্ষায় শিক্ষিত করুন।
                 </p>
             </div>
+        </div>
+        <div id="liveClock" class="bg-emerald-950 text-gold-400 px-3 py-1 rounded-lg font-mono text-[11px] shadow-inner flex-shrink-0 border border-emerald-700">
+            লোড হচ্ছে...
         </div>
     </div>
 
@@ -104,6 +107,9 @@
         </button>
         <button onclick="showSection('loginSection')" class="px-3 py-1.5 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 font-semibold transition">
             <i class="fa-solid fa-user-lock mr-1"></i> পোর্টালে লগইন
+        </button>
+        <button onclick="showSection('complaintSection')" class="px-3 py-1.5 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 font-semibold transition">
+            <i class="fa-solid fa-comment-dots mr-1"></i> অভিযোগ বক্স
         </button>
         <span class="text-slate-400 self-center">|</span>
         <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-900 border border-amber-300 hover:bg-amber-500/30 font-semibold">
@@ -164,7 +170,7 @@
                         <i class="fa-solid fa-book-quran"></i>
                     </div>
                     <h3 class="font-bold text-slate-800 text-sm">নূরানী ও মানসম্মত শিক্ষা</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed"> মানের নূরানী সিলেবাস, শুদ্ধ উচ্চারণ ও অভিজ্ঞ শিক্ষকদের নিবিড় পর্যবেক্ষণ।</p>
+                    <p class="text-xs text-slate-600 leading-relaxed">মানসম্মত নূরানী সিলেবাস, শুদ্ধ উচ্চারণ ও অভিজ্ঞ শিক্ষকদের নিবিড় পর্যবেক্ষণ।</p>
                 </div>
 
                 <div class="glass-card p-5 rounded-2xl shadow-sm space-y-2 border-t-4 border-gold-500">
@@ -193,28 +199,6 @@
                     <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=500" alt="Madrasa Campus" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
                     <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500" alt="Students Class" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
                     <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500" alt="Education Activity" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
-                </div>
-            </div>
-
-            <!-- Leadership Committee -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-base font-bold text-emerald-900 mb-4 pb-2 border-b flex items-center gap-2">
-                    <i class="fa-solid fa-users text-gold-500"></i> পরিচালনা পরিষদ
-                </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <p class="font-bold text-emerald-800">আলহাজ্ব মফিজুল্লাহ চৌধুরী (বাবলা)</p>
-                        <p class="text-[11px] text-slate-500">চেয়ারম্যান অত্র মাদ্রাসা, স্বত্বাধিকারী, পাইওনিয়ার ফিলিং স্টেশন, হাউজিং মোড় , সদর , দিনাজপুর</p>
-                    </div>
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <p class="font-bold text-emerald-800">ডাঃ মোঃ আরিফুর রহমান</p>
-                        <p class="text-[11px] text-slate-500">মহা-সচিব অত্র মাদ্রাসা, স্বত্বাধিকারী আরিফ হোমিও হল, হাউজিং মোর, সদর, দিনাজপুর</p>
-                    </div>
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <p class="font-bold text-emerald-800">মাওলানা উবায়দুল্লাহ মানাজির </p>
-                        <p class="text-[11px] text-slate-500">প্রতিষ্ঠাতা পরিচালক অত্র মাদ্রাসা, পেশ ইমাম, হাউজিং মোর জামে মসজিদ, সদর, দিনাজপুর</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -260,7 +244,32 @@
             </form>
         </div>
 
-        <!-- 3. GUARDIAN DASHBOARD -->
+        <!-- 3. COMPLAINT SECTION (অভিযোগ বক্স) -->
+        <div id="complaintSection" class="hidden max-w-lg mx-auto bg-white p-6 rounded-3xl shadow-xl border border-emerald-200 space-y-4">
+            <div class="text-center border-b pb-3">
+                <h3 class="text-lg font-bold text-emerald-900"><i class="fa-solid fa-comment-medical text-gold-500 mr-2"></i> অভিভাবক অভিযোগ বা পরামর্শ বক্স</h3>
+                <p class="text-xs text-slate-500 mt-1">আপনার মূল্যবান মতামত বা অভিযোগ সরাসরি অ্যাডমিন প্যানেলে জমা দিন।</p>
+            </div>
+            <form onsubmit="submitComplaint(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">আপনার নাম / শিক্ষার্থীর আইডি:</label>
+                    <input type="text" id="complaintName" required placeholder="যেমন: মো: রহিম (Nur1 এর অভিভাবক)" class="w-full p-2.5 bg-slate-50 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">মোবাইল নাম্বার:</label>
+                    <input type="text" id="complaintPhone" required placeholder="০১..." class="w-full p-2.5 bg-slate-50 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">অভিযোগ বা পরামর্শের বিবরণ:</label>
+                    <textarea id="complaintDetails" required rows="4" placeholder="আপনার বিস্তারিত এখানে লিখুন..." class="w-full p-2.5 bg-slate-50 border rounded-xl"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl shadow transition">
+                    <i class="fa-solid fa-paper-plane mr-1"></i> অভিযোগ জমা দিন
+                </button>
+            </form>
+        </div>
+
+        <!-- 4. GUARDIAN DASHBOARD -->
         <div id="guardianDashboard" class="hidden space-y-6">
             <!-- Student Header Profile Card -->
             <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-5 md:p-6 rounded-3xl shadow-xl relative overflow-hidden">
@@ -310,13 +319,49 @@
                 </div>
             </div>
 
+            <!-- DYNAMIC CALENDAR SYSTEM (মাসভিত্তিক হাজিরা ও ছুটির ক্যালেন্ডার) -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-2 gap-2">
+                    <h4 class="font-bold text-sm text-emerald-900 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days text-gold-500"></i> মাসিক উপস্থিতি ও ছুটির ক্যালেন্ডার
+                    </h4>
+                    <div class="flex items-center gap-2 text-xs">
+                        <select id="calendarMonthSelect" onchange="renderDynamicCalendar()" class="p-1.5 bg-slate-100 border rounded-lg font-semibold">
+                            <option value="0">জানুয়ারি</option><option value="1">ফেব্রুয়ারি</option><option value="2">মার্চ</option>
+                            <option value="3">এপ্রিল</option><option value="4">মে</option><option value="5">জুন</option>
+                            <option value="6">জুলাই</option><option value="7">আগস্ট</option><option value="8">সেপ্টেম্বর</option>
+                            <option value="9">অক্টোবর</option><option value="10">নভেম্বর</option><option value="11">ডিসেম্বর</option>
+                        </select>
+                        <select id="calendarYearSelect" onchange="renderDynamicCalendar()" class="p-1.5 bg-slate-100 border rounded-lg font-semibold">
+                            <option value="2026">২০২৬</option><option value="2027" selected>২০২৭</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Calendar Legend Info -->
+                <div class="flex flex-wrap gap-3 text-[11px] justify-center py-1">
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-600 rounded-full inline-block"></span> খোলা/উপস্থিত</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full inline-block"></span> ছুটি/অনুপস্থিত</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-slate-200 rounded-full inline-block"></span> সাধারণ দিন</span>
+                </div>
+
+                <!-- Calendar Grid Container -->
+                <div class="overflow-x-auto">
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-slate-600 mb-1">
+                        <span class="text-red-600">রবি</span><span>সোম</span><span>মঙ্গল</span><span>বুধ</span><span>বৃহস্পতি</span><span>শুক্র</span><span>শনি</span>
+                    </div>
+                    <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1.5 text-xs">
+                        <!-- JS দিয়ে জেনারেট হবে -->
+                    </div>
+                </div>
+            </div>
+
             <!-- Academic Results Table -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
                 <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center justify-between">
                     <span><i class="fa-solid fa-file-signature text-emerald-600 mr-1"></i> সাম্প্রতিক লাইভ পরীক্ষার তথ্য</span>
                     <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">সাময়িক পরীক্ষা</span>
-                  </h4>
-                
+                </h4>
                 <div class="space-y-2 text-xs">
                     <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
                         <span class="text-slate-600">বাংলা:</span>
@@ -334,23 +379,11 @@
                         <span class="text-slate-600">আরবি:</span>
                         <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
                     </div>
-                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
-                        <span class="text-slate-600">মাসনুন দোয়া:</span>
-                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
-                        <span class="text-slate-600">হাদিস:</span>
-                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
-                        <span class="text-slate-600">সাধারণ জ্ঞান:</span>
-                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 4. ADVANCED ADMIN DASHBOARD -->
+        <!-- 5. ADVANCED ADMIN DASHBOARD -->
         <div id="adminDashboard" class="hidden space-y-6">
             <!-- Header Banner -->
             <div class="bg-emerald-900 text-white p-5 rounded-3xl shadow-xl flex justify-between items-center">
@@ -373,7 +406,6 @@
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">শিক্ষার্থী আইডি নির্বাচন করুন:</label>
                         <select id="targetStudentId" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:border-emerald-600">
-                            <!-- Dynamically generated options for Nur1 to Nur20 -->
                             <script>
                                 for(let i=1; i<=20; i++) {
                                     document.write(`<option value="Nur${i}">Nur${i} - শিক্ষার্থী ${i}</option>`);
@@ -425,10 +457,35 @@
                 </button>
             </div>
 
+            <!-- Admin Calendar Attendance/Holiday Manager -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-check text-gold-600"></i> ২. ক্যালেন্ডার ছুটি ও উপস্থিতি নিয়ন্ত্রণ (লাল/সবুজ মার্কিং)
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">তারিখ (YYYY-MM-DD):</label>
+                        <input type="date" id="adminCalDate" class="w-full p-2 bg-slate-50 border rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">অবস্থা নির্বাচন:</label>
+                        <select id="adminCalStatus" class="w-full p-2.5 bg-slate-50 border rounded-xl">
+                            <option value="open">মাদ্রাসা খোলা / উপস্থিত (সবুজ)</option>
+                            <option value="holiday">ছুটি / অনুপস্থিত (লাল)</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="saveAdminCalendarDate()" class="w-full bg-gold-600 hover:bg-gold-700 text-emerald-950 font-bold py-2.5 rounded-xl transition">
+                            সেভ করুন
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Live Notice Manager -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
                 <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-gold-600"></i> ২. লাইভ স্ক্রলিং নোটিশ পরিবর্তন
+                    <i class="fa-solid fa-bullhorn text-gold-600"></i> ৩. লাইভ স্ক্রলিং নোটিশ পরিবর্তন
                 </h4>
                 <div class="flex gap-2">
                     <input type="text" id="adminNoticeInput" placeholder="এখানে নতুন ঘোষণা লিখুন..." class="flex-grow p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs">
@@ -438,28 +495,14 @@
                 </div>
             </div>
 
-            <!-- Daily Hadith Manager -->
+            <!-- View Complaints List -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-kaaba text-teal-700"></i> ৩. হাদিস পরিবর্তন প্যানেল
+                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center justify-between">
+                    <span><i class="fa-solid fa-inbox text-emerald-700"></i> ৪. অভিভাবকদের জমা দেওয়া অভিযোগ ও পরামর্শসমূহ</span>
+                    <span id="complaintCount" class="bg-red-100 text-red-700 text-[10px] px-2 py-0.5 rounded-full font-bold">০টি</span>
                 </h4>
-                <textarea id="adminHadithInput" placeholder="হাদিসের আরবি/বাংলা অনুবাদ লিখুন..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs h-20"></textarea>
-                <input type="text" id="adminHadithRefInput" placeholder="রেফারেন্স (যেমন: সহীহ বুখারী - ১০০১)" class="w-full p-2.5 bg-slate-50 border rounded-xl text-xs">
-                <button onclick="updateHadith()" class="w-full bg-teal-800 hover:bg-teal-900 text-white font-bold py-2 rounded-xl text-xs transition">
-                    হাদিস আপডেট করুন
-                </button>
-            </div>
-
-            <!-- Gallery Image Link Manager -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-image text-emerald-700"></i> ৪. গ্যালারিতে ছবি যোগ করুন
-                </h4>
-                <div class="flex gap-2">
-                    <input type="text" id="adminGalleryImgUrl" placeholder="ছবি ডাইরেক্ট ইমেজ লিংক (URL) দিন..." class="flex-grow p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs">
-                    <button onclick="addGalleryImage()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 rounded-xl text-xs transition">
-                        যোগ করুন
-                    </button>
+                <div id="adminComplaintsList" class="space-y-2 max-h-60 overflow-y-auto text-xs">
+                    <p class="text-slate-400 text-center py-4">কোনো অভিযোগ জমা হয়নি।</p>
                 </div>
             </div>
         </div>
@@ -490,12 +533,14 @@
 
         let currentUserRole = null;
         let currentUserId = null;
+        let adminCalendarData = {}; // ডেটাবেজ থেকে ক্যালেন্ডারের স্ট্যাটাস লোড হবে
 
         // Dynamic System Listener
         window.onload = function() {
+            startLiveClock();
             listenGlobalSettings();
+            loadCalendarDataFromFirebase();
             
-            // Auth State Monitor
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     if (user.email === 'hmabusayedmisbah242@gmail.com') {
@@ -503,9 +548,9 @@
                         currentUserId = 'Admin';
                         setupNavAfterLogin();
                         showSection('adminDashboard');
+                        fetchComplaintsForAdmin();
                     } else {
                         currentUserRole = 'guardian';
-                        // Extract guardian ID from email (e.g. nur1@annoor.com -> Nur1)
                         const emailPrefix = user.email.split('@')[0];
                         currentUserId = emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
                         setupNavAfterLogin();
@@ -516,14 +561,30 @@
             });
         };
 
+        // Live Digital Clock Function
+        function startLiveClock() {
+            setInterval(() => {
+                const now = new Date();
+                let hours = now.getHours();
+                let minutes = now.getMinutes();
+                let seconds = now.getSeconds();
+                let ampm = hours >= 12 ? 'পিএম' : 'এএম';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '০' + minutes : minutes;
+                seconds = seconds < 10 ? '০' + seconds : seconds;
+                const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+                const dateString = now.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+                document.getElementById('liveClock').innerText = `${dateString} | ${timeString}`;
+            }, 1000);
+        }
+
         function listenGlobalSettings() {
-            // Notice Bar Listener
             database.ref('settings/notice').on('value', (snapshot) => {
                 const val = snapshot.val();
                 if(val) document.getElementById('liveNoticeBar').innerText = val;
             });
 
-            // Hadith Listener
             database.ref('settings/hadith').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if(data) {
@@ -531,19 +592,98 @@
                     document.getElementById('displayHadithRef').innerText = `— ${data.ref}`;
                 }
             });
+        }
 
-            // Gallery Listener
-            database.ref('gallery').on('value', (snapshot) => {
+        // Calendar Data Fetch and Render
+        function loadCalendarDataFromFirebase() {
+            database.ref('calendarStatus').on('value', (snapshot) => {
+                adminCalendarData = snapshot.val() || {};
+                renderDynamicCalendar();
+            });
+        }
+
+        function renderDynamicCalendar() {
+            const month = parseInt(document.getElementById('calendarMonthSelect').value);
+            const year = parseInt(document.getElementById('calendarYearSelect').value);
+            const grid = document.getElementById('calendarDaysGrid');
+            grid.innerHTML = '';
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Empty spaces before first day
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDiv = document.createElement('div');
+                grid.appendChild(emptyDiv);
+            }
+
+            for (let day = 1; day <= totalDays; day++) {
+                const dayDiv = document.createElement('div');
+                const mFormatted = String(month + 1).padStart(2, '0');
+                const dFormatted = String(day).padStart(2, '0');
+                const dateKey = `${year}-${mFormatted}-${dFormatted}`;
+
+                dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold border border-slate-100 bg-slate-100 text-slate-700 shadow-sm";
+                dayDiv.innerText = day;
+
+                // Admin status check (Red for holiday/absence, Green for open/present)
+                if (adminCalendarData[dateKey]) {
+                    if (adminCalendarData[dateKey] === 'holiday') {
+                        dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-red-500 text-white shadow-sm";
+                    } else if (adminCalendarData[dateKey] === 'open') {
+                        dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-emerald-600 text-white shadow-sm";
+                    }
+                }
+                grid.appendChild(dayDiv);
+            }
+        }
+
+        function saveAdminCalendarDate() {
+            const dateVal = document.getElementById('adminCalDate').value;
+            const statusVal = document.getElementById('adminCalStatus').value;
+            if(!dateVal) return alert('দয়া করে সঠিক তারিখ নির্বাচন করুন।');
+
+            database.ref('calendarStatus/' + dateVal).set(statusVal).then(() => {
+                alert('ক্যালেন্ডারের তারিখ সফলভাবে আপডেট করা হয়েছে!');
+            });
+        }
+
+        // Complaint Submission Box
+        function submitComplaint(event) {
+            event.preventDefault();
+            const name = document.getElementById('complaintName').value;
+            const phone = document.getElementById('complaintPhone').value;
+            const details = document.getElementById('complaintDetails').value;
+
+            database.ref('complaints').push({
+                name, phone, details, timestamp: new Date().toLocaleString()
+            }).then(() => {
+                alert('আপনার অভিযোগ/পরামর্শ সফলভাবে জমা হয়েছে। ধন্যবাদ!');
+                document.getElementById('complaintName').value = '';
+                document.getElementById('complaintPhone').value = '';
+                document.getElementById('complaintDetails').value = '';
+                showSection('publicView');
+            });
+        }
+
+        function fetchComplaintsForAdmin() {
+            database.ref('complaints').on('value', (snapshot) => {
                 const data = snapshot.val();
+                const container = document.getElementById('adminComplaintsList');
+                container.innerHTML = '';
                 if(data) {
-                    const container = document.getElementById('galleryContainer');
-                    container.innerHTML = '';
-                    Object.values(data).forEach(imgUrl => {
-                        const img = document.createElement('img');
-                        img.src = imgUrl;
-                        img.className = "w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm";
-                        container.appendChild(img);
+                    let count = Object.keys(data).length;
+                    document.getElementById('complaintCount').innerText = count + 'টি';
+                    Object.values(data).reverse().forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = "p-3 bg-slate-50 border rounded-xl space-y-1";
+                        div.innerHTML = `<p class="font-bold text-emerald-900">${item.name} <span class="text-slate-400 font-normal">(${item.phone})</span></p>
+                                         <p class="text-slate-700">${item.details}</p>
+                                         <p class="text-[10px] text-slate-400 text-right">${item.timestamp}</p>`;
+                        container.appendChild(div);
                     });
+                } else {
+                    container.innerHTML = '<p class="text-slate-400 text-center py-4">কোনো অভিযোগ জমা হয়নি।</p>';
                 }
             });
         }
@@ -551,6 +691,7 @@
         function showSection(sectionId) {
             document.getElementById('publicView').classList.add('hidden');
             document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('complaintSection').classList.add('hidden');
             document.getElementById('guardianDashboard').classList.add('hidden');
             document.getElementById('adminDashboard').classList.add('hidden');
 
@@ -577,7 +718,6 @@
             const errDiv = document.getElementById('loginError');
 
             let emailToUse = inputVal;
-            // If input is like Nur1, Nur2 etc, convert to proper firebase email format
             if(inputVal.toLowerCase().startsWith('nur')) {
                 emailToUse = inputVal.toLowerCase() + '@annoor.com';
             }
@@ -588,7 +728,6 @@
                 })
                 .catch((error) => {
                     errDiv.classList.remove('hidden');
-                    console.error(error.message);
                 });
         }
 
@@ -645,10 +784,7 @@
             const addr = document.getElementById('setAddress').value;
             const photo = document.getElementById('setStudentPhoto').value;
 
-            const updateObj = {
-                attendance: att,
-                feeStatus: fee
-            };
+            const updateObj = { attendance: att, feeStatus: fee };
             if(nameInput) updateObj.name = nameInput;
             if(due) updateObj.dueAmount = due;
             if(addr) updateObj.address = addr;
@@ -656,8 +792,6 @@
 
             database.ref('students/' + tId).update(updateObj).then(() => {
                 alert(tId + ' এর ডাটা সফলভাবে আপডেট করা হয়েছে!');
-            }).catch((error) => {
-                alert('ত্রুটি: ' + error.message);
             });
         }
 
@@ -669,26 +803,6 @@
                 document.getElementById('adminNoticeInput').value = '';
             });
         }
-
-        function updateHadith() {
-            const text = document.getElementById('adminHadithInput').value;
-            const ref = document.getElementById('adminHadithRefInput').value;
-            if(!text || !ref) return alert('হাদিস ও রেফারেন্স দুটোই লিখুন');
-            database.ref('settings/hadith').set({ text, ref }).then(() => {
-                alert('হাদিস সফলভাবে আপডেট করা হয়েছে!');
-                document.getElementById('adminHadithInput').value = '';
-                document.getElementById('adminHadithRefInput').value = '';
-            });
-        }
-
-        function addGalleryImage() {
-            const imgUrl = document.getElementById('adminGalleryImgUrl').value;
-            if(!imgUrl) return alert('ছবির লিংক দিন');
-            database.ref('gallery').push(imgUrl).then(() => {
-                alert('গ্যালারিতে ছবি সফলভাবে যোগ করা হয়েছে!');
-                document.getElementById('adminGalleryImgUrl').value = '';
-            });
-        }
     </script>
 </body>
-                        </html>
+</html>
