@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -70,13 +69,6 @@
                 <!-- লোগো ইমেজ -->
                 <img src="1000053910.jpg" alt="An-Noor Logo" class="w-10 h-10 rounded-full border-2 border-gold-400 object-cover shadow">
                 <div>
-                    <div class="w-11 h-11 rounded-full border-2 border-gold-400 bg-white p-0.5 shadow-md flex-shrink-0 flex items-center justify-center">
-                    <!-- Dynamic Fallback SVG Logo -->
-                    <svg class="w-8 h-8 text-emerald-800" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 2.27L18.09 9 12 12.27 5.91 9 12 5.27zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-                    </svg>
-                </div>
-                <div>
                     <h1 class="font-bold text-base md:text-lg leading-tight text-amber-300">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</h1>
                     <p class="text-[11px] text-emerald-200">৭ নং নিউটাউন, সদর, দিনাজপুর | হটলাইন: ০১৭৯৭১১১৫৪৪</p>
                 </div>
@@ -105,7 +97,7 @@
         </div>
     </div>
 
-    <!-- Quick Navigation / Demo Switcher for fast testing -->
+    <!-- Quick Navigation / Demo Switcher -->
     <div class="max-w-4xl mx-auto w-full px-4 pt-4 flex flex-wrap gap-2 justify-center text-xs">
         <button onclick="showSection('publicView')" class="px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 font-semibold transition">
             <i class="fa-solid fa-house mr-1"></i> মূল পেজ / ভর্তি তথ্য
@@ -125,7 +117,7 @@
     <!-- Main Container -->
     <main class="max-w-4xl mx-auto px-4 py-4 w-full flex-grow">
 
-        <!-- 1. PUBLIC VIEW (মাদ্রাসার সাধারণ পেজ ও প্রসপেক্টাস) -->
+        <!-- 1. PUBLIC VIEW -->
         <div id="publicView" class="space-y-6">
             <!-- Hero Banner -->
             <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white p-6 md:p-8 rounded-3xl shadow-xl relative overflow-hidden border border-emerald-700">
@@ -253,9 +245,8 @@
             </div>
         </div>
 
-        <!-- 3. GUARDIAN DASHBOARD (অভিভাবক ভিউ) -->
+        <!-- 3. GUARDIAN DASHBOARD -->
         <div id="guardianDashboard" class="hidden space-y-6">
-            <!-- Student Header Profile -->
             <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-5 md:p-6 rounded-3xl shadow-xl relative overflow-hidden">
                 <div class="absolute -right-4 -bottom-4 opacity-10 text-8xl">
                     <i class="fa-solid fa-graduation-cap"></i>
@@ -272,7 +263,6 @@
                 </div>
             </div>
 
-            <!-- Realtime Status Grid -->
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
                     <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
@@ -299,7 +289,6 @@
                 </div>
             </div>
 
-            <!-- Subject-wise Academic Result Card -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
                 <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center justify-between">
                     <span><i class="fa-solid fa-file-signature text-emerald-600 mr-1"></i> সর্বশেষ পরীক্ষার লাইভ ফলাফল</span>
@@ -326,87 +315,215 @@
                 </div>
             </div>
 
-            <!-- Contact Madrasah Office -->
-            <div class="bg-emerald-50 p-4 roun
-      4 rounded-2xl border border-emerald-200 text-center space-y-2">
-                <p class="text-xs text-emerald-900 font-medium">মাদ্রাসা অফিসে যোগাযোগ করতে:</p>
-                <div class="flex justify-center gap-3">
-                    <a href="tel:01797111544" class="bg-emerald-700 text-white text-xs px-4 py-2 rounded-xl font-bold shadow hover:bg-emerald-800 transition">
-                        <i class="fa-solid fa-phone mr-1"></i> কল করুন
-                    </a>
+            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex items-start gap-3">
+                <div class="text-emerald-700 text-lg mt-0.5">
+                    <i class="fa-solid fa-circle-info"></i>
                 </div>
+                <div>
+                    <h5 class="text-xs font-bold text-emerald-900">মাদ্রাসা কর্তৃপক্ষের বার্তা</h5>
+                    <p class="text-[11px] text-emerald-800 mt-0.5">অভিভাবকগণের অবগতির জন্য জানানো যাচ্ছে যে, নিয়মিত ফি পরিশোধ এবং ক্লাসে সময়মতো উপস্থিতির জন্য বিশেষভাবে অনুরোধ করা হলো।</p>
+                </div>
+            </div>
+        </div>
+
+             <!-- 4. ADMIN DASHBOARD -->
+        <div id="adminDashboard" class="hidden space-y-6">
+            <div class="bg-emerald-900 text-white p-5 md:p-6 rounded-3xl shadow-xl flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-amber-300"><i class="fa-solid fa-gauge-high mr-1"></i> অ্যাডমিন কন্ট্রোল প্যানেল</h3>
+                    <p class="text-xs text-emerald-200 mt-1">রিয়েলটাইম ডাটা ম্যানেজমেন্ট ও শিক্ষার্থী কন্ট্রোল</p>
+                </div>
+                <div class="bg-emerald-800 px-3 py-1.5 rounded-xl border border-emerald-700 text-xs font-semibold text-gold-400">
+                    🟢 লাইভ মোড
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-emerald-700"></i> শিক্ষার্থী রিয়েলটাইম স্ট্যাটাস আপডেট করুন
+                </h4>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">শিক্ষার্থী নির্বাচন করুন:</label>
+                        <select id="targetStudentId" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium">
+                            <option value="ANN101">ANN101 - মুহাম্মদ আব্দুল্লাহ (১ম শ্রেণি)</option>
+                            <option value="ANN102">ANN102 - ফাতেমা তুজ জোহরা (প্রী)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">উপস্থিতি স্ট্যাটাস:</label>
+                        <select id="setAttendance" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium">
+                            <option value="উপস্থিত (Present)">উপস্থিত (Present)</option>
+                            <option value="অনুপস্থিত (Absent)">অনুপস্থিত (Absent)</option>
+                            <option value="ছুটিতে আছে">ছুটিতে আছে</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">মাসিক ফি স্ট্যাটাস:</label>
+                        <select id="setFeeStatus" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium">
+                            <option value="পরিশোধিত (Paid)">পরিশোধিত (Paid)</option>
+                            <option value="বাকি আছে (Due)">বাকি আছে (Due)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">সার্বিক গ্রেড:</label>
+                        <select id="setOverallGrade" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium">
+                            <option value="এ+ (A+)">এ+ (A+)</option>
+                            <option value="এ (A)">এ (A)</option>
+                            <option value="এ- (A-)">এ- (A-)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="updateStudentData()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> ডাটাবেজে আপডেট সেভ করুন
+                </button>
             </div>
         </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-8">
-        <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong></p>
-        <p class="text-[10px] text-slate-400 mt-0.5">৭ নং নিউটাউন, সদর, দিনাজপুর।</p>
+    <footer class="bg-emerald-950 text-emerald-300 text-center py-4 text-xs mt-8 border-t border-emerald-900">
+        <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong> | কারিগরি সহযোগিতায়: স্মার্ট প্যানেল সিস্টেম</p>
     </footer>
 
-    <!-- JavaScript for Authentication & Interactivity -->
+    <!-- JavaScript Controller Logic -->
     <script>
-        // ডেমো ইউজার ডাটাবেস (এখানে আপনি গার্ডিয়ানদের আইডি ও পাসওয়ার্ড সেট করে দিতে পারবেন)
-        const guardiansDatabase = {
-            "ANN101": { pass: "1234", name: "আব্দুল্লাহ আল মামুন (অভিভাবক)", class: "প্রী শ্রেণি", roll: "০১" },
-            "ANN102": { pass: "5678", name: "মোছাঃ ফাতেমা খাতুন (অভিভাবক)", class: "১ম শ্রেণি", roll: "০২" },
-            "ANN103": { pass: "2026", name: "মোঃ রফিকুল ইসলাম (অভিভাবক)", class: "২য় শ্রেণি", roll: "০৩" }
+        const firebaseConfig = {
+            apiKey: "AIzaSyDlx9Ge1Oi58Dr_n22ny47",
+            authDomain: "misbah-fed0.firebaseapp.com",
+            databaseURL: "https://misbah-fed0-default-rtdb.firebaseio.com/",
+            projectId: "misbah-fed0",
+            storageBucket: "misbah-fed0.appspot.com",
+            messagingSenderId: "117643854786",
+            appId: "1:117643854786:web:d0fcc3f44",
+            measurementId: "G-GWENW0J1G6"
         };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let currentUserRole = null;
+        let currentUserId = null;
+
+        function showSection(sectionId) {
+            document.getElementById('publicView').classList.add('hidden');
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('guardianDashboard').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+
+            document.getElementById(sectionId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function quickAdminDemo() {
+            document.getElementById('userId').value = 'Admin';
+            document.getElementById('password').value = '1234';
+            showSection('loginSection');
+        }
+
+        function quickGuardianDemo() {
+            document.getElementById('userId').value = 'ANN101';
+            document.getElementById('password').value = '1234';
+            showSection('loginSection');
+        }
 
         function handleLogin(event) {
             event.preventDefault();
-            const inputId = document.getElementById('userId').value.trim();
-            const inputPass = document.getElementById('password').value.trim();
-            const errorDiv = document.getElementById('loginError');
+            const uId = document.getElementById('userId').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const errDiv = document.getElementById('loginError');
 
-            if (guardiansDatabase[inputId] && guardiansDatabase[inputId].pass === inputPass) {
-                // সফল লগইন
-                errorDiv.classList.add('hidden');
-                
-                // ড্যাশবোর্ড ডেটা আপডেট
-                const student = guardiansDatabase[inputId];
-                document.getElementById('studentName').textContent = student.name;
-                document.getElementById('displayId').textContent = inputId;
-
-                // সেকশন পরিবর্তন
-                document.getElementById('loginSection').classList.add('hidden');
-                document.getElementById('dashboardSection').classList.remove('hidden');
-                document.getElementById('logoutBtn').classList.remove('hidden');
+            if (uId.toLowerCase() === 'admin' && pass === '1234') {
+                currentUserRole = 'admin';
+                currentUserId = 'Admin';
+                errDiv.classList.add('hidden');
+                setupNavAfterLogin();
+                showSection('adminDashboard');
+            } else if ((uId === 'ANN101' || uId === 'ANN102') && pass === '1234') {
+                currentUserRole = 'guardian';
+                currentUserId = uId;
+                errDiv.classList.add('hidden');
+                setupNavAfterLogin();
+                fetchStudentData(uId);
+                showSection('guardianDashboard');
             } else {
-                // ভুল হলে এরর দেখাবে
-                errorDiv.classList.remove('hidden');
+                errDiv.classList.remove('hidden');
             }
         }
 
+        function setupNavAfterLogin() {
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            const badge = document.getElementById('roleBadge');
+            badge.classList.remove('hidden');
+            badge.innerText = currentUserRole === 'admin' ? 'অ্যাডমিন' : 'অভিভাবক';
+        }
+
         function logout() {
-            document.getElementById('dashboardSection').classList.add('hidden');
-            document.getElementById('loginSection').classList.remove('hidden');
+            currentUserRole = null;
+            currentUserId = null;
             document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('roleBadge').classList.add('hidden');
             document.getElementById('userId').value = '';
             document.getElementById('password').value = '';
+            showSection('publicView');
+        }
+
+        function fetchStudentData(uId) {
+            const studentRef = database.ref('students/' + uId);
+            studentRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById('gStudentName').innerText = data.name || 'শিক্ষার্থী';
+                    document.getElementById('gStudentDetails').innerText = `শ্রেণি: ${data.class} | রোল: ${data.roll}`;
+                    document.getElementById('gDisplayId').innerText = uId;
+                    document.getElementById('gAttendance').innerText = data.attendance || 'উপস্থিত';
+                    document.getElementById('gFeeStatus').innerText = data.feeStatus || 'পরিশোধিত';
+                    document.getElementById('gOverallGrade').innerText = data.grade || 'এ+ (A+)';
+                } else {
+                    if (uId === 'ANN101') {
+                        document.getElementById('gStudentName').innerText = 'মুহাম্মদ আব্দুল্লাহ';
+                        document.getElementById('gStudentDetails').innerText = 'শ্রেণি: ১ম | রোল: ০১';
+                    } else {
+                        document.getElementById('gStudentName').innerText = 'ফাতেমা তুজ জোহরা';
+                        document.getElementById('gStudentDetails').innerText = 'শ্রেণি: প্রী | রোল: ০২';
+                    }
+                    document.getElementById('gDisplayId').innerText = uId;
+                    document.getElementById('gAttendance').innerText = 'উপস্থিত (Present)';
+                    document.getElementById('gFeeStatus').innerText = 'পরিশোধিত (Paid)';
+                    document.getElementById('gOverallGrade').innerText = 'এ+ (A+)';
+                }
+            });
+        }
+
+        function updateStudentData() {
+            const tId = document.getElementById('targetStudentId').value;
+            const att = document.getElementById('setAttendance').value;
+            const fee = document.getElementById('setFeeStatus').value;
+            const grd = document.getElementById('setOverallGrade').value;
+
+            let nameVal = tId === 'ANN101' ? 'মুহাম্মদ আব্দুল্লাহ' : 'ফাতেমা তুজ জোহরা';
+            let classVal = tId === 'ANN101' ? '১ম' : 'প্রী';
+            let rollVal = tId === 'ANN101' ? '০১' : '০২';
+
+            database.ref('students/' + tId).set({
+                name: nameVal,
+                class: classVal,
+                roll: rollVal,
+                attendance: att,
+                feeStatus: fee,
+                grade: grd
+            }).then(() => {
+                alert('সফলভাবে ডাটা আপডেট করা হয়েছে!');
+            }).catch((error) => {
+                alert('ত্রুটি: ' + error.message);
+            });
         }
     </script>
-<script>// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDlX9EiOIisDR_n22nY47kZBWUvcvYEd3E",
-  authDomain: "misbah-feed0.firebaseapp.com",
-  projectId: "misbah-feed0",
-  storageBucket: "misbah-feed0.firebasestorage.app",
-  messagingSenderId: "117643854786",
-  appId: "1:117643854786:web:d0fcc3f4a825e6f74d8c5b",
-  measurementId: "G-GWENW8Q1J6"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);</script>// </body>
+</body>
 </html>
