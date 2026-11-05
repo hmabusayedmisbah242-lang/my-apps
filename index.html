@@ -11,7 +11,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Firebase SDK (Compat version for fast direct CDN usage) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -66,8 +66,7 @@
     <header class="bg-emerald-900 text-white shadow-xl sticky top-0 z-50 border-b border-gold-500/40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="showSection('publicView')">
-                <!-- লোগো ইমেজ -->
-                <img src="1000053910.jpg" alt="An-Noor Logo" class="w-10 h-10 rounded-full border-2 border-gold-400 object-cover shadow">
+                <img src="1000053910.jpg" alt="An-Noor Logo" class="w-10 h-10 rounded-full border-2 border-gold-400 object-cover shadow" onerror="this.src='https://via.placeholder.com/40'">
                 <div>
                     <h1 class="font-bold text-base md:text-lg leading-tight text-amber-300">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</h1>
                     <p class="text-[11px] text-emerald-200">৭ নং নিউটাউন, সদর, দিনাজপুর | হটলাইন: ০১৭৯৭১১১৫৪৪</p>
@@ -97,10 +96,10 @@
         </div>
     </div>
 
-    <!-- Quick Navigation / Demo Switcher -->
+    <!-- Quick Navigation Bar -->
     <div class="max-w-4xl mx-auto w-full px-4 pt-4 flex flex-wrap gap-2 justify-center text-xs">
         <button onclick="showSection('publicView')" class="px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 font-semibold transition">
-            <i class="fa-solid fa-house mr-1"></i> মূল পেজ / ভর্তি তথ্য
+            <i class="fa-solid fa-house mr-1"></i> মূল পেজ
         </button>
         <button onclick="showSection('loginSection')" class="px-3 py-1.5 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 font-semibold transition">
             <i class="fa-solid fa-user-lock mr-1"></i> পোর্টালে লগইন
@@ -114,7 +113,7 @@
         </button>
     </div>
 
-    <!-- Main Container -->
+    <!-- Main Content Container -->
     <main class="max-w-4xl mx-auto px-4 py-4 w-full flex-grow">
 
         <!-- 1. PUBLIC VIEW -->
@@ -126,53 +125,77 @@
                 </div>
                 <div class="relative z-10 space-y-3">
                     <span class="bg-gold-500 text-emerald-950 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-                        মাদ্রাসা অল-ইন-ওয়ান সিস্টেম
+                        স্মার্ট অনলাইন মাদ্রাসা পোর্টাল
                     </span>
                     <h2 class="text-2xl md:text-3xl font-extrabold text-amber-300 leading-snug">
                         দুনিয়ার শিক্ষা, আখেরাতের প্রস্তুতি — আমাদের মূল লক্ষ্য
                     </h2>
                     <p class="text-xs md:text-sm text-emerald-100 max-w-xl leading-relaxed">
-                        আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী ও আধুনিক শিক্ষার সমন্বয়ে শিশুদের নৈতিক ও মানসম্মত শিক্ষাদান করা হয়। অভিভাবক পোর্টালে যুক্ত হয়ে লাইভ আপডেট গ্রহণ করুন।
+                        আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী, তাহফিজ ও আধুনিক সমন্বিত শিক্ষায় শিশুদের চরিত্র গঠন ও মানসম্মত শিক্ষাদান করা হয়।
                     </p>
                     <div class="pt-2 flex flex-wrap gap-3">
-                        <button onclick="showSection('loginSection')" class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg transition duration-200">
-                            <i class="fa-solid fa-right-to-bracket mr-1"></i> অভিভাবক/অ্যাডমিন লগইন
+                        <button onclick="showSection('loginSection')" class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg transition">
+                            <i class="fa-solid fa-right-to-bracket mr-1"></i> লগইন করুন
                         </button>
-                        <a href="tel:01797111544" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow transition duration-200">
+                        <a href="tel:01797111544" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow transition">
                             <i class="fa-solid fa-phone mr-1"></i> ভর্তি তথ্য: ০১৭৯৭১১১৫৪৪
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Features Grid -->
+            <!-- Daily Hadith Card -->
+            <div class="bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/10 border border-emerald-300 p-5 rounded-2xl shadow-sm space-y-2">
+                <div class="flex items-center gap-2 text-emerald-800 font-bold text-sm border-b pb-1">
+                    <i class="fa-solid fa-quote-left text-gold-500 text-lg"></i>
+                    <h3>দৈনন্দিন হাদিস ও বাণী</h3>
+                </div>
+                <p id="displayHadithText" class="text-xs md:text-sm text-slate-700 italic leading-relaxed pt-1">
+                    "তোমাদের মধ্যে সর্বোত্তম ব্যক্তি সে, যে নিজে কুরআন শেখে এবং অপরকে শিক্ষা দেয়।"
+                </p>
+                <p id="displayHadithRef" class="text-[11px] font-semibold text-emerald-700 text-right">— সহীহ বুখারী (৫০২৭)</p>
+            </div>
+
+            <!-- Features & Academic Quality Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="glass-card p-5 rounded-2xl shadow-sm space-y-2 border-t-4 border-emerald-600">
                     <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-book-quran"></i>
                     </div>
                     <h3 class="font-bold text-slate-800 text-sm">নূরানী ও মানসম্মত শিক্ষা</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">ইক্বরা নূরানী বোর্ডের আওতাভুক্ত অভিজ্ঞ ও যোগ্য শিক্ষক মণ্ডলী দ্বারা ক্লাস পরিচালনা করা হয়।</p>
+                    <p class="text-xs text-slate-600 leading-relaxed">আন্তর্জাতিক মানের নূরানী সিলেবাস, শুদ্ধ উচ্চারণ ও অভিজ্ঞ শিক্ষকদের নিবিড় পর্যবেক্ষণ।</p>
                 </div>
 
                 <div class="glass-card p-5 rounded-2xl shadow-sm space-y-2 border-t-4 border-gold-500">
                     <div class="w-10 h-10 rounded-xl bg-gold-100 text-gold-700 flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <h3 class="font-bold text-slate-800 text-sm">নিরাপদ পরিবেশ</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">সম্পূর্ণ নিরাপদ ও শরয়ী বিধান মেনে শিক্ষক-শিক্ষার্থীদের পড়াশোনা ও সুসম্পর্ক নিশ্চিত করা হয়।</p>
+                    <h3 class="font-bold text-slate-800 text-sm">শরয়ী ও নিরাপদ পরিবেশ</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">সিসিটিভি নিয়ন্ত্রিত সম্পূর্ণ নিরাপদ ও ইসলামী অনুশাসন সমৃদ্ধ সুশৃঙ্খল ক্যাম্পাস।</p>
                 </div>
 
                 <div class="glass-card p-5 rounded-2xl shadow-sm space-y-2 border-t-4 border-teal-600">
                     <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-laptop-code"></i>
                     </div>
-                    <h3 class="font-bold text-slate-800 text-sm">লাইভ আপডেট ট্র্যাকিং</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">অভিভাবকগণ অনলাইনে সরাসরি শিক্ষার্থীর উপস্থিতি, পরীক্ষার রেজাল্ট ও ফি এর তথ্য দেখতে পারবেন।</p>
+                    <h3 class="font-bold text-slate-800 text-sm">স্মার্ট অভিভাবক ট্র্যাকিং</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">অনলাইনে দৈনন্দিন উপস্থিতি, রেজাল্ট, টিউটোরিয়াল ও ফি সংক্রান্ত যাবতীয় হিসাব সুবিধা।</p>
                 </div>
             </div>
 
-            <!-- Committee / Leadership -->
+            <!-- Photo & Event Gallery -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <h3 class="text-sm font-bold text-emerald-900 border-b pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-images text-gold-500"></i> মাদ্রাসা গ্যালারি ও ফটো অ্যালবাম
+                </h3>
+                <div id="galleryContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=500" alt="Madrasa Campus" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500" alt="Students Class" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500" alt="Education Activity" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
+                </div>
+            </div>
+
+            <!-- Leadership Committee -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <h3 class="text-base font-bold text-emerald-900 mb-4 pb-2 border-b flex items-center gap-2">
                     <i class="fa-solid fa-users text-gold-500"></i> উপদেষ্টা ও পরিচালনা পরিষদ
@@ -205,7 +228,7 @@
                     <i class="fa-solid fa-user-lock text-2xl"></i>
                 </div>
                 <h2 class="text-xl font-bold text-emerald-950">পোর্টালে প্রবেশ করুন</h2>
-                <p class="text-xs text-slate-500 mt-1">অভিভাবক বা অ্যাডমিন আইডি ও পাসওয়ার্ড লিখুন</p>
+                <p class="text-xs text-slate-500 mt-1">আইডি ও পাসওয়ার্ড দিয়ে প্রবেশ করুন</p>
             </div>
 
             <form onsubmit="handleLogin(event)" class="space-y-4">
@@ -215,9 +238,8 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                             <i class="fa-solid fa-user"></i>
                         </span>
-                        <input type="text" id="userId" required placeholder="যেমন: Admin অথবা ANN101" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600">
+                        <input type="text" id="userId" required placeholder="ANN101 অথবা Admin" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600">
                     </div>
-                    <p class="text-[10px] text-slate-400 mt-1">অভিভাবক আইডি: ANN101 / ANN102 | অ্যাডমিন আইডি: Admin</p>
                 </div>
 
                 <div>
@@ -228,133 +250,132 @@
                         </span>
                         <input type="password" id="password" required placeholder="••••••••" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600">
                     </div>
-                    <p class="text-[10px] text-slate-400 mt-1">ডিফল্ট পাসওয়ার্ড: 1234</p>
                 </div>
 
                 <div id="loginError" class="hidden text-xs text-red-600 text-center font-medium bg-red-50 p-2.5 rounded-xl border border-red-200">
-                    ⚠️ ভুল আইডি অথবা পাসওয়ার্ড দেওয়া হয়েছে! আবার চেষ্টা করুন।
+                    ⚠️ ভুল আইডি অথবা পাসওয়ার্ড দেওয়া হয়েছে!
                 </div>
 
-                <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl shadow-lg transition duration-300 text-sm flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-right-to-bracket"></i> লগইন করুন
+                <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> সাইন ইন
                 </button>
             </form>
-
-            <div class="mt-6 text-center border-t border-slate-200 pt-4">
-                <p class="text-[11px] text-slate-500">সহযোগিতায়: হটলাইন - <span class="font-bold text-emerald-800">০১৭৯৭১১১৫৪৪</span></p>
-            </div>
         </div>
 
         <!-- 3. GUARDIAN DASHBOARD -->
         <div id="guardianDashboard" class="hidden space-y-6">
+            <!-- Student Header Profile Card -->
             <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-5 md:p-6 rounded-3xl shadow-xl relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-4 opacity-10 text-8xl">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
                 <div class="flex items-center space-x-4 relative z-10">
-                    <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-md text-emerald-800 flex items-center justify-center font-bold text-2xl flex-shrink-0">
-                        <i class="fa-solid fa-user-graduate"></i>
-                    </div>
+                    <img id="gStudentPhoto" src="https://via.placeholder.com/150" alt="Student Photo" class="w-16 h-16 rounded-2xl border-2 border-gold-400 object-cover shadow-md flex-shrink-0">
                     <div>
                         <h3 id="gStudentName" class="text-lg md:text-xl font-bold text-amber-300">শিক্ষার্থীর নাম</h3>
                         <p id="gStudentDetails" class="text-xs text-emerald-200">শ্রেণি: ১ম | রোল: ০১</p>
-                        <p class="text-[11px] text-slate-300 mt-1">স্টুডেন্ট আইডি: <span id="gDisplayId" class="font-mono bg-emerald-950 px-2.5 py-0.5 rounded-md text-gold-400">ANN101</span></p>
+                        <p class="text-[11px] text-slate-300 mt-0.5">আইডি: <span id="gDisplayId" class="font-mono bg-emerald-950 px-2 py-0.5 rounded text-gold-400">ANN101</span></p>
+                        <p class="text-[11px] text-emerald-200 mt-1"><i class="fa-solid fa-location-dot text-gold-400 mr-1"></i>ঠিকানা: <span id="gAddress">লোড হচ্ছে...</span></p>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Student Metrics Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
-                    <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
+                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-base">
                         <i class="fa-solid fa-calendar-check"></i>
                     </div>
-                    <h4 class="text-xs text-slate-500">উপস্থিতি স্থিতি</h4>
-                    <p id="gAttendance" class="text-sm font-bold text-emerald-800 mt-1">লোড হচ্ছে...</p>
+                    <h4 class="text-[11px] text-slate-500">উপস্থিতি</h4>
+                    <p id="gAttendance" class="text-xs font-bold text-emerald-800 mt-1">লোড হচ্ছে...</p>
                 </div>
 
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
-                    <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg">
+                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-base">
                         <i class="fa-solid fa-receipt"></i>
                     </div>
-                    <h4 class="text-xs text-slate-500">চলতি মাসের ফি</h4>
-                    <p id="gFeeStatus" class="text-sm font-bold text-blue-800 mt-1">লোড হচ্ছে...</p>
+                    <h4 class="text-[11px] text-slate-500">চলতি ফি স্থিতি</h4>
+                    <p id="gFeeStatus" class="text-xs font-bold text-blue-800 mt-1">লোড হচ্ছে...</p>
                 </div>
 
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center col-span-2 md:col-span-1">
-                    <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
+                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-red-100 text-red-700 flex items-center justify-center text-base">
+                        <i class="fa-solid fa-bangladeshi-taka-sign"></i>
+                    </div>
+                    <h4 class="text-[11px] text-slate-500">বকেয়া পরিমাণ</h4>
+                    <p id="gDueAmount" class="text-xs font-bold text-red-700 mt-1">০ ৳</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
+                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-base">
                         <i class="fa-solid fa-star"></i>
                     </div>
-                    <h4 class="text-xs text-slate-500">সামগ্রিক গ্রেড</h4>
-                    <p id="gOverallGrade" class="text-sm font-bold text-amber-800 mt-1">এ+ (A+)</p>
+                    <h4 class="text-[11px] text-slate-500">মেধা অবস্থান</h4>
+                    <p id="gOverallGrade" class="text-xs font-bold text-amber-800 mt-1">এ+ (A+)</p>
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+            <!-- Academic Results Table -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
                 <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center justify-between">
-                    <span><i class="fa-solid fa-file-signature text-emerald-600 mr-1"></i> সর্বশেষ পরীক্ষার লাইভ ফলাফল</span>
-                    <span class="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">প্রথম সাময়িক</span>
+                    <span><i class="fa-solid fa-file-signature text-emerald-600 mr-1"></i> সাম্প্রতিক লাইভ পরীক্ষার তথ্য</span>
+                    <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">সাময়িক পরীক্ষা</span>
                 </h4>
                 
-                <div class="space-y-2.5 text-xs">
-                    <div class="flex justify-between items-center py-2 border-b border-slate-100">
-                        <span class="text-slate-600 font-medium">কুরআন তিলাওয়াত ও নূরানী:</span>
-                        <span id="gResQuran" class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
+                   <div class="space-y-2 text-xs">
+                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
+                        <span class="text-slate-600">কুরআন তিলাওয়াত ও তাজবীদ:</span>
+                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
                     </div>
-                    <div class="flex justify-between items-center py-2 border-b border-slate-100">
-                        <span class="text-slate-600 font-medium">বাংলা ও ইংরেজি:</span>
-                        <span id="gResBanglaEng" class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ (A)</span>
+                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
+                        <span class="text-slate-600">বাংলা ও ইংরেজি:</span>
+                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ (A)</span>
                     </div>
-                    <div class="flex justify-between items-center py-2 border-b border-slate-100">
-                        <span class="text-slate-600 font-medium">গণিত ও মেধা বিকাশ:</span>
-                        <span id="gResMath" class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
+                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
+                        <span class="text-slate-600">গণিত ও মেধা মেধা চর্চা:</span>
+                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
                     </div>
-                    <div class="flex justify-between items-center py-2">
-                        <span class="text-slate-600 font-medium">আরবি ও দৈনন্দিন দু'আ:</span>
-                        <span id="gResArabic" class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
+                    <div class="flex justify-between items-center py-1.5">
+                        <span class="text-slate-600">আরবি ভাষা ও দৈনন্দিন মাসনুন দু'আ:</span>
+                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
                     </div>
-                </div>
-            </div>
-
-            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex items-start gap-3">
-                <div class="text-emerald-700 text-lg mt-0.5">
-                    <i class="fa-solid fa-circle-info"></i>
-                </div>
-                <div>
-                    <h5 class="text-xs font-bold text-emerald-900">মাদ্রাসা কর্তৃপক্ষের বার্তা</h5>
-                    <p class="text-[11px] text-emerald-800 mt-0.5">অভিভাবকগণের অবগতির জন্য জানানো যাচ্ছে যে, নিয়মিত ফি পরিশোধ এবং ক্লাসে সময়মতো উপস্থিতির জন্য বিশেষভাবে অনুরোধ করা হলো।</p>
                 </div>
             </div>
         </div>
 
-             <!-- 4. ADMIN DASHBOARD -->
+        <!-- 4. ADVANCED ADMIN DASHBOARD -->
         <div id="adminDashboard" class="hidden space-y-6">
-            <div class="bg-emerald-900 text-white p-5 md:p-6 rounded-3xl shadow-xl flex justify-between items-center">
+            <!-- Header Banner -->
+            <div class="bg-emerald-900 text-white p-5 rounded-3xl shadow-xl flex justify-between items-center">
                 <div>
-                    <h3 class="text-lg md:text-xl font-bold text-amber-300"><i class="fa-solid fa-gauge-high mr-1"></i> অ্যাডমিন কন্ট্রোল প্যানেল</h3>
-                    <p class="text-xs text-emerald-200 mt-1">রিয়েলটাইম ডাটা ম্যানেজমেন্ট ও শিক্ষার্থী কন্ট্রোল</p>
+                    <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-sliders mr-1"></i> কেন্দ্রীয় অ্যাডমিন কন্ট্রোল</h3>
+                    <p class="text-xs text-emerald-200 mt-0.5">মাদ্রাসা ম্যানেজমেন্ট ও তথ্য পরিচালনা</p>
                 </div>
-                <div class="bg-emerald-800 px-3 py-1.5 rounded-xl border border-emerald-700 text-xs font-semibold text-gold-400">
-                    🟢 লাইভ মোড
-                </div>
+                <span class="bg-emerald-800 px-3 py-1 rounded-xl text-xs font-semibold text-gold-400 border border-emerald-700">
+                    🟢 লাইভ সংযোগ
+                </span>
             </div>
 
+            <!-- Student Data Update Tool -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
                 <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-emerald-700"></i> শিক্ষার্থী রিয়েলটাইম স্ট্যাটাস আপডেট করুন
+                    <i class="fa-solid fa-user-pen text-emerald-700"></i> ১. শিক্ষার্থী প্রোফাইল ও রেজাল্ট আপডেট
                 </h4>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">শিক্ষার্থী নির্বাচন করুন:</label>
-                        <select id="targetStudentId" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium">
+                        <select id="targetStudentId" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:border-emerald-600">
                             <option value="ANN101">ANN101 - মুহাম্মদ আব্দুল্লাহ (১ম শ্রেণি)</option>
                             <option value="ANN102">ANN102 - ফাতেমা তুজ জোহরা (প্রী)</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">উপস্থিতি স্ট্যাটাস:</label>
-                        <select id="setAttendance" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium">
+                        <label class="block font-semibold text-slate-700 mb-1">ঠিকানা:</label>
+                        <input type="text" id="setAddress" placeholder="যেমন: নিউটাউন, দিনাজপুর" class="w-full p-2 bg-slate-50 border rounded-xl">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">উপস্থিতি স্থিতি:</label>
+                        <select id="setAttendance" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl">
                             <option value="উপস্থিত (Present)">উপস্থিত (Present)</option>
                             <option value="অনুপস্থিত (Absent)">অনুপস্থিত (Absent)</option>
                             <option value="ছুটিতে আছে">ছুটিতে আছে</option>
@@ -362,26 +383,65 @@
                     </div>
 
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">মাসিক ফি স্ট্যাটাস:</label>
-                        <select id="setFeeStatus" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium">
+                        <label class="block font-semibold text-slate-700 mb-1">ফি স্ট্যাটাস:</label>
+                        <select id="setFeeStatus" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl">
                             <option value="পরিশোধিত (Paid)">পরিশোধিত (Paid)</option>
                             <option value="বাকি আছে (Due)">বাকি আছে (Due)</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">সার্বিক গ্রেড:</label>
-                        <select id="setOverallGrade" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium">
-                            <option value="এ+ (A+)">এ+ (A+)</option>
-                            <option value="এ (A)">এ (A)</option>
-                            <option value="এ- (A-)">এ- (A-)</option>
-                        </select>
+                        <label class="block font-semibold text-slate-700 mb-1">বকেয়া টাকার পরিমাণ (৳):</label>
+                        <input type="number" id="setDueAmount" placeholder="যেমন: ৫৫০" class="w-full p-2 bg-slate-50 border rounded-xl">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">ছবি URL (ইমেজ লিংক):</label>
+                        <input type="text" id="setStudentPhoto" placeholder="https://..." class="w-full p-2 bg-slate-50 border rounded-xl">
                     </div>
                 </div>
 
                 <button onclick="updateStudentData()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> ডাটাবেজে আপডেট সেভ করুন
+                    <i class="fa-solid fa-cloud-arrow-up"></i> শিক্ষার্থী ডাটা আপডেট করুন
                 </button>
+            </div>
+
+            <!-- Live Notice Manager -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-bullhorn text-gold-600"></i> ২. লাইভ স্ক্রলিং নোটিশ পরিবর্তন
+                </h4>
+                <div class="flex gap-2">
+                    <input type="text" id="adminNoticeInput" placeholder="এখানে নতুন ঘোষণা লিখুন..." class="flex-grow p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs">
+                    <button onclick="updateNoticeBar()" class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-4 rounded-xl text-xs transition">
+                        পাবলিশ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Daily Hadith Manager -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-kaaba text-teal-700"></i> ৩. হাদিস পরিবর্তন প্যানেল
+                </h4>
+                <textarea id="adminHadithInput" placeholder="হাদিসের আরবি/বাংলা অনুবাদ লিখুন..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs h-20"></textarea>
+                <input type="text" id="adminHadithRefInput" placeholder="রেফারেন্স (যেমন: সহীহ বুখারী - ১০০১)" class="w-full p-2.5 bg-slate-50 border rounded-xl text-xs">
+                <button onclick="updateHadith()" class="w-full bg-teal-800 hover:bg-teal-900 text-white font-bold py-2 rounded-xl text-xs transition">
+                    হাদিস আপডেট করুন
+                </button>
+            </div>
+
+            <!-- Gallery Image Link Manager -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-image text-emerald-700"></i> ৪. গ্যালারিতে ছবি যোগ করুন
+                </h4>
+                <div class="flex gap-2">
+                    <input type="text" id="adminGalleryImgUrl" placeholder="ছবি ডাইরেক্ট ইমেজ লিংক (URL) দিন..." class="flex-grow p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs">
+                    <button onclick="addGalleryImage()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 rounded-xl text-xs transition">
+                        যোগ করুন
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -389,10 +449,10 @@
 
     <!-- Footer -->
     <footer class="bg-emerald-950 text-emerald-300 text-center py-4 text-xs mt-8 border-t border-emerald-900">
-        <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong> | কারিগরি সহযোগিতায়: স্মার্ট প্যানেল সিস্টেম</p>
+        <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong> | স্মার্ট ডিজিটাল এডুকেশন সিস্টেম</p>
     </footer>
 
-    <!-- JavaScript Controller Logic -->
+    <!-- JavaScript Controller & Firebase Script -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDlx9Ge1Oi58Dr_n22ny47",
@@ -410,6 +470,43 @@
 
         let currentUserRole = null;
         let currentUserId = null;
+
+        // Dynamic System Listener
+        window.onload = function() {
+            listenGlobalSettings();
+        };
+
+        function listenGlobalSettings() {
+            // Notice Bar Listener
+            database.ref('settings/notice').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if(val) document.getElementById('liveNoticeBar').innerText = val;
+            });
+
+            // Hadith Listener
+            database.ref('settings/hadith').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if(data) {
+                    document.getElementById('displayHadithText').innerText = `"${data.text}"`;
+                    document.getElementById('displayHadithRef').innerText = `— ${data.ref}`;
+                }
+            });
+
+            // Gallery Listener
+            database.ref('gallery').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if(data) {
+                    const container = document.getElementById('galleryContainer');
+                    container.innerHTML = '';
+                    Object.values(data).forEach(imgUrl => {
+                        const img = document.createElement('img');
+                        img.src = imgUrl;
+                        img.className = "w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm";
+                        container.appendChild(img);
+                    });
+                }
+            });
+        }
 
         function showSection(sectionId) {
             document.getElementById('publicView').classList.add('hidden');
@@ -480,23 +577,21 @@
                 const data = snapshot.val();
                 if (data) {
                     document.getElementById('gStudentName').innerText = data.name || 'শিক্ষার্থী';
-                    document.getElementById('gStudentDetails').innerText = `শ্রেণি: ${data.class} | রোল: ${data.roll}`;
+                    document.getElementById('gStudentDetails').innerText = `শ্রেণি: ${data.class || '১ম'} | রোল: ${data.roll || '০১'}`;
                     document.getElementById('gDisplayId').innerText = uId;
                     document.getElementById('gAttendance').innerText = data.attendance || 'উপস্থিত';
                     document.getElementById('gFeeStatus').innerText = data.feeStatus || 'পরিশোধিত';
-                    document.getElementById('gOverallGrade').innerText = data.grade || 'এ+ (A+)';
+                    document.getElementById('gDueAmount').innerText = (data.dueAmount || '০') + ' ৳';
+                    document.getElementById('gAddress').innerText = data.address || 'নিউটাউন, দিনাজপুর';
+                    if(data.photo) document.getElementById('gStudentPhoto').src = data.photo;
                 } else {
-                    if (uId === 'ANN101') {
-                        document.getElementById('gStudentName').innerText = 'মুহাম্মদ আব্দুল্লাহ';
-                        document.getElementById('gStudentDetails').innerText = 'শ্রেণি: ১ম | রোল: ০১';
-                    } else {
-                        document.getElementById('gStudentName').innerText = 'ফাতেমা তুজ জোহরা';
-                        document.getElementById('gStudentDetails').innerText = 'শ্রেণি: প্রী | রোল: ০২';
-                    }
+                    document.getElementById('gStudentName').innerText = uId === 'ANN101' ? 'মুহাম্মদ আব্দুল্লাহ' : 'ফাতেমা তুজ জোহরা';
+                    document.getElementById('gStudentDetails').innerText = uId === 'ANN101' ? 'শ্রেণি: ১ম | রোল: ০১' : 'শ্রেণি: প্রী | রোল: ০২';
                     document.getElementById('gDisplayId').innerText = uId;
                     document.getElementById('gAttendance').innerText = 'উপস্থিত (Present)';
                     document.getElementById('gFeeStatus').innerText = 'পরিশোধিত (Paid)';
-                    document.getElementById('gOverallGrade').innerText = 'এ+ (A+)';
+                    document.getElementById('gDueAmount').innerText = '০ ৳';
+                    document.getElementById('gAddress').innerText = '৭ নং নিউটাউন, সদর, দিনাজপুর';
                 }
             });
         }
@@ -505,25 +600,60 @@
             const tId = document.getElementById('targetStudentId').value;
             const att = document.getElementById('setAttendance').value;
             const fee = document.getElementById('setFeeStatus').value;
-            const grd = document.getElementById('setOverallGrade').value;
+            const due = document.getElementById('setDueAmount').value;
+            const addr = document.getElementById('setAddress').value;
+            const photo = document.getElementById('setStudentPhoto').value;
 
             let nameVal = tId === 'ANN101' ? 'মুহাম্মদ আব্দুল্লাহ' : 'ফাতেমা তুজ জোহরা';
             let classVal = tId === 'ANN101' ? '১ম' : 'প্রী';
             let rollVal = tId === 'ANN101' ? '০১' : '০২';
 
-            database.ref('students/' + tId).set({
+            const updateObj = {
                 name: nameVal,
                 class: classVal,
                 roll: rollVal,
                 attendance: att,
-                feeStatus: fee,
-                grade: grd
-            }).then(() => {
-                alert('সফলভাবে ডাটা আপডেট করা হয়েছে!');
+                feeStatus: fee
+            };
+            if(due) updateObj.dueAmount = due;
+            if(addr) updateObj.address = addr;
+            if(photo) updateObj.photo = photo;
+
+            database.ref('students/' + tId).update(updateObj).then(() => {
+                alert('শিক্ষার্থীর ডাটা সফলভাবে আপডেট করা হয়েছে!');
             }).catch((error) => {
                 alert('ত্রুটি: ' + error.message);
             });
         }
+
+        function updateNoticeBar() {
+            const noticeText = document.getElementById('adminNoticeInput').value;
+            if(!noticeText) return alert('অনুগ্রহ করে নোটিশের লেখা লিখুন');
+            database.ref('settings/notice').set(noticeText).then(() => {
+                alert('লাইভ নোটিশ সফলভাবে পরিবর্তন করা হয়েছে!');
+                document.getElementById('adminNoticeInput').value = '';
+            });
+        }
+
+        function updateHadith() {
+            const text = document.getElementById('adminHadithInput').value;
+            const ref = document.getElementById('adminHadithRefInput').value;
+            if(!text || !ref) return alert('হাদিস ও রেফারেন্স দুটোই লিখুন');
+            database.ref('settings/hadith').set({ text, ref }).then(() => {
+                alert('হাদিস সফলভাবে আপডেট করা হয়েছে!');
+                document.getElementById('adminHadithInput').value = '';
+                document.getElementById('adminHadithRefInput').value = '';
+            });
+        }
+
+        function addGalleryImage() {
+            const imgUrl = document.getElementById('adminGalleryImgUrl').value;
+            if(!imgUrl) return alert('ছবির লিংক দিন');
+            database.ref('gallery').push(imgUrl).then(() => {
+                alert('গ্যালারিতে ছবি সফলভাবে যোগ করা হয়েছে!');
+                document.getElementById('adminGalleryImgUrl').value = '';
+            });
+        }
     </script>
 </body>
-</html>
+</html> 
