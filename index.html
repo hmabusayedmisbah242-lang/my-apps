@@ -6,8 +6,8 @@
     <title>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা - স্মার্ট অনলাইন প্যানেল</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Hind Siliguri) -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts (Hind Siliguri & Orbitron for Clock) -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -26,15 +26,18 @@
                             700: '#065f46',
                             800: '#064e3b',
                             900: '#022c22',
+                            950: '#012019',
                         },
                         gold: {
+                            300: '#fde047',
                             400: '#fbbf24',
                             500: '#f59e0b',
                             600: '#d97706',
                         }
                     },
                     fontFamily: {
-                        bengali: ['"Hind Siliguri"', 'sans-serif']
+                        bengali: ['"Hind Siliguri"', 'sans-serif'],
+                        digital: ['"Orbitron"', 'sans-serif']
                     }
                 }
             }
@@ -43,10 +46,19 @@
     <style>
         body {
             font-family: 'Hind Siliguri', sans-serif;
-            background-color: #f0fdf4;
+            background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #0f172a 100%);
+            background-attachment: fixed;
+            color: #f8fafc;
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(6, 78, 70, 0.45);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(251, 191, 36, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .glass-card-white {
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(16, 185, 129, 0.2);
         }
@@ -59,26 +71,32 @@
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
+        /* Stylish Glowing Digital Clock Style */
+        .neon-clock {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.7), 0 0 20px rgba(245, 158, 11, 0.5);
+            letter-spacing: 1px;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+<body class="text-slate-100 antialiased min-h-screen flex flex-col justify-between">
 
     <!-- Header / Navbar -->
-    <header class="bg-emerald-900 text-white shadow-xl sticky top-0 z-50 border-b border-gold-500/40">
+    <header class="bg-emerald-950/90 backdrop-blur-md text-white shadow-2xl sticky top-0 z-50 border-b border-gold-500/40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="showSection('publicView')">
-                <img src="1000053910.jpg" alt="An-Noor Logo" class="w-10 h-10 rounded-full border-2 border-gold-400 object-cover shadow" onerror="this.src='https://via.placeholder.com/40'">
+                <img src="1000053910.jpg" alt="An-Noor Logo" class="w-11 h-11 rounded-full border-2 border-gold-400 object-cover shadow-lg shadow-gold-500/20" onerror="this.src='https://via.placeholder.com/40'">
                 <div>
-                    <h1 class="font-bold text-base md:text-lg leading-tight text-amber-300">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</h1>
+                    <h1 class="font-bold text-base md:text-lg leading-tight text-amber-300 drop-shadow">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</h1>
                     <p class="text-[11px] text-emerald-200">৭ নং নিউটাউন, সদর, দিনাজপুর | হটলাইন: ০১৭৯৭১১১৫৪২</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2">
-                <span id="roleBadge" class="hidden text-[11px] bg-gold-500 text-emerald-950 font-bold px-2.5 py-1 rounded-full shadow">
+                <span id="roleBadge" class="hidden text-[11px] bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-extrabold px-3 py-1 rounded-full shadow-md">
                     অভিভাবক
                 </span>
-                <button onclick="logout()" id="logoutBtn" class="hidden text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-xl transition shadow items-center gap-1">
+                <button onclick="logout()" id="logoutBtn" class="hidden text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-xl transition shadow-lg items-center gap-1 font-semibold">
                     <i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">লগআউট</span>
                 </button>
             </div>
@@ -86,36 +104,37 @@
     </header>
 
     <!-- Live Digital Clock & Announcement Bar -->
-    <div class="bg-emerald-800 text-gold-300 text-xs py-2 px-4 border-b border-emerald-700 shadow-inner flex flex-col sm:flex-row justify-between items-center gap-2">
+    <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-gold-300 text-xs py-2 px-4 border-b border-emerald-700/60 shadow-inner flex flex-col sm:flex-row justify-between items-center gap-2">
         <div class="flex items-center w-full overflow-hidden">
-            <span class="bg-gold-500 text-emerald-950 px-2 py-0.5 font-bold rounded text-[10px] mr-2 flex-shrink-0">নোটিশ</span>
+            <span class="bg-gold-500 text-emerald-950 px-2.5 py-0.5 font-bold rounded text-[10px] mr-2 flex-shrink-0 shadow">ঘোষণা</span>
             <div class="overflow-hidden w-full relative">
                 <p id="liveNoticeBar" class="animate-marquee font-medium">
                     ২০২৭ শিক্ষাবর্ষে প্লে গ্রুপ হতে ৩য় শ্রেণি পর্যন্ত ভর্তি চলছে! আপনার সন্তানকে দ্বীনি ও আধুনিক শিক্ষায় শিক্ষিত করুন।
                 </p>
             </div>
         </div>
-        <div id="liveClock" class="bg-emerald-950 text-gold-400 px-3 py-1 rounded-lg font-mono text-[11px] shadow-inner flex-shrink-0 border border-emerald-700">
+        <!-- Stylized Digital Clock -->
+        <div id="liveClock" class="neon-clock bg-emerald-950 text-gold-400 px-3 py-1 rounded-xl text-xs font-bold border border-gold-500/40 shadow-lg flex-shrink-0">
             লোড হচ্ছে...
         </div>
     </div>
 
     <!-- Quick Navigation Bar -->
     <div class="max-w-4xl mx-auto w-full px-4 pt-4 flex flex-wrap gap-2 justify-center text-xs">
-        <button onclick="showSection('publicView')" class="px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 font-semibold transition">
+        <button onclick="showSection('publicView')" class="px-3.5 py-1.5 rounded-xl bg-emerald-800/80 text-gold-300 hover:bg-emerald-700 border border-emerald-600 font-semibold transition shadow">
             <i class="fa-solid fa-house mr-1"></i> মূল পেজ
         </button>
-        <button onclick="showSection('loginSection')" class="px-3 py-1.5 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 font-semibold transition">
+        <button onclick="showSection('loginSection')" class="px-3.5 py-1.5 rounded-xl bg-gold-500 text-emerald-950 hover:bg-gold-400 font-bold transition shadow">
             <i class="fa-solid fa-user-lock mr-1"></i> পোর্টালে লগইন
         </button>
-        <button onclick="showSection('complaintSection')" class="px-3 py-1.5 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 font-semibold transition">
+        <button onclick="showSection('complaintSection')" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-200 hover:bg-amber-500/30 border border-amber-500/40 font-semibold transition shadow">
             <i class="fa-solid fa-comment-dots mr-1"></i> অভিযোগ বক্স
         </button>
-        <span class="text-slate-400 self-center">|</span>
-        <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-900 border border-amber-300 hover:bg-amber-500/30 font-semibold">
+        <span class="text-slate-500 self-center">|</span>
+        <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 font-semibold">
             ⚡ অ্যাডমিন লগইন
         </button>
-        <button onclick="quickGuardianDemo()" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-900 border border-emerald-300 hover:bg-emerald-500/30 font-semibold">
+        <button onclick="quickGuardianDemo()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/30 font-semibold">
             ⚡ অভিভাবক লগইন (Nur1)
         </button>
     </div>
@@ -126,25 +145,25 @@
         <!-- 1. PUBLIC VIEW -->
         <div id="publicView" class="space-y-6">
             <!-- Hero Banner -->
-            <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white p-6 md:p-8 rounded-3xl shadow-xl relative overflow-hidden border border-emerald-700">
+            <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-950 text-white p-6 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden border border-gold-500/30">
                 <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl">
                     <i class="fa-solid fa-mosque"></i>
                 </div>
                 <div class="relative z-10 space-y-3">
-                    <span class="bg-gold-500 text-emerald-950 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+                    <span class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider inline-block shadow">
                         স্মার্ট অনলাইন মাদ্রাসা পোর্টাল
                     </span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-amber-300 leading-snug">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-amber-300 leading-snug drop-shadow">
                         দুনিয়ার শিক্ষা, আখেরাতের প্রস্তুতি — আমাদের মূল লক্ষ্য
                     </h2>
                     <p class="text-xs md:text-sm text-emerald-100 max-w-xl leading-relaxed">
                         আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী, তাহফিজ ও আধুনিক সমন্বিত শিক্ষায় শিশুদের চরিত্র গঠন ও মানসম্মত শিক্ষাদান করা হয়।
                     </p>
                     <div class="pt-2 flex flex-wrap gap-3">
-                        <button onclick="showSection('loginSection')" class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg transition">
+                        <button onclick="showSection('loginSection')" class="bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-emerald-950 font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-xl transition">
                             <i class="fa-solid fa-right-to-bracket mr-1"></i> লগইন করুন
                         </button>
-                        <a href="tel:01797111542" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow transition">
+                        <a href="tel:01797111542" class="bg-emerald-700/80 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg border border-emerald-500 transition">
                             <i class="fa-solid fa-phone mr-1"></i> ভর্তি তথ্য: ০১৭৯৭১১১৫৪২
                         </a>
                     </div>
@@ -152,118 +171,128 @@
             </div>
 
             <!-- Daily Hadith Card -->
-            <div class="bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/10 border border-emerald-300 p-5 rounded-2xl shadow-sm space-y-2">
-                <div class="flex items-center gap-2 text-emerald-800 font-bold text-sm border-b pb-1">
-                    <i class="fa-solid fa-quote-left text-gold-500 text-lg"></i>
+            <div class="glass-card p-5 rounded-2xl space-y-2 border border-gold-500/30">
+                <div class="flex items-center gap-2 text-amber-300 font-bold text-sm border-b border-emerald-700/50 pb-1">
+                    <i class="fa-solid fa-quote-left text-gold-400 text-lg"></i>
                     <h3>দৈনন্দিন হাদিস ও বাণী</h3>
                 </div>
-                <p id="displayHadithText" class="text-xs md:text-sm text-slate-700 italic leading-relaxed pt-1">
+                <p id="displayHadithText" class="text-xs md:text-sm text-slate-200 italic leading-relaxed pt-1">
                     "তোমাদের মধ্যে সর্বোত্তম ব্যক্তি সে, যে নিজে কুরআন শেখে এবং অপরকে শিক্ষা দেয়।"
                 </p>
-                <p id="displayHadithRef" class="text-[11px] font-semibold text-emerald-700 text-right">— সহীহ বুখারী (৫০২৭)</p>
+                <p id="displayHadithRef" class="text-[11px] font-semibold text-gold-400 text-right">— সহীহ বুখারী (৫০২৭)</p>
             </div>
 
             <!-- Features Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="glass-card p-5 rounded-2xl shadow-sm space-y-2 border-t-4 border-emerald-600">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl font-bold">
+                <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-emerald-500">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-book-quran"></i>
                     </div>
-                    <h3 class="font-bold text-slate-800 text-sm">নূরানী ও মানসম্মত শিক্ষা</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">মানসম্মত নূরানী সিলেবাস, শুদ্ধ উচ্চারণ ও অভিজ্ঞ শিক্ষকদের নিবিড় পর্যবেক্ষণ।</p>
+                    <h3 class="font-bold text-amber-300 text-sm">নূরানী ও মানসম্মত শিক্ষা</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">মানসম্মত নূরানী সিলেবাস, শুদ্ধ উচ্চারণ ও অভিজ্ঞ শিক্ষকদের নিবিড় পর্যবেক্ষণ।</p>
                 </div>
 
-                <div class="glass-card p-5 rounded-2xl shadow-sm space-y-2 border-t-4 border-gold-500">
-                    <div class="w-10 h-10 rounded-xl bg-gold-100 text-gold-700 flex items-center justify-center text-xl font-bold">
+                <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-gold-500">
+                    <div class="w-10 h-10 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <h3 class="font-bold text-slate-800 text-sm">শরয়ী ও নিরাপদ পরিবেশ</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">সিসিটিভি নিয়ন্ত্রিত সম্পূর্ণ নিরাপদ ও ইসলামী অনুশাসন সমৃদ্ধ সুশৃঙ্খল ক্যাম্পাস।</p>
+                    <h3 class="font-bold text-amber-300 text-sm">শরয়ী ও নিরাপদ পরিবেশ</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">সিসিটিভি নিয়ন্ত্রিত সম্পূর্ণ নিরাপদ ও ইসলামী অনুশাসন সমৃদ্ধ সুশৃঙ্খল ক্যাম্পাস।</p>
                 </div>
 
-                <div class="glass-card p-5 rounded-2xl shadow-sm space-y-2 border-t-4 border-teal-600">
-                    <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-xl font-bold">
+                <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-teal-500">
+                    <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-laptop-code"></i>
                     </div>
-                    <h3 class="font-bold text-slate-800 text-sm">স্মার্ট অভিভাবক ট্র্যাকিং</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">অনলাইনে দৈনন্দিন উপস্থিতি, রেজাল্ট, টিউটোরিয়াল ও ফি সংক্রান্ত যাবতীয় হিসাব সুবিধা।</p>
+                    <h3 class="font-bold text-amber-300 text-sm">স্মার্ট অভিভাবক ট্র্যাকিং</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">অনলাইনে দৈনন্দিন উপস্থিতি, রেজাল্ট, টিউটোরিয়াল ও ফি সংক্রান্ত যাবতীয় হিসাব সুবিধা।</p>
                 </div>
             </div>
 
             <!-- Photo & Event Gallery -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                <h3 class="text-sm font-bold text-emerald-900 border-b pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-images text-gold-500"></i> মাদ্রাসা গ্যালারি ও ফটো অ্যালবাম
+            <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
+                <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-images text-gold-400"></i> মাদ্রাসা ফটো ও ভিডিও গ্যালারি
                 </h3>
-                <div id="galleryContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=500" alt="Madrasa Campus" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500" alt="Students Class" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500" alt="Education Activity" class="w-full h-28 object-cover rounded-xl border border-slate-200 shadow-sm">
+                <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=500" alt="Madrasa Campus" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
+                    <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500" alt="Students Class" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500" alt="Education Activity" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
+                </div>
+            </div>
+
+            <!-- PUBLIC POST FEED (অ্যাডমিনের পোস্ট, সবার লাইক ও কমেন্ট অপশন) -->
+            <div class="glass-card p-5 rounded-2xl space-y-4 border border-gold-500/30">
+                <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-newspaper text-gold-400"></i> মাদ্রাসার সর্বশেষ পোস্ট ও আপডেটসমূহ
+                </h3>
+                <div id="publicPostsFeed" class="space-y-5">
+                    <p class="text-xs text-slate-400 text-center py-4">পোস্ট লোড হচ্ছে...</p>
                 </div>
             </div>
         </div>
 
         <!-- 2. LOGIN SECTION -->
-        <div id="loginSection" class="hidden glass-card p-6 md:p-8 rounded-3xl shadow-xl max-w-md mx-auto my-6 border-t-4 border-emerald-700">
+        <div id="loginSection" class="hidden glass-card p-6 md:p-8 rounded-3xl shadow-2xl max-w-md mx-auto my-6 border-t-4 border-gold-500">
             <div class="text-center mb-6">
-                <div class="w-16 h-16 mx-auto mb-3 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-800 shadow-inner">
+                <div class="w-16 h-16 mx-auto mb-3 bg-emerald-800/60 rounded-full flex items-center justify-center text-gold-400 border border-gold-500/30 shadow-inner">
                     <i class="fa-solid fa-user-lock text-2xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-emerald-950">পোর্টালে প্রবেশ করুন</h2>
-                <p class="text-xs text-slate-500 mt-1">আইডি (যেমন: Nur1 বা ইমেইল) ও পাসওয়ার্ড দিয়ে প্রবেশ করুন</p>
+                <h2 class="text-xl font-bold text-amber-300">পোর্টালে প্রবেশ করুন</h2>
+                <p class="text-xs text-slate-300 mt-1">আইডি (যেমন: Nur1 বা ইমেইল) ও পাসওয়ার্ড দিয়ে প্রবেশ করুন</p>
             </div>
 
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ইউজার আইডি / ইমেইল (User ID)</label>
+                    <label class="block text-xs font-semibold text-slate-200 mb-1">ইউজার আইডি / ইমেইল (User ID)</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                             <i class="fa-solid fa-user"></i>
                         </span>
-                        <input type="text" id="loginEmail" required placeholder="Nur1 অথবা hmabusayedmisbah242@gmail.com" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600">
+                        <input type="text" id="loginEmail" required placeholder="Nur1 অথবা hmabusayedmisbah242@gmail.com" class="w-full pl-10 pr-4 py-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-gold-400">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">পাসওয়ার্ড (Password)</label>
+                    <label class="block text-xs font-semibold text-slate-200 mb-1">পাসওয়ার্ড (Password)</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                             <i class="fa-solid fa-lock"></i>
                         </span>
-                        <input type="password" id="loginPassword" required placeholder="123456" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-emerald-600">
+                        <input type="password" id="loginPassword" required placeholder="123456" class="w-full pl-10 pr-4 py-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-gold-400">
                     </div>
                 </div>
 
-                <div id="loginError" class="hidden text-xs text-red-600 text-center font-medium bg-red-50 p-2.5 rounded-xl border border-red-200">
+                <div id="loginError" class="hidden text-xs text-red-300 text-center font-medium bg-red-900/40 p-2.5 rounded-xl border border-red-500/40">
                     ⚠️ ভুল আইডি অথবা পাসওয়ার্ড দেওয়া হয়েছে!
                 </div>
 
-                <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
+                <button type="submit" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-emerald-950 font-bold py-3 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
                     <i class="fa-solid fa-right-to-bracket"></i> সাইন ইন
                 </button>
             </form>
         </div>
 
         <!-- 3. COMPLAINT SECTION (অভিযোগ বক্স) -->
-        <div id="complaintSection" class="hidden max-w-lg mx-auto bg-white p-6 rounded-3xl shadow-xl border border-emerald-200 space-y-4">
-            <div class="text-center border-b pb-3">
-                <h3 class="text-lg font-bold text-emerald-900"><i class="fa-solid fa-comment-medical text-gold-500 mr-2"></i> অভিভাবক অভিযোগ বা পরামর্শ বক্স</h3>
-                <p class="text-xs text-slate-500 mt-1">আপনার মূল্যবান মতামত বা অভিযোগ সরাসরি অ্যাডমিন প্যানেলে জমা দিন।</p>
+        <div id="complaintSection" class="hidden max-w-lg mx-auto glass-card p-6 rounded-3xl shadow-2xl border border-gold-500/30 space-y-4">
+            <div class="text-center border-b border-emerald-700/50 pb-3">
+                <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-comment-medical text-gold-400 mr-2"></i> অভিভাবক অভিযোগ বা পরামর্শ বক্স</h3>
+                <p class="text-xs text-slate-300 mt-1">আপনার মূল্যবান মতামত বা অভিযোগ সরাসরি অ্যাডমিন প্যানেলে জমা দিন।</p>
             </div>
             <form onsubmit="submitComplaint(event)" class="space-y-3 text-xs">
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">আপনার নাম / শিক্ষার্থীর আইডি:</label>
-                    <input type="text" id="complaintName" required placeholder="যেমন: মো: রহিম (Nur1 এর অভিভাবক)" class="w-full p-2.5 bg-slate-50 border rounded-xl">
+                    <label class="block font-semibold text-slate-200 mb-1">আপনার নাম / শিক্ষার্থীর আইডি:</label>
+                    <input type="text" id="complaintName" required placeholder="যেমন: মো: রহিম (Nur1 এর অভিভাবক)" class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">মোবাইল নাম্বার:</label>
-                    <input type="text" id="complaintPhone" required placeholder="০১..." class="w-full p-2.5 bg-slate-50 border rounded-xl">
+                    <label class="block font-semibold text-slate-200 mb-1">মোবাইল নাম্বার:</label>
+                    <input type="text" id="complaintPhone" required placeholder="০১..." class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">অভিযোগ বা পরামর্শের বিবরণ:</label>
-                    <textarea id="complaintDetails" required rows="4" placeholder="আপনার বিস্তারিত এখানে লিখুন..." class="w-full p-2.5 bg-slate-50 border rounded-xl"></textarea>
+                    <label class="block font-semibold text-slate-200 mb-1">অভিযোগ বা পরামর্শের বিবরণ:</label>
+                    <textarea id="complaintDetails" required rows="4" placeholder="আপনার বিস্তারিত এখানে লিখুন..." class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl shadow transition">
+                <button type="submit" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow-lg hover:from-gold-500 hover:to-amber-600 transition">
                     <i class="fa-solid fa-paper-plane mr-1"></i> অভিযোগ জমা দিন
                 </button>
             </form>
@@ -272,60 +301,60 @@
         <!-- 4. GUARDIAN DASHBOARD -->
         <div id="guardianDashboard" class="hidden space-y-6">
             <!-- Student Header Profile Card -->
-            <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-5 md:p-6 rounded-3xl shadow-xl relative overflow-hidden">
+            <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-5 md:p-6 rounded-3xl shadow-xl relative overflow-hidden border border-gold-500/30">
                 <div class="flex items-center space-x-4 relative z-10">
                     <img id="gStudentPhoto" src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=500" alt="Student Photo" class="w-16 h-16 rounded-2xl border-2 border-gold-400 object-cover shadow-md flex-shrink-0">
                     <div>
                         <h3 id="gStudentName" class="text-lg md:text-xl font-bold text-amber-300">শিক্ষার্থীর নাম</h3>
                         <p id="gStudentDetails" class="text-xs text-emerald-200">শ্রেণি: ১ম | রোল: ০১</p>
                         <p class="text-[11px] text-slate-300 mt-0.5">আইডি: <span id="gDisplayId" class="font-mono bg-emerald-950 px-2 py-0.5 rounded text-gold-400">Nur1</span></p>
-                        <p class="text-[11px] text-emerald-200 mt-1"><i class="fa-solid fa-location-dot text-gold-400 mr-1"></i>ঠিকানা: <span id="gAddress">লোড হচ্ছে...</span></p>
+                         <p class="text-[11px] text-emerald-200 mt-1"><i class="fa-solid fa-location-dot text-gold-400 mr-1"></i>ঠিকানা: <span id="gAddress">লোড হচ্ছে...</span></p>
                     </div>
                 </div>
             </div>
 
             <!-- Student Metrics Grid -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
-                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-base">
+                <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-emerald-400">
+                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-base">
                         <i class="fa-solid fa-calendar-check"></i>
                     </div>
-                    <h4 class="text-[11px] text-slate-500">উপস্থিতি</h4>
-                    <p id="gAttendance" class="text-xs font-bold text-emerald-800 mt-1">লোড হচ্ছে...</p>
+                    <h4 class="text-[11px] text-slate-300">উপস্থিতি</h4>
+                    <p id="gAttendance" class="text-xs font-bold text-emerald-400 mt-1">লোড হচ্ছে...</p>
                 </div>
 
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
-                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-base">
+                <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-blue-400">
+                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-base">
                         <i class="fa-solid fa-receipt"></i>
                     </div>
-                    <h4 class="text-[11px] text-slate-500">চলতি ফি স্থিতি</h4>
-                    <p id="gFeeStatus" class="text-xs font-bold text-blue-800 mt-1">লোড হচ্ছে...</p>
+                    <h4 class="text-[11px] text-slate-300">চলতি ফি স্থিতি</h4>
+                    <p id="gFeeStatus" class="text-xs font-bold text-blue-300 mt-1">লোড হচ্ছে...</p>
                 </div>
 
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
-                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-red-100 text-red-700 flex items-center justify-center text-base">
+                <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-red-400">
+                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-red-500/20 text-red-300 flex items-center justify-center text-base">
                         <i class="fa-solid fa-bangladeshi-taka-sign"></i>
                     </div>
-                    <h4 class="text-[11px] text-slate-500">বকেয়া পরিমাণ</h4>
-                    <p id="gDueAmount" class="text-xs font-bold text-red-700 mt-1">০ ৳</p>
+                    <h4 class="text-[11px] text-slate-300">বকেয়া পরিমাণ</h4>
+                    <p id="gDueAmount" class="text-xs font-bold text-red-400 mt-1">০ ৳</p>
                 </div>
 
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
-                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-base">
+                <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-amber-400">
+                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-base">
                         <i class="fa-solid fa-star"></i>
                     </div>
-                    <h4 class="text-[11px] text-slate-500">মেধা অবস্থান</h4>
-                   <p id="gOverallGrade" class="text-xs font-bold text-amber-800 mt-1">এ+ (A+)</p>
+                    <h4 class="text-[11px] text-slate-300">মেধা অবস্থান</h4>
+                   <p id="gOverallGrade" class="text-xs font-bold text-amber-300 mt-1">এ+ (A+)</p>
                 </div>
             </div>
 
             <!-- DYNAMIC CALENDAR SYSTEM (মাসভিত্তিক হাজিরা ও ছুটির ক্যালেন্ডার) -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-2 gap-2">
-                    <h4 class="font-bold text-sm text-emerald-900 flex items-center gap-2">
-                        <i class="fa-solid fa-calendar-days text-gold-500"></i> মাসিক উপস্থিতি ও ছুটির ক্যালেন্ডার
+            <div class="glass-card p-5 rounded-2xl space-y-3">
+                <div class="flex flex-col sm:flex-row justify-between items-center border-b border-emerald-700/50 pb-2 gap-2">
+                    <h4 class="font-bold text-sm text-amber-300 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days text-gold-400"></i> মাসিক উপস্থিতি ও ছুটির ক্যালেন্ডার
                     </h4>
-                    <div class="flex items-center gap-2 text-xs">
+                    <div class="flex items-center gap-2 text-xs text-slate-800">
                         <select id="calendarMonthSelect" onchange="renderDynamicCalendar()" class="p-1.5 bg-slate-100 border rounded-lg font-semibold">
                             <option value="0">জানুয়ারি</option><option value="1">ফেব্রুয়ারি</option><option value="2">মার্চ</option>
                             <option value="3">এপ্রিল</option><option value="4">মে</option><option value="5">জুন</option>
@@ -340,15 +369,15 @@
 
                 <!-- Calendar Legend Info -->
                 <div class="flex flex-wrap gap-3 text-[11px] justify-center py-1">
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-600 rounded-full inline-block"></span> খোলা/উপস্থিত</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-500 rounded-full inline-block"></span> খোলা/উপস্থিত</span>
                     <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full inline-block"></span> ছুটি/অনুপস্থিত</span>
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-slate-200 rounded-full inline-block"></span> সাধারণ দিন</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-slate-600 rounded-full inline-block"></span> সাধারণ দিন</span>
                 </div>
 
                 <!-- Calendar Grid Container -->
                 <div class="overflow-x-auto">
-                    <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-slate-600 mb-1">
-                        <span class="text-red-600">রবি</span><span>সোম</span><span>মঙ্গল</span><span>বুধ</span><span>বৃহস্পতি</span><span>শুক্র</span><span>শনি</span>
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-gold-400 mb-1">
+                        <span class="text-red-400">রবি</span><span>সোম</span><span>মঙ্গল</span><span>বুধ</span><span>বৃহস্পতি</span><span>শুক্র</span><span>শনি</span>
                     </div>
                     <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1.5 text-xs">
                         <!-- JS দিয়ে জেনারেট হবে -->
@@ -356,29 +385,14 @@
                 </div>
             </div>
 
-            <!-- Academic Results Table -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center justify-between">
-                    <span><i class="fa-solid fa-file-signature text-emerald-600 mr-1"></i> সাম্প্রতিক লাইভ পরীক্ষার তথ্য</span>
-                    <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">সাময়িক পরীক্ষা</span>
+            <!-- Academic Results Table (অভিভাবক রেজাল্ট ভিউ) -->
+            <div class="glass-card p-5 rounded-2xl space-y-3">
+                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center justify-between">
+                    <span><i class="fa-solid fa-file-signature text-gold-400 mr-1"></i> সাম্প্রতিক দৈনন্দিন ও পরীক্ষার রেজাল্ট</span>
+                    <span class="text-[11px] text-gold-300 font-semibold bg-emerald-950 px-2.5 py-0.5 rounded-full border border-gold-500/40">লাইভ রেজাল্ট</span>
                 </h4>
-                <div class="space-y-2 text-xs">
-                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
-                        <span class="text-slate-600">বাংলা:</span>
-                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
-                        <span class="text-slate-600">ইংরেজি:</span>
-                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
-                        <span class="text-slate-600">গণিত:</span>
-                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
-                    </div>
-                    <div class="flex justify-between items-center py-1.5">
-                        <span class="text-slate-600">আরবি:</span>
-                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">এ+ (A+)</span>
-                    </div>
+                <div id="gResultsContainer" class="space-y-2 text-xs">
+                    <!-- রেজাল্ট JS দ্বারা ডায়নামিক লোড হবে -->
                 </div>
             </div>
         </div>
@@ -386,47 +400,76 @@
         <!-- 5. ADVANCED ADMIN DASHBOARD -->
         <div id="adminDashboard" class="hidden space-y-6">
             <!-- Header Banner -->
-            <div class="bg-emerald-900 text-white p-5 rounded-3xl shadow-xl flex justify-between items-center">
+            <div class="bg-gradient-to-r from-emerald-950 to-emerald-900 border border-gold-500/30 text-white p-5 rounded-3xl shadow-xl flex justify-between items-center">
                 <div>
-                    <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-sliders mr-1"></i> কেন্দ্রীয় অ্যাডমিন কন্ট্রোল</h3>
-                    <p class="text-xs text-emerald-200 mt-0.5">মাদ্রাসা ম্যানেজমেন্ট ও তথ্য পরিচালনা</p>
+                    <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-sliders mr-1"></i> কেন্দ্রীয় অ্যাডমিন কন্ট্রোল প্যানেল</h3>
+                    <p class="text-xs text-emerald-200 mt-0.5">মাদ্রাসা ম্যানেজমেন্ট, ছাত্র যুক্ত/মুছে ফেলা ও নোটিশ পরিচালনা</p>
                 </div>
-                <span class="bg-emerald-800 px-3 py-1 rounded-xl text-xs font-semibold text-gold-400 border border-emerald-700">
-                    🟢 লাইভ সংযোগ
+                <span class="bg-emerald-950 px-3 py-1 rounded-xl text-xs font-semibold text-gold-400 border border-gold-500/40">
+                    🟢 অ্যাডমিন সেশন
                 </span>
             </div>
 
-            <!-- Student Data Update Tool -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-user-pen text-emerald-700"></i> ১. শিক্ষার্থী প্রোফাইল ও রেজাল্ট আপডেট (Nur1 - Nur20)
+            <!-- STUDENT MANAGEMENT SECTION (ছাত্র যুক্ত করা এবং মুছে ফেলার নতুন ফিচার) -->
+            <div class="glass-card p-5 rounded-2xl space-y-4">
+                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-gold-400"></i> ১. নতুন ছাত্র যোগ করুন এবং তালিকা থেকে মুছে ফেলুন
+                </h4>
+
+                <!-- Add Student Form -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থী ইউজার আইডি (যেমন: Nur1, Nur2):</label>
+                        <input type="text" id="addStudentId" placeholder="Nur21" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থীর নাম:</label>
+                        <input type="text" id="addStudentName" placeholder="মুহাম্মদ আব্দুল্লাহ" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-200 mb-1">শ্রেণি ও রোল:</label>
+                        <input type="text" id="addStudentClass" placeholder="শ্রেণি: ১ম | রোল: ০৫" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-200 mb-1">ঠিকানা:</label>
+                        <input type="text" id="addStudentAddress" placeholder="নিউটাউন, দিনাজপুর" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                    </div>
+                </div>
+                <button onclick="addNewStudent()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-plus-circle"></i> নতুন ছাত্র সেভ/যোগ করুন
+                </button>
+
+                <!-- Registered Student List with Remove Option -->
+                <div class="pt-3 border-t border-emerald-700/50 space-y-2">
+                    <h5 class="text-xs font-bold text-gold-300">বর্তমান ছাত্রদের তালিকা (মুছে ফেলার অপশন সহ):</h5>
+                    <div id="adminStudentList" class="space-y-2 max-h-48 overflow-y-auto text-xs">
+                        <p class="text-slate-400 text-center py-2">ছাত্রের ডাটা লোড হচ্ছে...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Data & Daily Exam Result Update Tool -->
+            <div class="glass-card p-5 rounded-2xl space-y-4">
+                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-user-pen text-gold-400"></i> ২. শিক্ষার্থী প্রোফাইল ও প্রতিদিনের রেজাল্ট আপডেট
                 </h4>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">শিক্ষার্থী আইডি নির্বাচন করুন:</label>
-                        <select id="targetStudentId" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:border-emerald-600">
-                            <script>
-                                for(let i=1; i<=20; i++) {
-                                    document.write(`<option value="Nur${i}">Nur${i} - শিক্ষার্থী ${i}</option>`);
-                                }
-                            </script>
+                        <label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থী আইডি নির্বাচন করুন:</label>
+                        <select id="targetStudentId" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white focus:border-gold-400">
+                            <!-- Dynamic from JS -->
                         </select>
                     </div>
 
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">শিক্ষার্থীর নাম:</label>
-                        <input type="text" id="setStudentNameInput" placeholder="যেমন: মুহাম্মদ আব্দুল্লাহ" class="w-full p-2 bg-slate-50 border rounded-xl">
+                        <label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থীর নাম আপডেট:</label>
+                        <input type="text" id="setStudentNameInput" placeholder="যেমন: মুহাম্মদ আব্দুল্লাহ" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
                     </div>
 
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">ঠিকানা:</label>
-                        <input type="text" id="setAddress" placeholder="যেমন: নিউটাউন, দিনাজপুর" class="w-full p-2 bg-slate-50 border rounded-xl">
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">উপস্থিতি স্থিতি:</label>
-                        <select id="setAttendance" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl">
+                        <label class="block font-semibold text-slate-200 mb-1">উপস্থিতি স্থিতি:</label>
+                        <select id="setAttendance" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
                             <option value="উপস্থিত (Present)">উপস্থিত (Present)</option>
                             <option value="অনুপস্থিত (Absent)">অনুপস্থিত (Absent)</option>
                             <option value="ছুটিতে আছে">ছুটিতে আছে</option>
@@ -434,72 +477,115 @@
                     </div>
 
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">ফি স্ট্যাটাস:</label>
-                        <select id="setFeeStatus" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl">
+                        <label class="block font-semibold text-slate-200 mb-1">ফি স্ট্যাটাস:</label>
+                        <select id="setFeeStatus" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
                             <option value="পরিশোধিত (Paid)">পরিশোধিত (Paid)</option>
                             <option value="বাকি আছে (Due)">বাকি আছে (Due)</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">বকেয়া টাকার পরিমাণ (৳):</label>
-                        <input type="number" id="setDueAmount" placeholder="যেমন: ৫৫০" class="w-full p-2 bg-slate-50 border rounded-xl">
+                        <label class="block font-semibold text-slate-200 mb-1">বকেয়া টাকার পরিমাণ (৳):</label>
+                        <input type="number" id="setDueAmount" placeholder="যেমন: ৫৫০" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
                     </div>
 
-                    <div class="sm:col-span-2">
-                        <label class="block font-semibold text-slate-700 mb-1">ছবি URL (ইমেজ লিংক):</label>
-                        <input type="text" id="setStudentPhoto" placeholder="https://..." class="w-full p-2 bg-slate-50 border rounded-xl">
+                    <div>
+                        <label class="block font-semibold text-slate-200 mb-1">ছবি URL (ইমেজ লিংক):</label>
+                        <input type="text" id="setStudentPhoto" placeholder="https://..." class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
                     </div>
                 </div>
 
-                <button onclick="updateStudentData()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> শিক্ষার্থী ডাটা আপডেট করুন
+                <!-- Daily Exam Result Update Form -->
+                <div class="bg-emerald-950/80 p-3.5 rounded-xl border border-emerald-700/60 space-y-2 text-xs">
+                    <h5 class="font-bold text-gold-400 border-b border-emerald-800 pb-1">দৈনন্দিন পরীক্ষার রেজাল্ট এন্ট্রি করুন:</h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <input type="text" id="resSubject" placeholder="বিষয় (যেমন: বাংলা/আরবি)" class="p-2 bg-emerald-900 border border-emerald-700 rounded-lg text-white">
+                        <input type="text" id="resGrade" placeholder="রেজাল্ট/গ্রেড (যেমন: এ+ / ৮০)" class="p-2 bg-emerald-900 border border-emerald-700 rounded-lg text-white">
+                        <input type="date" id="resDate" class="p-2 bg-emerald-900 border border-emerald-700 rounded-lg text-white">
+                    </div>
+                </div>
+
+                <button onclick="updateStudentData()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> প্রোফাইল ও রেজাল্ট সেভ আপডেট করুন
                 </button>
             </div>
 
+            <!-- ADMIN POST SYSTEM (অ্যাডমিনের জন্য আনলিমিটেড পোস্ট করার সুবিধা) -->
+            <div class="glass-card p-5 rounded-2xl space-y-3">
+                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-gold-400"></i> ৩. নতুন পোস্ট আপডেট করুন (ছবি ও ভিডিও সহ)
+                </h4>
+                <div class="space-y-3 text-xs">
+                    <textarea id="adminPostText" rows="3" placeholder="এখানে পোস্টের বিবরণ লিখুন..." class="w-full p-3 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></textarea>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input type="text" id="adminPostMedia" placeholder="ছবি বা ভিডিও লিংক (URL/YouTube Embed Link)" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                        <select id="adminMediaType" class="p-2 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
+                            <option value="image">ছবি (Image)</option>
+                            <option value="video">ভিডিও (Video Link/Embed)</option>
+                        </select>
+                    </div>
+                    <button onclick="addNewAdminPost()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> পোস্ট পাবলিশ করুন
+                    </button>
+                </div>
+            </div>
+
+            <!-- Photo & Video Gallery Manager for Admin -->
+            <div class="glass-card p-5 rounded-2xl space-y-3">
+                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-photo-film text-gold-400"></i> ৪. গ্যালারিতে ছবি ও ভিডিও অপশন এড করুন
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                    <input type="text" id="adminGalleryUrl" placeholder="ছবি বা ভিডিও URL..." class="sm:col-span-2 p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                    <button onclick="addGalleryItem()" class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold px-3 py-2 rounded-xl">
+                        গ্যালারিতে যুক্ত করুন
+                    </button>
+                </div>
+            </div>
+
             <!-- Admin Calendar Attendance/Holiday Manager -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-check text-gold-600"></i> ২. ক্যালেন্ডার ছুটি ও উপস্থিতি নিয়ন্ত্রণ (লাল/সবুজ মার্কিং)
+            <div class="glass-card p-5 rounded-2xl space-y-4">
+                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-check text-gold-400"></i> ৫. ক্যালেন্ডার ছুটি ও উপস্থিতি নিয়ন্ত্রণ (লাল/সবুজ মার্কিং)
                 </h4>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">তারিখ (YYYY-MM-DD):</label>
-                        <input type="date" id="adminCalDate" class="w-full p-2 bg-slate-50 border rounded-xl">
+                        <label class="block font-semibold text-slate-200 mb-1">তারিখ (YYYY-MM-DD):</label>
+                        <input type="date" id="adminCalDate" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
                     </div>
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">অবস্থা নির্বাচন:</label>
-                        <select id="adminCalStatus" class="w-full p-2.5 bg-slate-50 border rounded-xl">
+                        <label class="block font-semibold text-slate-200 mb-1">অবস্থা নির্বাচন:</label>
+                        <select id="adminCalStatus" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
                             <option value="open">মাদ্রাসা খোলা / উপস্থিত (সবুজ)</option>
                             <option value="holiday">ছুটি / অনুপস্থিত (লাল)</option>
                         </select>
                     </div>
                     <div class="flex items-end">
-                        <button onclick="saveAdminCalendarDate()" class="w-full bg-gold-600 hover:bg-gold-700 text-emerald-950 font-bold py-2.5 rounded-xl transition">
-                            সেভ করুন
+                        <button onclick="saveAdminCalendarDate()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl transition">
+                            ক্যালেন্ডারে সেভ করুন
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- Live Notice Manager -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-gold-600"></i> ৩. লাইভ স্ক্রলিং নোটিশ পরিবর্তন
+            <div class="glass-card p-5 rounded-2xl space-y-3">
+                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-bullhorn text-gold-400"></i> ৬. লাইভ স্ক্রলিং নোটিশ পরিবর্তন
                 </h4>
                 <div class="flex gap-2">
-                    <input type="text" id="adminNoticeInput" placeholder="এখানে নতুন ঘোষণা লিখুন..." class="flex-grow p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs">
-                    <button onclick="updateNoticeBar()" class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-4 rounded-xl text-xs transition">
+                    <input type="text" id="adminNoticeInput" placeholder="এখানে নতুন ঘোষণা লিখুন..." class="flex-grow p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-xs text-white">
+                    <button onclick="updateNoticeBar()" class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold px-4 rounded-xl text-xs transition">
                         পাবলিশ
                     </button>
                 </div>
             </div>
 
             <!-- View Complaints List -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                <h4 class="font-bold text-sm text-slate-800 border-b pb-2 flex items-center justify-between">
-                    <span><i class="fa-solid fa-inbox text-emerald-700"></i> ৪. অভিভাবকদের জমা দেওয়া অভিযোগ ও পরামর্শসমূহ</span>
-                    <span id="complaintCount" class="bg-red-100 text-red-700 text-[10px] px-2 py-0.5 rounded-full font-bold">০টি</span>
+            <div class="glass-card p-5 rounded-2xl space-y-3">
+                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center justify-between">
+                    <span><i class="fa-solid fa-inbox text-gold-400"></i> ৭. অভিভাবকদের জমা দেওয়া অভিযোগ ও পরামর্শসমূহ</span>
+                    <span id="complaintCount" class="bg-red-500/20 text-red-300 text-[10px] px-2 py-0.5 rounded-full font-bold border border-red-500/30">০টি</span>
                 </h4>
                 <div id="adminComplaintsList" class="space-y-2 max-h-60 overflow-y-auto text-xs">
                     <p class="text-slate-400 text-center py-4">কোনো অভিযোগ জমা হয়নি।</p>
@@ -510,7 +596,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-emerald-950 text-emerald-300 text-center py-4 text-xs mt-8 border-t border-emerald-900">
+       <footer class="bg-emerald-950 text-emerald-300 text-center py-4 text-xs mt-8 border-t border-emerald-800">
         <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong> | স্মার্ট ডিজিটাল এডুকেশন সিস্টেম</p>
     </footer>
 
@@ -533,13 +619,16 @@
 
         let currentUserRole = null;
         let currentUserId = null;
-        let adminCalendarData = {}; // ডেটাবেজ থেকে ক্যালেন্ডারের স্ট্যাটাস লোড হবে
+        let adminCalendarData = {};
 
         // Dynamic System Listener
         window.onload = function() {
             startLiveClock();
             listenGlobalSettings();
             loadCalendarDataFromFirebase();
+            loadPublicPostsFeed();
+            loadGalleryFromFirebase();
+            listenStudentList();
             
             auth.onAuthStateChanged((user) => {
                 if (user) {
@@ -561,21 +650,21 @@
             });
         };
 
-        // Live Digital Clock Function
+        // Stylish Live Digital Clock Function
         function startLiveClock() {
             setInterval(() => {
                 const now = new Date();
                 let hours = now.getHours();
                 let minutes = now.getMinutes();
                 let seconds = now.getSeconds();
-                let ampm = hours >= 12 ? 'পিএম' : 'এএম';
+                let ampm = hours >= 12 ? 'PM' : 'AM';
                 hours = hours % 12;
                 hours = hours ? hours : 12;
-                minutes = minutes < 10 ? '০' + minutes : minutes;
-                seconds = seconds < 10 ? '০' + seconds : seconds;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
                 const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
                 const dateString = now.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
-                document.getElementById('liveClock').innerText = `${dateString} | ${timeString}`;
+                document.getElementById('liveClock').innerText = `🕒 ${dateString} | ${timeString}`;
             }, 1000);
         }
 
@@ -611,7 +700,6 @@
             const firstDay = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
-            // Empty spaces before first day
             for (let i = 0; i < firstDay; i++) {
                 const emptyDiv = document.createElement('div');
                 grid.appendChild(emptyDiv);
@@ -623,15 +711,14 @@
                 const dFormatted = String(day).padStart(2, '0');
                 const dateKey = `${year}-${mFormatted}-${dFormatted}`;
 
-                dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold border border-slate-100 bg-slate-100 text-slate-700 shadow-sm";
+                dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold border border-emerald-700/50 bg-emerald-950/60 text-slate-200 shadow-sm";
                 dayDiv.innerText = day;
 
-                // Admin status check (Red for holiday/absence, Green for open/present)
                 if (adminCalendarData[dateKey]) {
                     if (adminCalendarData[dateKey] === 'holiday') {
-                        dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-red-500 text-white shadow-sm";
+                        dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-red-600 text-white shadow-md";
                     } else if (adminCalendarData[dateKey] === 'open') {
-                        dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-emerald-600 text-white shadow-sm";
+                        dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-emerald-500 text-white shadow-md";
                     }
                 }
                 grid.appendChild(dayDiv);
@@ -648,16 +735,210 @@
             });
         }
 
-        // Complaint Submission Box (সক্রিয় ও উন্নত করা হয়েছে)
+        // Add New Student & Remove Student System (নতুন ফিচার)
+        function addNewStudent() {
+            const sId = document.getElementById('addStudentId').value.trim();
+            const sName = document.getElementById('addStudentName').value.trim();
+            const sClass = document.getElementById('addStudentClass').value.trim();
+            const sAddress = document.getElementById('addStudentAddress').value.trim();
+
+            if(!sId || !sName) return alert('দয়া করে ছাত্র আইডি এবং নাম প্রদান করুন!');
+
+            database.ref('students/' + sId).set({
+                name: sName,
+                classDetails: sClass || 'শ্রেণি: ১ম',
+                address: sAddress || 'দিনাজপুর',
+                attendance: 'উপস্থিত (Present)',
+                feeStatus: 'পরিশোধিত (Paid)',
+                dueAmount: '০'
+            }).then(() => {
+                alert('নতুন ছাত্র সফলভাবে যুক্ত হয়েছে!');
+                document.getElementById('addStudentId').value = '';
+                document.getElementById('addStudentName').value = '';
+            });
+        }
+
+        function deleteStudent(studentId) {
+            if(confirm(`আপনি কি নিশ্চিত যে ${studentId} ছাত্রটিকে সিস্টেম থেকে মুছে ফেলতে চান?`)) {
+                database.ref('students/' + studentId).remove().then(() => {
+                    alert('ছাত্র সফলভাবে মুছে ফেলা হয়েছে!');
+                });
+            }
+        }
+
+        function listenStudentList() {
+            database.ref('students').on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                const listContainer = document.getElementById('adminStudentList');
+                const selectDropdown = document.getElementById('targetStudentId');
+                
+                listContainer.innerHTML = '';
+                selectDropdown.innerHTML = '';
+
+                const keys = Object.keys(data);
+                if(keys.length === 0) {
+                    listContainer.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো ছাত্রের ডাটা নেই।</p>';
+                    return;
+                }
+
+                keys.forEach(key => {
+                    const student = data[key];
+                    // Dropdown option
+                    const opt = document.createElement('option');
+                    opt.value = key;
+                    opt.innerText = `${key} - ${student.name || 'শিক্ষার্থী'}`;
+                    selectDropdown.appendChild(opt);
+
+                    // List item with Delete Button
+                    const item = document.createElement('div');
+                    item.className = "flex justify-between items-center p-2 bg-emerald-950/80 border border-emerald-700/60 rounded-xl";
+                    item.innerHTML = `
+                        <div>
+                            <span class="font-bold text-amber-300">${key}</span>: ${student.name || 'নাম নেই'}
+                        </div>
+                        <button onclick="deleteStudent('${key}')" class="bg-red-600 hover:bg-red-700 text-white text-[11px] px-2.5 py-1 rounded-lg transition">
+                            <i class="fa-solid fa-trash"></i> মুছে ফেলুন
+                        </button>`;
+                    listContainer.appendChild(item);
+                });
+            });
+        }
+
+        // Photo/Video Gallery System
+        function addGalleryItem() {
+            const url = document.getElementById('adminGalleryUrl').value.trim();
+            if(!url) return alert('URL দিন!');
+            database.ref('gallery').push({ url: url }).then(() => {
+                alert('গ্যালারিতে যুক্ত হয়েছে!');
+                document.getElementById('adminGalleryUrl').value = '';
+            });
+        }
+
+        function loadGalleryFromFirebase() {
+            database.ref('gallery').on('value', (snapshot) => {
+                const data = snapshot.val();
+                const container = document.getElementById('galleryContainer');
+                if(data) {
+                    container.innerHTML = '';
+                    Object.values(data).forEach(item => {
+                        if(item.url.includes('youtube.com') || item.url.includes('youtu.be')) {
+                            const iframe = document.createElement('iframe');
+                            iframe.src = item.url;
+                            iframe.className = "w-full h-32 rounded-xl border border-gold-500/30 shadow-md";
+                            container.appendChild(iframe);
+                        } else {
+                            const img = document.createElement('img');
+                            img.src = item.url;
+                            img.className = "w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md";
+                            container.appendChild(img);
+                        }
+                    });
+                }
+            });
+        }
+
+        // ADMIN POST FEED, LIKE & COMMENT SYSTEM (অ্যাডমিন পোস্ট অপশন ও লাইক/কমেন্ট)
+        function addNewAdminPost() {
+            const text = document.getElementById('adminPostText').value.trim();
+            const media = document.getElementById('adminPostMedia').value.trim();
+            const mediaType = document.getElementById('adminMediaType').value;
+
+            if(!text) return alert('পোস্টের বিষয়বস্তু লিখুন!');
+
+            database.ref('posts').push({
+                text: text,
+                media: media || '',
+                mediaType: mediaType,
+                likes: 0,
+                timestamp: new Date().toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' })
+            }).then(() => {
+                alert('পোস্ট সফলভাবে পাবলিশ হয়েছে!');
+                document.getElementById('adminPostText').value = '';
+                document.getElementById('adminPostMedia').value = '';
+            });
+        }
+
+        function loadPublicPostsFeed() {
+            database.ref('posts').on('value', (snapshot) => {
+                const data = snapshot.val();
+                const container = document.getElementById('publicPostsFeed');
+                container.innerHTML = '';
+
+                if(data) {
+                    Object.entries(data).reverse().forEach(([postId, post]) => {
+                        const postDiv = document.createElement('div');
+                        postDiv.className = "p-4 bg-emerald-950/70 border border-emerald-700/60 rounded-2xl space-y-3 shadow-md";
+                        
+                        let mediaHtml = '';
+                        if(post.media) {
+                            if(post.mediaType === 'video') {
+                                mediaHtml = `<iframe src="${post.media}" class="w-full h-48 sm:h-64 rounded-xl border border-gold-500/30 mt-2" allowfullscreen></iframe>`;
+                            } else {
+                                mediaHtml = `<img src="${post.media}" class="w-full max-h-72 object-cover rounded-xl border border-gold-500/30 mt-2">`;
+                            }
+                        }
+
+                        // Comments html
+                        let commentsHtml = '';
+                        if(post.comments) {
+                            Object.values(post.comments).forEach(c => {
+                                commentsHtml += `<div class="bg-emerald-900/60 p-2 rounded-lg text-xs mt-1"><span class="font-bold text-amber-300">${c.user}:</span> ${c.text}</div>`;
+                            });
+                        }
+
+                        postDiv.innerHTML = `
+                            <div class="flex justify-between items-center text-xs border-b border-emerald-800 pb-2">
+                                <span class="font-bold text-gold-400"><i class="fa-solid fa-user-shield"></i> অ্যাডমিন পোস্ট</span>
+                                <span class="text-[10px] text-slate-400">${post.timestamp}</span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-100 leading-relaxed">${post.text}</p>
+                            ${mediaHtml}
+                            <div class="flex items-center gap-4 pt-2 text-xs border-t border-emerald-800/60">
+                                <button onclick="likePost('${postId}', ${post.likes || 0})" class="text-amber-300 hover:text-gold-400 font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-heart text-red-500"></i> লাইক (${post.likes || 0})
+                                </button>
+                            </div>
+                            <div class="space-y-1 pt-1">
+                                ${commentsHtml}
+                                <div class="flex gap-2 pt-2">
+                                    <input type="text" id="commentInput_${postId}" placeholder="কমেন্ট লিখুন..." class="flex-grow p-1.5 bg-emerald-900 border border-emerald-700 rounded-lg text-xs text-white">
+                                    <button onclick="addComment('${postId}')" class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-3 rounded-lg text-xs">পাঠান</button>
+                                </div>
+                            </div>`;
+                        container.appendChild(postDiv);
+                    });
+                } else {
+                    container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">এখনো কোনো পোস্ট করা হয়নি।</p>';
+                }
+            });
+        }
+
+        function likePost(postId, currentLikes) {
+            database.ref(`posts/${postId}/likes`).set(currentLikes + 1);
+        }
+
+        function addComment(postId) {
+            const input = document.getElementById(`commentInput_${postId}`);
+            const commentText = input.value.trim();
+            if(!commentText) return;
+            const userName = currentUserRole === 'admin' ? 'অ্যাডমিন' : (currentUserId || 'ভিজিটর');
+
+            database.ref(`posts/${postId}/comments`).push({
+                user: userName,
+                text: commentText
+            }).then(() => {
+                input.value = '';
+            });
+        }
+
+        // Complaint Submission Box
         function submitComplaint(event) {
             event.preventDefault();
             const name = document.getElementById('complaintName').value.trim();
             const phone = document.getElementById('complaintPhone').value.trim();
             const details = document.getElementById('complaintDetails').value.trim();
 
-            if(!name || !phone || !details) {
-                return alert('দয়া করে সকল তথ্য সঠিকভাবে পূরণ করুন।');
-            }
+            if(!name || !phone || !details) return alert('দয়া করে সকল তথ্য সঠিকভাবে পূরণ করুন।');
 
             database.ref('complaints').push({
                 name: name,
@@ -670,12 +951,9 @@
                 document.getElementById('complaintPhone').value = '';
                 document.getElementById('complaintDetails').value = '';
                 showSection('publicView');
-            }).catch((error) => {
-                alert('ত্রুটি: ' + error.message);
             });
         }
 
-        // Fetch Complaints for Admin Panel
         function fetchComplaintsForAdmin() {
             database.ref('complaints').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -686,13 +964,13 @@
                     document.getElementById('complaintCount').innerText = count + 'টি';
                     Object.entries(data).reverse().forEach(([key, item]) => {
                         const div = document.createElement('div');
-                        div.className = "p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5 shadow-sm relative";
+                        div.className = "p-3.5 bg-emerald-950/80 border border-emerald-700/60 rounded-xl space-y-1.5 shadow-sm relative";
                         div.innerHTML = `
                             <div class="flex justify-between items-start">
-                                <p class="font-bold text-emerald-900">${item.name} <span class="text-xs font-normal text-slate-500">(${item.phone})</span></p>
-                                <button onclick="deleteComplaint('${key}')" class="text-red-500 hover:text-red-700 text-xs px-2 py-0.5 rounded"><i class="fa-solid fa-trash"></i></button>
+                                <p class="font-bold text-amber-300">${item.name} <span class="text-xs font-normal text-slate-300">(${item.phone})</span></p>
+                                <button onclick="deleteComplaint('${key}')" class="text-red-400 hover:text-red-500 text-xs px-2 py-0.5 rounded"><i class="fa-solid fa-trash"></i></button>
                             </div>
-                            <p class="text-slate-700 bg-white p-2 rounded-lg border border-slate-100">${item.details}</p>
+                            <p class="text-slate-200 bg-emerald-900/60 p-2 rounded-lg border border-emerald-800">${item.details}</p>
                             <p class="text-[10px] text-slate-400 text-right">${item.timestamp}</p>`;
                         container.appendChild(div);
                     });
@@ -703,12 +981,9 @@
             });
         }
 
-        // Delete Complaint by Admin
         function deleteComplaint(id) {
             if(confirm('আপনি কি এই অভিযোগটি মুছে ফেলতে চান?')) {
-                database.ref('complaints/' + id).remove().then(() => {
-                    alert('অভিযোগটি মুছে ফেলা হয়েছে।');
-                });
+                database.ref('complaints/' + id).remove();
             }
         }
 
@@ -747,12 +1022,8 @@
             }
 
             auth.signInWithEmailAndPassword(emailToUse, pass)
-                .then((userCredential) => {
-                    errDiv.classList.add('hidden');
-                })
-                .catch((error) => {
-                    errDiv.classList.remove('hidden');
-                });
+                .then(() => { errDiv.classList.add('hidden'); })
+                .catch(() => { errDiv.classList.remove('hidden'); });
         }
 
         function setupNavAfterLogin() {
@@ -768,33 +1039,41 @@
                 currentUserId = null;
                 document.getElementById('logoutBtn').classList.add('hidden');
                 document.getElementById('roleBadge').classList.add('hidden');
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
                 showSection('publicView');
             });
         }
 
         function fetchStudentData(uId) {
-            const studentRef = database.ref('students/' + uId);
-            studentRef.on('value', (snapshot) => {
+            database.ref('students/' + uId).on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
                     document.getElementById('gStudentName').innerText = data.name || ('শিক্ষার্থী (' + uId + ')');
-                    document.getElementById('gStudentDetails').innerText = `আইডি: ${uId} | মাদ্রাসা পোর্টাল`;
+                    document.getElementById('gStudentDetails').innerText = data.classDetails || `আইডি: ${uId} | মাদ্রাসা পোর্টাল`;
                     document.getElementById('gDisplayId').innerText = uId;
                     document.getElementById('gAttendance').innerText = data.attendance || 'উপস্থিত';
                     document.getElementById('gFeeStatus').innerText = data.feeStatus || 'পরিশোধিত';
                     document.getElementById('gDueAmount').innerText = (data.dueAmount || '০') + ' ৳';
                     document.getElementById('gAddress').innerText = data.address || 'নিউটাউন, দিনাজপুর';
                     if(data.photo) document.getElementById('gStudentPhoto').src = data.photo;
-                } else {
-                    document.getElementById('gStudentName').innerText = 'শিক্ষার্থী - ' + uId;
-                    document.getElementById('gStudentDetails').innerText = `আইডি: ${uId} | মাদ্রাসা পোর্টাল`;
-                    document.getElementById('gDisplayId').innerText = uId;
-                    document.getElementById('gAttendance').innerText = 'উপস্থিত (Present)';
-                    document.getElementById('gFeeStatus').innerText = 'পরিশোধিত (Paid)';
-                    document.getElementById('gDueAmount').innerText = '০ ৳';
-                    document.getElementById('gAddress').innerText = '৭ নং নিউটাউন, সদর, দিনাজপুর';
+
+                    // Load Results
+                    const resContainer = document.getElementById('gResultsContainer');
+                    resContainer.innerHTML = '';
+                    if(data.results) {
+                        Object.values(data.results).reverse().forEach(res => {
+                            const rDiv = document.createElement('div');
+                            rDiv.className = "flex justify-between items-center py-2 border-b border-emerald-800/60";
+                            rDiv.innerHTML = `
+                                <div>
+                                    <span class="text-slate-200 font-semibold">${res.subject}:</span>
+                                    <span class="text-[10px] text-slate-400 block">${res.date || ''}</span>
+                                </div>
+                                <span class="font-bold text-amber-300 bg-emerald-950 px-2.5 py-1 rounded-lg border border-gold-500/30">${res.grade}</span>`;
+                            resContainer.appendChild(rDiv);
+                        });
+                    } else {
+                        resContainer.innerHTML = '<p class="text-slate-400 text-center py-2">রেজাল্ট আপডেট করা হয়নি।</p>';
+                    }
                 }
             });
         }
@@ -805,17 +1084,28 @@
             const att = document.getElementById('setAttendance').value;
             const fee = document.getElementById('setFeeStatus').value;
             const due = document.getElementById('setDueAmount').value;
-            const addr = document.getElementById('setAddress').value;
             const photo = document.getElementById('setStudentPhoto').value;
+
+            const resSub = document.getElementById('resSubject').value.trim();
+            const resGrd = document.getElementById('resGrade').value.trim();
+            const resDt = document.getElementById('resDate').value;
 
             const updateObj = { attendance: att, feeStatus: fee };
             if(nameInput) updateObj.name = nameInput;
             if(due) updateObj.dueAmount = due;
-            if(addr) updateObj.address = addr;
             if(photo) updateObj.photo = photo;
 
             database.ref('students/' + tId).update(updateObj).then(() => {
-                alert(tId + ' এর ডাটা সফলভাবে আপডেট করা হয়েছে!');
+                if(resSub && resGrd) {
+                    database.ref(`students/${tId}/results`).push({
+                        subject: resSub,
+                        grade: resGrd,
+                        date: resDt || new Date().toLocaleDateString('bn-BD')
+                    });
+                }
+                alert(tId + ' এর তথ্য ও রেজাল্ট সফলভাবে সেভ হয়েছে!');
+                document.getElementById('resSubject').value = '';
+                document.getElementById('resGrade').value = '';
             });
         }
 
