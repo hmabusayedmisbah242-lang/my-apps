@@ -480,11 +480,12 @@
             // Auth State Monitor
             auth.onAuthStateChanged((user) => {
                 if (user) {
-                    if (user.uid === 'elSyoscXFTW4vA4wuC06BFmfNb2') {
-                        currentUserRole = 'admin';
-                        currentUserId = 'Admin';
-                        setupNavAfterLogin();
-                        showSection('adminDashboard');
+                  if (user.email === 'hmabusayedmisbah@gmail.com') {
+    currentUserRole = 'admin';
+    currentUserId = 'Admin';
+    setupNavAfterLogin();
+    showSection('adminDashboard');
+            
                     } else {
                         currentUserRole = 'guardian';
                         currentUserId = user.email.includes('ann101') ? 'ANN101' : 'ANN102';
