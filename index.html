@@ -513,21 +513,22 @@
             <!-- ADMIN POST SYSTEM (অ্যাডমিনের জন্য আনলিমিটেড পোস্ট ও ডিলিট সুবিধা) -->
 <div class="glass-card p-5 rounded-2xl space-y-3">
     <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-        <i class="fa-solid fa-pen-to-square text-gold-400"></i> ৩. নতুন পোস্ট আপডেট ও ম্যানেজ করুন (ছবি ও ভিডিও সহ)
+        <i class="fa-solid fa-pen-to-square text-amber-400"></i> ৩. নতুন পোস্ট আপডেট ও ম্যানেজ করুন (ছবি ও ভিডিও সহ)
     </h4>
     <div class="space-y-3 text-xs">
-        <textarea id="adminPostText" rows="3" placeholder="এখানে পোস্টের বিবরণ লিখুন..." class="w-full p-3 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></textarea>
+        <textarea id="adminPostText" rows="3" placeholder="এখানে পোস্টের বিবরণ লিখুন..." class="w-full p-3 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white focus:outline-none focus:border-amber-400"></textarea>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <input type="text" id="adminPostMedia" placeholder="ছবি বা ভিডিও লিংক (URL/YouTube Embed Link)" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-            <select id="adminMediaType" class="p-2 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
+            <input type="text" id="adminPostMedia" placeholder="ছবি বা ভিডিও লিংক (URL/YouTube Embed Link)" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
+            <select id="adminMediaType" class="p-2 bg-emerald-950 border border-emerald-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
                 <option value="image">ছবি (Image)</option>
                 <option value="video">ভিডিও (Video Link/Embed)</option>
             </select>
         </div>
-        <button onclick="addNewAdminPost()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
+        <button onclick="addNewAdminPost()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2 hover:opacity-90">
             <i class="fa-solid fa-paper-plane"></i> পোস্ট পাবলিশ করুন
         </button>
     </div>
+    
     <!-- লাইভ পোস্ট লিস্ট ও ডিলিট অপশন দেখার জন্য কন্টেইনার -->
     <div class="pt-3 border-t border-emerald-800 space-y-2">
         <p class="font-bold text-emerald-200">বিদ্যমান পোস্টসমূহ (ডিলিট করতে পারবেন):</p>
@@ -540,14 +541,15 @@
 <!-- Photo & Video Gallery Manager for Admin with Delete Option -->
 <div class="glass-card p-5 rounded-2xl space-y-3">
     <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-        <i class="fa-solid fa-photo-film text-gold-400"></i> ৪. গ্যালারি ম্যানেজমেন্ট (যুক্ত ও ডিলিট করুন)
+        <i class="fa-solid fa-photo-film text-amber-400"></i> ৪. গ্যালারি ম্যানেজমেন্ট (যুক্ত ও ডিলিট করুন)
     </h4>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-        <input type="text" id="adminGalleryUrl" placeholder="ছবি বা ভিডিও URL..." class="sm:col-span-2 p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-        <button onclick="addGalleryItem()" class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold px-3 py-2 rounded-xl">
+        <input type="text" id="adminGalleryUrl" placeholder="ছবি বা ভিডিও URL..." class="sm:col-span-2 p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
+        <button onclick="addGalleryItem()" class="bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 font-bold px-3 py-2 rounded-xl hover:opacity-90 transition">
             গ্যালারিতে যুক্ত করুন
         </button>
     </div>
+    
     <!-- গ্যালারির ছবি ডিলিট করার লিস্ট -->
     <div class="pt-2 border-t border-emerald-800 space-y-2">
         <p class="font-bold text-emerald-200">গ্যালারির ছবিসমূহ:</p>
@@ -556,6 +558,102 @@
         </div>
     </div>
 </div>
+
+<script>
+    // পেজ লোড হওয়ার সাথে সাথে পোস্ট ও গ্যালারি ফেচ করার জন্য
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchAdminPostsForManagement();
+        fetchGalleryForManagement();
+    });
+
+    // ১. অ্যাডমিন পোস্ট লোড ও লাইভ রেন্ডার করার ফাংশন
+    function fetchAdminPostsForManagement() {
+        database.ref('posts').on('value', (snapshot) => {
+            const data = snapshot.val();
+            const container = document.getElementById('adminManagePostsList');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            if (data) {
+                Object.entries(data).reverse().forEach(([key, item]) => {
+                    const div = document.createElement('div');
+                    div.className = "p-2 bg-emerald-950 border border-emerald-700 rounded-xl flex justify-between items-center text-xs";
+                    div.innerHTML = `<span class="truncate pr-2 text-white">${item.text || 'ছবি/ভিডিও পোস্ট'}</span>
+                                     <button onclick="deleteAdminPost('${key}')" class="text-red-400 hover:text-red-300 px-2 py-1"><i class="fa-solid fa-trash"></i></button>`;
+                    container.appendChild(div);
+                });
+            } else {
+                container.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো পোস্ট নেই</p>';
+            }
+        });
+    }
+
+    // ২. পোস্ট ডিলিট করার ফাংশন
+    function deleteAdminPost(id) {
+        if (confirm('আপনি কি নিশ্চিতভাবে এই পোস্টটি মুছে ফেলতে চান?')) {
+            database.ref('posts/' + id).remove().catch((error) => {
+                alert('পোস্ট ডিলিট করতে সমস্যা হয়েছে!');
+            });
+        }
+    }
+
+    // ৩. নতুন পোস্ট পাবলিশ করার ফাংশন
+    function addNewAdminPost() {
+        const text = document.getElementById('adminPostText').value;
+        const mediaUrl = document.getElementById('adminPostMedia').value;
+        const mediaType = document.getElementById('adminMediaType').value;
+
+        if (!text && !mediaUrl) {
+            alert('দয়া করে কিছু লিখে দিন অথবা মিডিয়া লিংক দিন!');
+            return;
+        }
+
+        const postData = {
+            text: text,
+            mediaUrl: mediaUrl,
+            mediaType: mediaType,
+            timestamp: Date.now()
+        };
+
+        database.ref('posts').push(postData).then(() => {
+            document.getElementById('adminPostText').value = '';
+            document.getElementById('adminPostMedia').value = '';
+            alert('পোস্ট সফলভাবে পাবলিশ হয়েছে!');
+        });
+    }
+
+    // ৪. গ্যালারি লোড ও ডিলিট করার ফাংশন
+    function fetchGalleryForManagement() {
+        database.ref('gallery').on('value', (snapshot) => {
+            const data = snapshot.val();
+            const container = document.getElementById('adminManageGalleryList');
+            if (!container) return;
+            container.innerHTML = '';
+            if (data) {
+                Object.entries(data).forEach(([key, url]) => {
+                    const div = document.createElement('div');
+                    div.className = "relative group rounded-lg overflow-hidden border border-emerald-700 h-20";
+                    div.innerHTML = `<img src="${url}" class="w-full h-full object-cover">
+                                     <button onclick="deleteGalleryItem('${key}')" class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-red-500"><i class="fa-solid fa-trash text-lg"></i></button>`;
+                    container.appendChild(div);
+                });
+            }
+        });
+    }
+
+    function deleteGalleryItem(id) {
+        database.ref('gallery/' + id).remove();
+    }
+
+    function addGalleryItem() {
+        const url = document.getElementById('adminGalleryUrl').value;
+        if (url) {
+            database.ref('gallery').push(url).then(() => {
+                document.getElementById('adminGalleryUrl').value = '';
+            });
+        }
+    }
+</script>
 
 
             <!-- Admin Calendar Attendance/Holiday Manager -->
