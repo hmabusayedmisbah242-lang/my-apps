@@ -3,44 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা - স্মার্ট অনলাইন প্যানেল</title>
-    <!-- Tailwind CSS CDN -->
+    <title>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা — স্মার্ট প্রিমিয়াম প্যানেল</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Hind Siliguri & Orbitron for Clock) -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Firebase SDK (Compat Version for v9) -->
+    <!-- Premium Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Firebase compat -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        emerald: {
-                            600: '#047857',
-                            700: '#065f46',
-                            800: '#064e3b',
-                            900: '#022c22',
-                            950: '#012019',
-                        },
-                        gold: {
-                            300: '#fde047',
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                            600: '#d97706',
-                        }
-                    },
-                    fontFamily: {
-                        bengali: ['"Hind Siliguri"', 'sans-serif'],
-                        digital: ['"Orbitron"', 'sans-serif']
-                    }
-                }
-            }
+            darkMode: 'class',
+            theme: { extend: {
+                colors: {
+                    emerald: { 600:'#047857',700:'#065f46',800:'#064e3b',900:'#022c22',950:'#012019' },
+                    gold: { 300:'#fde047',400:'#fbbf24',500:'#f59e0b',600:'#d97706' }
+                },
+                fontFamily: { bengali:['"Hind Siliguri"','sans-serif'], digital:['"Orbitron"','sans-serif'] }
+            }}
         }
     </script>
     <style>
@@ -49,1187 +34,1633 @@
             background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #0f172a 100%);
             background-attachment: fixed;
             color: #f8fafc;
+            transition: background .4s ease, color .3s ease;
+        }
+        body.light-theme {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #f0fdfa 100%);
+            color: #0f172a;
+        }
+        body.light-theme .glass-card {
+            background: rgba(255,255,255,0.85);
+            border-color: rgba(16,185,129,0.3);
+            color: #0f172a;
+        }
+        body.light-theme .glass-card h3, body.light-theme .glass-card h4 { color: #047857 !important; }
+        body.light-theme .text-slate-200, body.light-theme .text-slate-300 { color:#334155 !important; }
+        body.light-theme .text-slate-400 { color:#64748b !important; }
+        body.light-theme input, body.light-theme textarea, body.light-theme select {
+            background:#f8fafc !important; color:#0f172a !important; border-color:#cbd5e1 !important;
         }
         .glass-card {
-            background: rgba(6, 78, 70, 0.45);
+            background: rgba(6,78,70,0.45);
             backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(251, 191, 36, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(251,191,36,0.25);
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
         }
-        .glass-card-white {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-        .animate-marquee {
-            white-space: nowrap;
-            display: inline-block;
-            animation: marquee 18s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        /* Stylish Glowing Digital Clock Style */
+        .animate-marquee { white-space: nowrap; display:inline-block; animation: marquee 22s linear infinite; }
+        @keyframes marquee { 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
         .neon-clock {
             font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(251, 191, 36, 0.7), 0 0 20px rgba(245, 158, 11, 0.5);
+            text-shadow: 0 0 10px rgba(251,191,36,0.7), 0 0 20px rgba(245,158,11,0.5);
             letter-spacing: 1px;
         }
+        .tab-btn { transition: all .2s; border-bottom: 2px solid transparent; }
+        .tab-btn.active { color: #fbbf24; border-bottom-color: #fbbf24; background: rgba(251,191,36,0.08); }
+        .tab-content { animation: fadeUp .35s ease; }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+        .stat-card { transition: transform .2s, box-shadow .2s; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 15px 35px -10px rgba(251,191,36,0.4); }
+        .badge-pulse { animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+        /* Print styles */
+        @media print {
+            header, footer, .no-print, #quickNav, #mainNav, #announcementBar { display:none !important; }
+            body { background: white !important; color: black !important; }
+            .glass-card { background:white !important; border:1px solid #333 !important; box-shadow:none !important; }
+        }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(251,191,36,0.4); border-radius: 3px; }
+        .id-card { background: linear-gradient(135deg,#064e3b,#022c22); color:white; border:2px solid #fbbf24; }
+        .pulse-dot { animation: pulseDot 1.5s ease-in-out infinite; }
+        @keyframes pulseDot { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.3);opacity:0.6;} }
     </style>
 </head>
-<body class="text-slate-100 antialiased min-h-screen flex flex-col justify-between">
+<body class="antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- Header / Navbar -->
-    <header class="bg-emerald-950/90 backdrop-blur-md text-white shadow-2xl sticky top-0 z-50 border-b border-gold-500/40">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="showSection('publicView')">
-                <img src="1000053910.jpg" alt="An-Noor Logo" class="w-11 h-11 rounded-full border-2 border-gold-400 object-cover shadow-lg shadow-gold-500/20" onerror="this.src='https://via.placeholder.com/40'">
-                <div>
-                    <h1 class="font-bold text-base md:text-lg leading-tight text-amber-300 drop-shadow">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</h1>
-                    <p class="text-[11px] text-emerald-200">৭ নং নিউটাউন, সদর, দিনাজপুর | হটলাইন: ০১৭৯৭১১১৫৪২-০১৭২২৯৮০৮৯৭</p>
+<!-- HEADER -->
+<header class="bg-emerald-950/90 backdrop-blur-md text-white shadow-2xl sticky top-0 z-50 border-b border-gold-500/40 no-print">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="showSection('publicView')">
+            <img src="1000053910.jpg" alt="An-Noor Logo" class="w-11 h-11 rounded-full border-2 border-gold-400 object-cover shadow-lg shadow-gold-500/20" onerror="this.src='https://via.placeholder.com/40'">
+            <div>
+                <h1 class="font-bold text-base md:text-lg leading-tight text-amber-300 drop-shadow">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</h1>
+                <p class="text-[11px] text-emerald-200 hidden sm:block">৭ নং নিউটাউন, সদর, দিনাজপুর | হটলাইন: ০১৭৯৭১১১৫৪২</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <!-- Notifications Bell -->
+            <div class="relative">
+                <button onclick="toggleNotifications()" class="relative text-gold-300 hover:text-gold-400 p-2 rounded-full hover:bg-emerald-900/60 transition">
+                    <i class="fa-solid fa-bell text-base"></i>
+                    <span id="notifBadge" class="hidden absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center pulse-dot">0</span>
+                </button>
+                <div id="notifDropdown" class="hidden absolute right-0 mt-2 w-72 bg-emerald-950 border border-gold-500/40 rounded-xl shadow-2xl p-3 text-xs max-h-80 overflow-y-auto scrollbar-thin z-50">
+                    <p class="font-bold text-gold-400 border-b border-emerald-800 pb-1 mb-2">নোটিফিকেশন</p>
+                    <div id="notifList" class="space-y-2 text-slate-300"><p class="text-center py-2 text-slate-500">কোনো নোটিফিকেশন নেই</p></div>
                 </div>
             </div>
-
-            <div class="flex items-center gap-2">
-                <span id="roleBadge" class="hidden text-[11px] bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-extrabold px-3 py-1 rounded-full shadow-md">
-                    অভিভাবক
-                </span>
-                <button onclick="logout()" id="logoutBtn" class="hidden text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-xl transition shadow-lg items-center gap-1 font-semibold">
-                    <i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">লগআউট</span>
-                </button>
-            </div>
+            <!-- Theme Toggle -->
+            <button onclick="toggleTheme()" id="themeBtn" class="text-gold-300 hover:text-gold-400 p-2 rounded-full hover:bg-emerald-900/60 transition" title="Theme Palette">
+                <i class="fa-solid fa-moon text-base"></i>
+            </button>
+            <span id="roleBadge" class="hidden text-[11px] bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-extrabold px-3 py-1 rounded-full shadow-md">অভিভাবক</span>
+            <button onclick="logout()" id="logoutBtn" class="hidden text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-xl transition shadow-lg items-center gap-1 font-semibold">
+                <i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">লগআউট</span>
+            </button>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- Live Digital Clock & Announcement Bar -->
-    <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-gold-300 text-xs py-2 px-4 border-b border-emerald-700/60 shadow-inner flex flex-col sm:flex-row justify-between items-center gap-2">
-        <div class="flex items-center w-full overflow-hidden">
-            <span class="bg-gold-500 text-emerald-950 px-2.5 py-0.5 font-bold rounded text-[10px] mr-2 flex-shrink-0 shadow">ঘোষণা</span>
-            <div class="overflow-hidden w-full relative">
-                <p id="liveNoticeBar" class="animate-marquee font-medium">
-                    ২০২৭ শিক্ষাবর্ষে প্লে গ্রুপ হতে ৩য় শ্রেণি পর্যন্ত ভর্তি চলছে! আপনার সন্তানকে দ্বীনি ও আধুনিক শিক্ষায় শিক্ষিত করুন।
-                </p>
-            </div>
+<!-- ANNOUNCEMENTS + CLOCK -->
+<div id="announcementBar" class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-gold-300 text-xs py-2 px-4 border-b border-emerald-700/60 shadow-inner flex flex-col sm:flex-row justify-between items-center gap-2 no-print">
+    <div class="flex items-center w-full overflow-hidden">
+        <span class="bg-gold-500 text-emerald-950 px-2.5 py-0.5 font-bold rounded text-[10px] mr-2 flex-shrink-0 shadow">ঘোষণা</span>
+        <div class="overflow-hidden w-full relative">
+            <p id="liveNoticeBar" class="animate-marquee font-medium">২০২৭ শিক্ষাবর্ষে প্লে গ্রুপ হতে ৩য় শ্রেণি পর্যন্ত ভর্তি চলছে! আপনার সন্তানকে দ্বীনি ও আধুনিক শিক্ষায় শিক্ষিত করুন।</p>
         </div>
-        <!-- Stylized Digital Clock -->
-        <div id="liveClock" class="neon-clock bg-emerald-950 text-gold-400 px-3 py-1 rounded-xl text-xs font-bold border border-gold-500/40 shadow-lg flex-shrink-0">
-            লোড হচ্ছে...
+    </div>
+    <div id="liveClock" class="neon-clock bg-emerald-950 text-gold-400 px-3 py-1 rounded-xl text-xs font-bold border border-gold-500/40 shadow-lg flex-shrink-0">লোড হচ্ছে...</div>
+</div>
+
+<!-- QUICK NAV -->
+<div id="quickNav" class="max-w-6xl mx-auto w-full px-4 pt-4 flex flex-wrap gap-2 justify-center text-xs no-print">
+    <button onclick="showSection('publicView')" class="px-3.5 py-1.5 rounded-xl bg-emerald-800/80 text-gold-300 hover:bg-emerald-700 border border-emerald-600 font-semibold transition shadow"><i class="fa-solid fa-house mr-1"></i> মূল পেজ</button>
+    <button onclick="showSection('loginSection')" class="px-3.5 py-1.5 rounded-xl bg-gold-500 text-emerald-950 hover:bg-gold-400 font-bold transition shadow"><i class="fa-solid fa-user-lock mr-1"></i> পোর্টালে লগইন</button>
+    <button onclick="showSection('complaintSection')" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-200 hover:bg-amber-500/30 border border-amber-500/40 font-semibold transition shadow"><i class="fa-solid fa-comment-dots mr-1"></i> অভিযোগ বক্স</button>
+    <button onclick="showSection('admissionSection')" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/40 font-semibold transition shadow"><i class="fa-solid fa-user-plus mr-1"></i> অনলাইন ভর্তি</button>
+    <span class="text-slate-500 self-center">|</span>
+    <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 font-semibold">⚡ অ্যাডমিন</button>
+    <button onclick="quickGuardianDemo()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/30 font-semibold">⚡ অভিভাবক (Nur1)</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="max-w-6xl mx-auto px-4 py-6 w-full flex-grow">
+
+<!-- ========== 1. PUBLIC VIEW ========== -->
+<div id="publicView" class="space-y-6 tab-content">
+    <!-- Hero Banner -->
+    <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-950 text-white p-6 md:p-10 rounded-3xl shadow-2xl relative overflow-hidden border border-gold-500/30">
+        <div class="absolute -right-8 -bottom-8 opacity-10 text-9xl"><i class="fa-solid fa-mosque"></i></div>
+        <div class="relative z-10 space-y-4">
+            <span class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider inline-block shadow">স্মার্ট অনলাইন মাদ্রাসা পোর্টাল</span>
+            <h2 class="text-2xl md:text-4xl font-extrabold text-amber-300 leading-snug drop-shadow">দুনিয়ার শিক্ষা, আখেরাতের প্রস্তুতি — আমাদের মূল লক্ষ্য</h2>
+            <p class="text-xs md:text-sm text-emerald-100 max-w-2xl leading-relaxed">আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী, তাহফিজ ও আধুনিক সমন্বিত শিক্ষায় শিশুদের চরিত্র গঠন ও মানসম্মত শিক্ষাদান করা হয়।</p>
+            <div class="pt-2 flex flex-wrap gap-3">
+                <button onclick="showSection('loginSection')" class="bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-emerald-950 font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-xl transition"><i class="fa-solid fa-right-to-bracket mr-1"></i> লগইন করুন</button>
+                <button onclick="showSection('admissionSection')" class="bg-emerald-700/80 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg border border-emerald-500 transition"><i class="fa-solid fa-user-plus mr-1"></i> অনলাইনে ভর্তি</button>
+                <a href="tel:01797111542" class="bg-emerald-800/80 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg transition"><i class="fa-solid fa-phone mr-1"></i> ০১৭৯৭১১১৫৪২</a>
+            </div>
         </div>
     </div>
 
-    <!-- Quick Navigation Bar -->
-    <div class="max-w-4xl mx-auto w-full px-4 pt-4 flex flex-wrap gap-2 justify-center text-xs">
-        <button onclick="showSection('publicView')" class="px-3.5 py-1.5 rounded-xl bg-emerald-800/80 text-gold-300 hover:bg-emerald-700 border border-emerald-600 font-semibold transition shadow">
-            <i class="fa-solid fa-house mr-1"></i> মূল পেজ
-        </button>
-        <button onclick="showSection('loginSection')" class="px-3.5 py-1.5 rounded-xl bg-gold-500 text-emerald-950 hover:bg-gold-400 font-bold transition shadow">
-            <i class="fa-solid fa-user-lock mr-1"></i> পোর্টালে লগইন
-        </button>
-        <button onclick="showSection('complaintSection')" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-200 hover:bg-amber-500/30 border border-amber-500/40 font-semibold transition shadow">
-            <i class="fa-solid fa-comment-dots mr-1"></i> অভিযোগ বক্স
-        </button>
-        <span class="text-slate-500 self-center">|</span>
-        <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 font-semibold">
-            ⚡ অ্যাডমিন লগইন
-        </button>
-        <button onclick="quickGuardianDemo()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/30 font-semibold">
-            ⚡ অভিভাবক লগইন (Nur1)
-        </button>
+    <!-- Live Stats Bar -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-gold-400">
+            <p class="text-2xl md:text-3xl font-bold text-gold-300 font-digital" id="statStudents">০</p>
+            <p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-user-graduate mr-1"></i> মোট ছাত্র</p>
+        </div>
+        <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-emerald-400">
+            <p class="text-2xl md:text-3xl font-bold text-emerald-300 font-digital" id="statTeachers">০</p>
+            <p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-chalkboard-user mr-1"></i> শিক্ষক</p>
+        </div>
+        <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-blue-400">
+            <p class="text-2xl md:text-3xl font-bold text-blue-300 font-digital">১২</p>
+            <p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-medal mr-1"></i> বছরের অভিজ্ঞতা</p>
+        </div>
+        <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-amber-400">
+            <p class="text-2xl md:text-3xl font-bold text-amber-300 font-digital">৯৮%</p>
+            <p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-thumbs-up mr-1"></i> পাসের হার</p>
+        </div>
     </div>
 
-    <!-- Main Content Container -->
-    <main class="max-w-4xl mx-auto px-4 py-4 w-full flex-grow">
-
-        <!-- 1. PUBLIC VIEW -->
-        <div id="publicView" class="space-y-6">
-            <!-- Hero Banner -->
-            <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-950 text-white p-6 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden border border-gold-500/30">
-                <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl">
-                    <i class="fa-solid fa-mosque"></i>
-                </div>
-                <div class="relative z-10 space-y-3">
-                    <span class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider inline-block shadow">
-                        স্মার্ট অনলাইন মাদ্রাসা পোর্টাল
-                    </span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-amber-300 leading-snug drop-shadow">
-                        দুনিয়ার শিক্ষা, আখেরাতের প্রস্তুতি — আমাদের মূল লক্ষ্য
-                    </h2>
-                    <p class="text-xs md:text-sm text-emerald-100 max-w-xl leading-relaxed">
-                        আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী, তাহফিজ ও আধুনিক সমন্বিত শিক্ষায় শিশুদের চরিত্র গঠন ও মানসম্মত শিক্ষাদান করা হয়।
-                    </p>
-                    <div class="pt-2 flex flex-wrap gap-3">
-                        <button onclick="showSection('loginSection')" class="bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-emerald-950 font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-xl transition">
-                            <i class="fa-solid fa-right-to-bracket mr-1"></i> লগইন করুন
-                        </button>
-                        <a href="tel:01797111542" class="bg-emerald-700/80 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg border border-emerald-500 transition">
-                            <i class="fa-solid fa-phone mr-1"></i> ভর্তি তথ্য: ০১৭৯৭১১১৫৪২
-                        </a>
-                    </div>
-                </div>
+    <!-- Namaz Times + Hadith + Events Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Namaz times -->
+        <div class="glass-card p-5 rounded-2xl space-y-2 border border-gold-500/30">
+            <div class="flex items-center gap-2 text-amber-300 font-bold text-sm border-b border-emerald-700/50 pb-1">
+                <i class="fa-solid fa-mosque text-gold-400"></i><h3>আজকের নামাজের সময়সূচি</h3>
             </div>
-
-            <!-- Daily Hadith Card -->
-            <div class="glass-card p-5 rounded-2xl space-y-2 border border-gold-500/30">
-                <div class="flex items-center gap-2 text-amber-300 font-bold text-sm border-b border-emerald-700/50 pb-1">
-                    <i class="fa-solid fa-quote-left text-gold-400 text-lg"></i>
-                    <h3>দৈনন্দিন হাদিস ও বাণী</h3>
-                </div>
-                <p id="displayHadithText" class="text-xs md:text-sm text-slate-200 italic leading-relaxed pt-1">
-                    "তোমাদের মধ্যে সর্বোত্তম ব্যক্তি সে, যে নিজে কুরআন শেখে এবং অপরকে শিক্ষা দেয়।"
-                </p>
-                <p id="displayHadithRef" class="text-[11px] font-semibold text-gold-400 text-right">— সহীহ বুখারী (৫০২৭)</p>
-            </div>
-
-            <!-- Features Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-emerald-500">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-book-quran"></i>
-                    </div>
-                    <h3 class="font-bold text-amber-300 text-sm">নূরানী ও মানসম্মত শিক্ষা</h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">মানসম্মত নূরানী সিলেবাস, শুদ্ধ উচ্চারণ ও অভিজ্ঞ শিক্ষকদের নিবিড় পর্যবেক্ষণ।</p>
-                </div>
-
-                <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-gold-500">
-                    <div class="w-10 h-10 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <h3 class="font-bold text-amber-300 text-sm">শরয়ী ও নিরাপদ পরিবেশ</h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">সিসিটিভি নিয়ন্ত্রিত সম্পূর্ণ নিরাপদ ও ইসলামী অনুশাসন সমৃদ্ধ সুশৃঙ্খল ক্যাম্পাস।</p>
-                </div>
-
-                <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-teal-500">
-                    <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-laptop-code"></i>
-                    </div>
-                    <h3 class="font-bold text-amber-300 text-sm">স্মার্ট অভিভাবক ট্র্যাকিং</h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">অনলাইনে দৈনন্দিন উপস্থিতি, রেজাল্ট, টিউটোরিয়াল ও ফি সংক্রান্ত যাবতীয় হিসাব সুবিধা।</p>
-                </div>
-            </div>
-
-            <!-- Photo & Event Gallery -->
-            <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
-                <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-images text-gold-400"></i> মাদ্রাসা ফটো ও ভিডিও গ্যালারি
-                </h3>
-                <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=500" alt="Madrasa Campus" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
-                    <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500" alt="Students Class" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
-                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500" alt="Education Activity" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
-                </div>
-            </div>
-
-            <!-- PUBLIC POST FEED (অ্যাডমিনের পোস্ট, সবার লাইক ও কমেন্ট অপশন) -->
-            <div class="glass-card p-5 rounded-2xl space-y-4 border border-gold-500/30">
-                <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-newspaper text-gold-400"></i> মাদ্রাসার সর্বশেষ পোস্ট ও আপডেটসমূহ
-                </h3>
-                <div id="publicPostsFeed" class="space-y-5">
-                    <p class="text-xs text-slate-400 text-center py-4">পোস্ট লোড হচ্ছে...</p>
-                </div>
+            <div class="grid grid-cols-5 gap-1 text-center text-[11px] pt-1" id="namazTimesCard">
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ফজর</p><p class="text-gold-300 font-bold mt-1" id="namazFajr">৫:০০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">জোহর</p><p class="text-gold-300 font-bold mt-1" id="namazDhuhr">১:০০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">আসর</p><p class="text-gold-300 font-bold mt-1" id="namazAsr">৪:০০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">মাগরিব</p><p class="text-gold-300 font-bold mt-1" id="namazMaghrib">৬:১০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ইশা</p><p class="text-gold-300 font-bold mt-1" id="namazIsha">৭:২০</p></div>
             </div>
         </div>
-
-        <!-- 2. LOGIN SECTION -->
-        <div id="loginSection" class="hidden glass-card p-6 md:p-8 rounded-3xl shadow-2xl max-w-md mx-auto my-6 border-t-4 border-gold-500">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 mx-auto mb-3 bg-emerald-800/60 rounded-full flex items-center justify-center text-gold-400 border border-gold-500/30 shadow-inner">
-                    <i class="fa-solid fa-user-lock text-2xl"></i>
-                </div>
-                <h2 class="text-xl font-bold text-amber-300">পোর্টালে প্রবেশ করুন</h2>
-                <p class="text-xs text-slate-300 mt-1">আইডি (যেমন: Nur1 বা ইমেইল) ও পাসওয়ার্ড দিয়ে প্রবেশ করুন</p>
+        <!-- Hadith -->
+        <div class="glass-card p-5 rounded-2xl space-y-2 border border-gold-500/30">
+            <div class="flex items-center gap-2 text-amber-300 font-bold text-sm border-b border-emerald-700/50 pb-1">
+                <i class="fa-solid fa-quote-left text-gold-400"></i><h3>দৈনন্দিন হাদিস ও বাণী</h3>
             </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-200 mb-1">ইউজার আইডি / ইমেইল (User ID)</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                            <i class="fa-solid fa-user"></i>
-                        </span>
-                        <input type="text" id="loginEmail" required placeholder="Nur1 অথবা hmabusayedmisbah242@gmail.com" class="w-full pl-10 pr-4 py-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-gold-400">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-200 mb-1">পাসওয়ার্ড (Password)</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                            <i class="fa-solid fa-lock"></i>
-                        </span>
-                        <input type="password" id="loginPassword" required placeholder="123456" class="w-full pl-10 pr-4 py-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-gold-400">
-                    </div>
-                </div>
-
-                <div id="loginError" class="hidden text-xs text-red-300 text-center font-medium bg-red-900/40 p-2.5 rounded-xl border border-red-500/40">
-                    ⚠️ ভুল আইডি অথবা পাসওয়ার্ড দেওয়া হয়েছে!
-                </div>
-
-                <button type="submit" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-emerald-950 font-bold py-3 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-right-to-bracket"></i> সাইন ইন
-                </button>
-            </form>
+            <p id="displayHadithText" class="text-xs md:text-sm text-slate-200 italic leading-relaxed pt-1">"তোমাদের মধ্যে সর্বোত্তম ব্যক্তি সে, যে নিজে কুরআন শেখে এবং অপরকে শিক্ষা দেয়।"</p>
+            <p id="displayHadithRef" class="text-[11px] font-semibold text-gold-400 text-right">— সহীহ বুখারী (৫০২৭)</p>
         </div>
+    </div>
 
-        <!-- 3. COMPLAINT SECTION (অভিযোগ বক্স) -->
-        <div id="complaintSection" class="hidden max-w-lg mx-auto glass-card p-6 rounded-3xl shadow-2xl border border-gold-500/30 space-y-4">
-            <div class="text-center border-b border-emerald-700/50 pb-3">
-                <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-comment-medical text-gold-400 mr-2"></i> অভিভাবক অভিযোগ বা পরামর্শ বক্স</h3>
-                <p class="text-xs text-slate-300 mt-1">আপনার মূল্যবান মতামত বা অভিযোগ সরাসরি অ্যাডমিন প্যানেলে জমা দিন।</p>
-            </div>
-            <form onsubmit="submitComplaint(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="block font-semibold text-slate-200 mb-1">আপনার নাম / শিক্ষার্থীর আইডি:</label>
-                    <input type="text" id="complaintName" required placeholder="যেমন: মো: রহিম (Nur1 এর অভিভাবক)" class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-200 mb-1">মোবাইল নাম্বার:</label>
-                    <input type="text" id="complaintPhone" required placeholder="০১..." class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-200 mb-1">অভিযোগ বা পরামর্শের বিবরণ:</label>
-                    <textarea id="complaintDetails" required rows="4" placeholder="আপনার বিস্তারিত এখানে লিখুন..." class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow-lg hover:from-gold-500 hover:to-amber-600 transition">
-                    <i class="fa-solid fa-paper-plane mr-1"></i> অভিযোগ জমা দিন
-                </button>
-            </form>
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-emerald-500">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-book-quran"></i></div>
+            <h3 class="font-bold text-amber-300 text-sm">নূরানী ও মানসম্মত শিক্ষা</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">মানসম্মত নূরানী সিলেবাস, শুদ্ধ উচ্চারণ ও অভিজ্ঞ শিক্ষকদের নিবিড় পর্যবেক্ষণ।</p>
         </div>
+        <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-gold-500">
+            <div class="w-10 h-10 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3 class="font-bold text-amber-300 text-sm">শরয়ী ও নিরাপদ পরিবেশ</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">সিসিটিভি নিয়ন্ত্রিত সম্পূর্ণ নিরাপদ ও ইসলামী অনুশাসন সমৃদ্ধ সুশৃঙ্খল ক্যাম্পাস।</p>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-teal-500">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-laptop-code"></i></div>
+            <h3 class="font-bold text-amber-300 text-sm">স্মার্ট অভিভাবক ট্র্যাকিং</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">অনলাইনে দৈনন্দিন উপস্থিতি, রেজাল্ট, টিউটোরিয়াল ও ফি সংক্রান্ত যাবতীয় হিসাব।</p>
+        </div>
+    </div>
 
-        <!-- 4. GUARDIAN DASHBOARD -->
-        <div id="guardianDashboard" class="hidden space-y-6">
-            <!-- Student Header Profile Card -->
-            <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-5 md:p-6 rounded-3xl shadow-xl relative overflow-hidden border border-gold-500/30">
-                <div class="flex items-center space-x-4 relative z-10">
-                    <img id="gStudentPhoto" src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=500" alt="Student Photo" class="w-16 h-16 rounded-2xl border-2 border-gold-400 object-cover shadow-md flex-shrink-0">
-                    <div>
-                        <h3 id="gStudentName" class="text-lg md:text-xl font-bold text-amber-300">শিক্ষার্থীর নাম</h3>
-                        <p id="gStudentDetails" class="text-xs text-emerald-200">শ্রেণি: ১ম | রোল: ০১</p>
-                        <p class="text-[11px] text-slate-300 mt-0.5">আইডি: <span id="gDisplayId" class="font-mono bg-emerald-950 px-2 py-0.5 rounded text-gold-400">Nur1</span></p>
-                         <p class="text-[11px] text-emerald-200 mt-1"><i class="fa-solid fa-location-dot text-gold-400 mr-1"></i>ঠিকানা: <span id="gAddress">লোড হচ্ছে...</span></p>
-                    </div>
-                </div>
-            </div>
+    <!-- Events / Notices with countdown -->
+    <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
+        <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-calendar-star text-gold-400"></i> আসন্ন ইভেন্ট ও প্রোগ্রাম</h3>
+        <div id="eventsList" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">বার্ষিক ইসলামিক সম্মেলন</p><p class="text-slate-300 mt-1">১৪ ডিসেম্বর ২০২৬ • মাদ্রাসা প্রাঙ্গণ</p></div>
+            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">হিফজ সমাপনী অনুষ্ঠান</p><p class="text-slate-300 mt-1">২৫ জানুয়ারি ২০২৭ • প্রধান মিলনায়তন</p></div>
+        </div>
+    </div>
 
-            <!-- Student Metrics Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-emerald-400">
-                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-base">
-                        <i class="fa-solid fa-calendar-check"></i>
-                    </div>
-                    <h4 class="text-[11px] text-slate-300">উপস্থিতি</h4>
-                    <p id="gAttendance" class="text-xs font-bold text-emerald-400 mt-1">লোড হচ্ছে...</p>
-                </div>
+    <!-- Gallery -->
+    <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
+        <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-images text-gold-400"></i> মাদ্রাসা ফটো ও ভিডিও গ্যালারি</h3>
+        <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=500" alt="Madrasa Campus" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
+            <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500" alt="Students Class" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500" alt="Education Activity" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
+        </div>
+    </div>
 
-                <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-blue-400">
-                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-base">
-                        <i class="fa-solid fa-receipt"></i>
-                    </div>
-                    <h4 class="text-[11px] text-slate-300">চলতি ফি স্থিতি</h4>
-                    <p id="gFeeStatus" class="text-xs font-bold text-blue-300 mt-1">লোড হচ্ছে...</p>
-                </div>
+    <!-- Posts Feed -->
+    <div class="glass-card p-5 rounded-2xl space-y-4 border border-gold-500/30">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-emerald-700/50 pb-2">
+            <h3 class="text-sm font-bold text-amber-300 flex items-center gap-2"><i class="fa-solid fa-newspaper text-gold-400"></i> সর্বশেষ পোস্ট ও আপডেট</h3>
+            <input type="search" id="postSearchInput" oninput="filterPosts()" placeholder="🔍 পোস্ট খুঁজুন..." class="w-full sm:w-56 text-xs p-1.5 rounded-lg bg-emerald-950/80 border border-emerald-700 text-white">
+        </div>
+        <div id="publicPostsFeed" class="space-y-5"><p class="text-xs text-slate-400 text-center py-4">পোস্ট লোড হচ্ছে...</p></div>
+    </div>
 
-                <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-red-400">
-                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-red-500/20 text-red-300 flex items-center justify-center text-base">
-                        <i class="fa-solid fa-bangladeshi-taka-sign"></i>
-                    </div>
-                    <h4 class="text-[11px] text-slate-300">বকেয়া পরিমাণ</h4>
-                    <p id="gDueAmount" class="text-xs font-bold text-red-400 mt-1">০ ৳</p>
-                </div>
+    <!-- About Section -->
+    <div class="glass-card p-6 rounded-2xl space-y-3 border border-emerald-700/50">
+        <h3 class="text-sm font-bold text-amber-300 flex items-center gap-2"><i class="fa-solid fa-circle-info text-gold-400"></i> আমাদের সম্পর্কে</h3>
+        <p class="text-xs md:text-sm text-slate-300 leading-relaxed">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা দিনাজপুরের একটি অন্যতম দ্বীনি ও আধুনিক শিক্ষাপ্রতিষ্ঠান, যেখানে শিশুদের কুরআন, হাদিস ও আধুনিক শিক্ষার সমন্বয়ে গড়ে তোলা হয়। আমাদের অভিজ্ঞ শিক্ষকমণ্ডলী ও সুশৃঙ্খল পরিবেশ শিক্ষার্থীদের নৈতিক ও একাডেমিক উৎকর্ষ নিশ্চিত করে।</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-book text-gold-400 mr-1"></i><b class="text-gold-300">নূরানী বিভাগ</b><p class="text-slate-300 mt-1">শুদ্ধ কুরআন তিলাওয়াত ও প্রাথমিক ইসলামিক শিক্ষা।</p></div>
+            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-brain text-gold-400 mr-1"></i><b class="text-gold-300">হিফজ বিভাগ</b><p class="text-slate-300 mt-1">সম্পূর্ণ কুরআন হিফজের বিশেষ কোর্স।</p></div>
+            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-graduation-cap text-gold-400 mr-1"></i><b class="text-gold-300">আধুনিক শিক্ষা</b><p class="text-slate-300 mt-1">বাংলা, ইংরেজি, গণিত ও বিজ্ঞান বিষয়ে পাঠদান।</p></div>
+        </div>
+    </div>
 
-                <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-amber-400">
-                    <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-base">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <h4 class="text-[11px] text-slate-300">মেধা অবস্থান</h4>
-                   <p id="gOverallGrade" class="text-xs font-bold text-amber-300 mt-1">এ+ (A+)</p>
-                </div>
-            </div>
+    <!-- FAQ Accordion -->
+    <div class="glass-card p-5 rounded-2xl space-y-2 border border-emerald-700/50">
+        <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-circle-question text-gold-400"></i> সাধারণ জিজ্ঞাসা (FAQ)</h3>
+        <div id="faqList" class="space-y-2"></div>
+    </div>
 
-            <!-- DYNAMIC CALENDAR SYSTEM (মাসভিত্তিক হাজিরা ও ছুটির ক্যালেন্ডার) -->
-            <div class="glass-card p-5 rounded-2xl space-y-3">
-                <div class="flex flex-col sm:flex-row justify-between items-center border-b border-emerald-700/50 pb-2 gap-2">
-                    <h4 class="font-bold text-sm text-amber-300 flex items-center gap-2">
-                        <i class="fa-solid fa-calendar-days text-gold-400"></i> মাসিক উপস্থিতি ও ছুটির ক্যালেন্ডার
-                    </h4>
-                    <div class="flex items-center gap-2 text-xs text-slate-800">
-                        <select id="calendarMonthSelect" onchange="renderDynamicCalendar()" class="p-1.5 bg-slate-100 border rounded-lg font-semibold">
-                            <option value="0">জানুয়ারি</option><option value="1">ফেব্রুয়ারি</option><option value="2">মার্চ</option>
-                            <option value="3">এপ্রিল</option><option value="4">মে</option><option value="5">জুন</option>
-                            <option value="6">জুলাই</option><option value="7">আগস্ট</option><option value="8">সেপ্টেম্বর</option>
-                            <option value="9">অক্টোবর</option><option value="10">নভেম্বর</option><option value="11">ডিসেম্বর</option>
-                        </select>
-                        <select id="calendarYearSelect" onchange="renderDynamicCalendar()" class="p-1.5 bg-slate-100 border rounded-lg font-semibold">
-                            <option value="2026">২০২৬</option><option value="2027" selected>২০২৭</option>
-                        </select>
-                    </div>
-                </div>
+    <!-- Contact Section -->
+    <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
+        <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-address-book text-gold-400"></i> যোগাযোগ করুন</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="flex items-start gap-2"><i class="fa-solid fa-location-dot text-gold-400 mt-0.5"></i><p>৭ নং নিউটাউন, সদর, দিনাজপুর</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-phone text-gold-400 mt-0.5"></i><p>০১৭৯৭১১১৫৪২, ০১৭২২৯৮০৮৯৭</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-envelope text-gold-400 mt-0.5"></i><p>info@annoor-madrasa.edu.bd</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-clock text-gold-400 mt-0.5"></i><p>শনি–বৃহস্পতি, সকাল ৮টা – বিকাল ৪টা</p></div>
+        </div>
+    </div>
+</div>
 
-                <!-- Calendar Legend Info -->
-                <div class="flex flex-wrap gap-3 text-[11px] justify-center py-1">
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-500 rounded-full inline-block"></span> খোলা/উপস্থিত</span>
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full inline-block"></span> ছুটি/অনুপস্থিত</span>
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 bg-slate-600 rounded-full inline-block"></span> সাধারণ দিন</span>
-                </div>
-
-                <!-- Calendar Grid Container -->
-                <div class="overflow-x-auto">
-                    <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-gold-400 mb-1">
-                        <span class="text-red-400">রবি</span><span>সোম</span><span>মঙ্গল</span><span>বুধ</span><span>বৃহস্পতি</span><span>শুক্র</span><span>শনি</span>
-                    </div>
-                    <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1.5 text-xs">
-                        <!-- JS দিয়ে জেনারেট হবে -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Academic Results Table (অভিভাবক রেজাল্ট ভিউ) -->
-            <div class="glass-card p-5 rounded-2xl space-y-3">
-                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center justify-between">
-                    <span><i class="fa-solid fa-file-signature text-gold-400 mr-1"></i> সাম্প্রতিক দৈনন্দিন ও পরীক্ষার রেজাল্ট</span>
-                    <span class="text-[11px] text-gold-300 font-semibold bg-emerald-950 px-2.5 py-0.5 rounded-full border border-gold-500/40">লাইভ রেজাল্ট</span>
-                </h4>
-                <div id="gResultsContainer" class="space-y-2 text-xs">
-                    <!-- রেজাল্ট JS দ্বারা ডায়নামিক লোড হবে -->
-                </div>
+<!-- ========== 2. LOGIN ========== -->
+<div id="loginSection" class="hidden glass-card p-6 md:p-8 rounded-3xl shadow-2xl max-w-md mx-auto my-6 border-t-4 border-gold-500 tab-content">
+    <div class="text-center mb-6">
+        <div class="w-16 h-16 mx-auto mb-3 bg-emerald-800/60 rounded-full flex items-center justify-center text-gold-400 border border-gold-500/30 shadow-inner"><i class="fa-solid fa-user-lock text-2xl"></i></div>
+        <h2 class="text-xl font-bold text-amber-300">পোর্টালে প্রবেশ করুন</h2>
+        <p class="text-xs text-slate-300 mt-1">আইডি (যেমন: Nur1) ও পাসওয়ার্ড দিয়ে প্রবেশ করুন</p>
+    </div>
+    <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+            <label class="block text-xs font-semibold text-slate-200 mb-1">ইউজার আইডি / ইমেইল</label>
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-user"></i></span>
+                <input type="text" id="loginEmail" required placeholder="Nur1 অথবা admin email" class="w-full pl-10 pr-4 py-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-gold-400">
             </div>
         </div>
-
-        <!-- 5. ADVANCED ADMIN DASHBOARD -->
-        <div id="adminDashboard" class="hidden space-y-6">
-            <!-- Header Banner -->
-            <div class="bg-gradient-to-r from-emerald-950 to-emerald-900 border border-gold-500/30 text-white p-5 rounded-3xl shadow-xl flex justify-between items-center">
-                <div>
-                    <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-sliders mr-1"></i> কেন্দ্রীয় অ্যাডমিন কন্ট্রোল প্যানেল</h3>
-                    <p class="text-xs text-emerald-200 mt-0.5">মাদ্রাসা ম্যানেজমেন্ট, ছাত্র যুক্ত/মুছে ফেলা ও নোটিশ পরিচালনা</p>
-                </div>
-                <span class="bg-emerald-950 px-3 py-1 rounded-xl text-xs font-semibold text-gold-400 border border-gold-500/40">
-                    🟢 অ্যাডমিন সেশন
-                </span>
+        <div>
+            <label class="block text-xs font-semibold text-slate-200 mb-1">পাসওয়ার্ড</label>
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-lock"></i></span>
+                <input type="password" id="loginPassword" required placeholder="••••••" class="w-full pl-10 pr-4 py-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-gold-400">
             </div>
+        </div>
+        <div class="flex justify-between items-center text-[11px]">
+            <label class="flex items-center gap-1.5 text-slate-300 cursor-pointer"><input type="checkbox" id="rememberMe" class="accent-gold-500"> মনে রাখুন</label>
+            <button type="button" onclick="forgotPassword()" class="text-gold-400 hover:underline font-semibold">পাসওয়ার্ড ভুলে গেছেন?</button>
+        </div>
+        <div id="loginError" class="hidden text-xs text-red-300 text-center font-medium bg-red-900/40 p-2.5 rounded-xl border border-red-500/40">⚠️ ভুল আইডি অথবা পাসওয়ার্ড!</div>
+        <button type="submit" id="loginSubmitBtn" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-emerald-950 font-bold py-3 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-right-to-bracket"></i> সাইন ইন</button>
+    </form>
+</div>
 
-            <!-- STUDENT MANAGEMENT SECTION (ছাত্র যুক্ত করা এবং মুছে ফেলার নতুন ফিচার) -->
-            <div class="glass-card p-5 rounded-2xl space-y-4">
-                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-user-plus text-gold-400"></i> ১. নতুন ছাত্র যোগ করুন এবং তালিকা থেকে মুছে ফেলুন
-                </h4>
-
-                <!-- Add Student Form -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থী ইউজার আইডি (যেমন: Nur1, Nur2):</label>
-                        <input type="text" id="addStudentId" placeholder="Nur21" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থীর নাম:</label>
-                        <input type="text" id="addStudentName" placeholder="মুহাম্মদ আব্দুল্লাহ" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">শ্রেণি ও রোল:</label>
-                        <input type="text" id="addStudentClass" placeholder="শ্রেণি: ১ম | রোল: ০৫" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">ঠিকানা:</label>
-                        <input type="text" id="addStudentAddress" placeholder="নিউটাউন, দিনাজপুর" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    </div>
-                </div>
-                <button onclick="addNewStudent()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-plus-circle"></i> নতুন ছাত্র সেভ/যোগ করুন
-                </button>
-
-                <!-- Registered Student List with Remove Option -->
-                <div class="pt-3 border-t border-emerald-700/50 space-y-2">
-                    <h5 class="text-xs font-bold text-gold-300">বর্তমান ছাত্রদের তালিকা (মুছে ফেলার অপশন সহ):</h5>
-                    <div id="adminStudentList" class="space-y-2 max-h-48 overflow-y-auto text-xs">
-                        <p class="text-slate-400 text-center py-2">ছাত্রের ডাটা লোড হচ্ছে...</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Student Data & Daily Exam Result Update Tool -->
-            <div class="glass-card p-5 rounded-2xl space-y-4">
-                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-user-pen text-gold-400"></i> ২. শিক্ষার্থী প্রোফাইল ও প্রতিদিনের রেজাল্ট আপডেট
-                </h4>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থী আইডি নির্বাচন করুন:</label>
-                        <select id="targetStudentId" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white focus:border-gold-400">
-                            <!-- Dynamic from JS -->
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থীর নাম আপডেট:</label>
-                        <input type="text" id="setStudentNameInput" placeholder="যেমন: মুহাম্মদ আব্দুল্লাহ" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">উপস্থিতি স্থিতি:</label>
-                        <select id="setAttendance" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
-                            <option value="উপস্থিত (Present)">উপস্থিত (Present)</option>
-                            <option value="অনুপস্থিত (Absent)">অনুপস্থিত (Absent)</option>
-                            <option value="ছুটিতে আছে">ছুটিতে আছে</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">ফি স্ট্যাটাস:</label>
-                        <select id="setFeeStatus" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
-                            <option value="পরিশোধিত (Paid)">পরিশোধিত (Paid)</option>
-                            <option value="বাকি আছে (Due)">বাকি আছে (Due)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">বকেয়া টাকার পরিমাণ (৳):</label>
-                        <input type="number" id="setDueAmount" placeholder="যেমন: ৫৫০" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">ছবি URL (ইমেজ লিংক):</label>
-                        <input type="text" id="setStudentPhoto" placeholder="https://..." class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    </div>
-                </div>
-
-                <!-- Daily Exam Result Update Form -->
-                <div class="bg-emerald-950/80 p-3.5 rounded-xl border border-emerald-700/60 space-y-2 text-xs">
-                    <h5 class="font-bold text-gold-400 border-b border-emerald-800 pb-1">দৈনন্দিন পরীক্ষার রেজাল্ট এন্ট্রি করুন:</h5>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                        <input type="text" id="resSubject" placeholder="বিষয় (যেমন: বাংলা/আরবি)" class="p-2 bg-emerald-900 border border-emerald-700 rounded-lg text-white">
-                        <input type="text" id="resGrade" placeholder="রেজাল্ট/গ্রেড (যেমন: এ+ / ৮০)" class="p-2 bg-emerald-900 border border-emerald-700 rounded-lg text-white">
-                        <input type="date" id="resDate" class="p-2 bg-emerald-900 border border-emerald-700 rounded-lg text-white">
-                    </div>
-                </div>
-
-                <button onclick="updateStudentData()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> প্রোফাইল ও রেজাল্ট সেভ আপডেট করুন
-                </button>
-            </div>
-
-            <!-- ADMIN POST SYSTEM (অ্যাডমিনের জন্য আনলিমিটেড পোস্ট ও ডিলিট সুবিধা) -->
-<div class="glass-card p-5 rounded-2xl space-y-3">
-    <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-        <i class="fa-solid fa-pen-to-square text-amber-400"></i> ৩. নতুন পোস্ট আপডেট ও ম্যানেজ করুন (ছবি ও ভিডিও সহ)
-    </h4>
-    <div class="space-y-3 text-xs">
-        <textarea id="adminPostText" rows="3" placeholder="এখানে পোস্টের বিবরণ লিখুন..." class="w-full p-3 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white focus:outline-none focus:border-amber-400"></textarea>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <input type="text" id="adminPostMedia" placeholder="ছবি বা ভিডিও লিংক (URL/YouTube Embed Link)" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
-            <select id="adminMediaType" class="p-2 bg-emerald-950 border border-emerald-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
-                <option value="image">ছবি (Image)</option>
-                <option value="video">ভিডিও (Video Link/Embed)</option>
+<!-- ========== 3. COMPLAINT ========== -->
+<div id="complaintSection" class="hidden max-w-lg mx-auto glass-card p-6 rounded-3xl shadow-2xl border border-gold-500/30 space-y-4 tab-content">
+    <div class="text-center border-b border-emerald-700/50 pb-3">
+        <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-comment-medical text-gold-400 mr-2"></i> অভিভাবক অভিযোগ বা পরামর্শ বক্স</h3>
+        <p class="text-xs text-slate-300 mt-1">আপনার মূল্যবান মতামত বা অভিযোগ সরাসরি অ্যাডমিন প্যানেলে জমা দিন।</p>
+    </div>
+    <form onsubmit="submitComplaint(event)" class="space-y-3 text-xs">
+        <div>
+            <label class="block font-semibold text-slate-200 mb-1">আপনার নাম / শিক্ষার্থীর আইডি:</label>
+            <input type="text" id="complaintName" required placeholder="যেমন: মো: রহিম (Nur1 এর অভিভাবক)" class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100">
+        </div>
+        <div>
+            <label class="block font-semibold text-slate-200 mb-1">মোবাইল নাম্বার:</label>
+            <input type="text" id="complaintPhone" required placeholder="০১..." class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100">
+        </div>
+        <div>
+            <label class="block font-semibold text-slate-200 mb-1">অভিযোগের ধরন:</label>
+            <select id="complaintType" class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100">
+                <option value="academic">একাডেমিক</option><option value="fee">ফি সংক্রান্ত</option>
+                <option value="discipline">শৃঙ্খলা</option><option value="infrastructure">অবকাঠামো</option>
+                <option value="other">অন্যান্য</option>
             </select>
         </div>
-        <button onclick="addNewAdminPost()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2 hover:opacity-90">
-            <i class="fa-solid fa-paper-plane"></i> পোস্ট পাবলিশ করুন
-        </button>
+        <div>
+            <label class="block font-semibold text-slate-200 mb-1">অভিযোগ বা পরামর্শের বিবরণ:</label>
+            <textarea id="complaintDetails" required rows="4" placeholder="আপনার বিস্তারিত এখানে লিখুন..." class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow-lg hover:from-gold-500 hover:to-amber-600 transition"><i class="fa-solid fa-paper-plane mr-1"></i> অভিযোগ জমা দিন</button>
+    </form>
+</div>
+
+<!-- ========== 4. ADMISSION ========== -->
+<div id="admissionSection" class="hidden max-w-2xl mx-auto glass-card p-6 rounded-3xl shadow-2xl border border-gold-500/30 space-y-4 tab-content">
+    <div class="text-center border-b border-emerald-700/50 pb-3">
+        <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-user-plus text-gold-400 mr-2"></i> অনলাইন ভর্তি ফর্ম</h3>
+        <p class="text-xs text-slate-300 mt-1">ফর্ম পূরণ করে জমা দিন, আমাদের টিম আপনার সাথে যোগাযোগ করবে।</p>
     </div>
-    
-    <!-- লাইভ পোস্ট লিস্ট ও ডিলিট অপশন দেখার জন্য কন্টেইনার -->
-    <div class="pt-3 border-t border-emerald-800 space-y-2">
-        <p class="font-bold text-emerald-200">বিদ্যমান পোস্টসমূহ (ডিলিট করতে পারবেন):</p>
-        <div id="adminManagePostsList" class="space-y-2 max-h-48 overflow-y-auto text-xs">
-            <p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p>
+    <form onsubmit="submitAdmission(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div><label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থীর নাম *</label><input type="text" id="admStudentName" required class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></div>
+            <div><label class="block font-semibold text-slate-200 mb-1">পিতার নাম *</label><input type="text" id="admFatherName" required class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></div>
+            <div><label class="block font-semibold text-slate-200 mb-1">মাতার নাম</label><input type="text" id="admMotherName" class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></div>
+            <div><label class="block font-semibold text-slate-200 mb-1">জন্ম তারিখ</label><input type="date" id="admBirthDate" class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></div>
+            <div><label class="block font-semibold text-slate-200 mb-1">ভর্তি হওয়ার শ্রেণি *</label>
+                <select id="admClass" required class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100">
+                    <option>প্লে</option><option>নার্সারি</option><option>১ম</option><option>২য়</option><option>৩য়</option><option>হিফজ</option>
+                </select>
+            </div>
+            <div><label class="block font-semibold text-slate-200 mb-1">মোবাইল নম্বর *</label><input type="tel" id="admPhone" required class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></div>
+        </div>
+        <div><label class="block font-semibold text-slate-200 mb-1">ঠিকানা *</label><input type="text" id="admAddress" required class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></div>
+        <div><label class="block font-semibold text-slate-200 mb-1">অতিরিক্ত তথ্য</label><textarea id="admNotes" rows="3" class="w-full p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-slate-100"></textarea></div>
+        <button type="submit" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow-lg hover:from-gold-500 hover:to-amber-600 transition"><i class="fa-solid fa-paper-plane mr-1"></i> ভর্তি আবেদন জমা দিন</button>
+    </form>
+</div>
+
+<!-- ========== 5. GUARDIAN DASHBOARD ========== -->
+<div id="guardianDashboard" class="hidden space-y-6 tab-content">
+    <!-- Profile Header -->
+    <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-5 md:p-6 rounded-3xl shadow-xl relative overflow-hidden border border-gold-500/30">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 relative z-10">
+            <img id="gStudentPhoto" src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=500" alt="Student" class="w-20 h-20 rounded-2xl border-2 border-gold-400 object-cover shadow-md flex-shrink-0">
+            <div class="flex-1">
+                <h3 id="gStudentName" class="text-lg md:text-xl font-bold text-amber-300">শিক্ষার্থীর নাম</h3>
+                <p id="gStudentDetails" class="text-xs text-emerald-200 mt-1">শ্রেণি: ১ম | রোল: ০১</p>
+                <p class="text-[11px] text-slate-300 mt-0.5">আইডি: <span id="gDisplayId" class="font-mono bg-emerald-950 px-2 py-0.5 rounded text-gold-400">Nur1</span></p>
+                <p class="text-[11px] text-emerald-200 mt-1"><i class="fa-solid fa-location-dot text-gold-400 mr-1"></i>ঠিকানা: <span id="gAddress">লোড হচ্ছে...</span></p>
+            </div>
+            <button onclick="printIdCard()" class="no-print text-xs bg-gold-500 hover:bg-gold-400 text-emerald-950 font-bold px-3 py-1.5 rounded-xl shadow"><i class="fa-solid fa-id-card mr-1"></i> ID কার্ড</button>
+        </div>
+    </div>
+
+    <!-- Guardian Tabs -->
+    <div class="flex overflow-x-auto scrollbar-thin border-b border-emerald-700/60 text-xs font-semibold no-print">
+        <button onclick="switchGuardianTab('overview')" data-gtab="overview" class="tab-btn active px-4 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-gauge mr-1"></i>ওভারভিউ</button>
+        <button onclick="switchGuardianTab('results')" data-gtab="results" class="tab-btn px-4 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-file-signature mr-1"></i>রেজাল্ট</button>
+        <button onclick="switchGuardianTab('fees')" data-gtab="fees" class="tab-btn px-4 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-receipt mr-1"></i>ফি</button>
+        <button onclick="switchGuardianTab('attendance')" data-gtab="attendance" class="tab-btn px-4 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-calendar-check mr-1"></i>উপস্থিতি</button>
+        <button onclick="switchGuardianTab('documents')" data-gtab="documents" class="tab-btn px-4 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-folder-open mr-1"></i>ডকুমেন্ট</button>
+    </div>
+
+    <!-- Guardian Tab: Overview -->
+    <div id="gTab_overview" class="space-y-4 guardian-tab">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-emerald-400"><div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-base"><i class="fa-solid fa-calendar-check"></i></div><h4 class="text-[11px] text-slate-300">উপস্থিতি</h4><p id="gAttendance" class="text-xs font-bold text-emerald-400 mt-1">লোড হচ্ছে...</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-blue-400"><div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-base"><i class="fa-solid fa-receipt"></i></div><h4 class="text-[11px] text-slate-300">ফি স্ট্যাটাস</h4><p id="gFeeStatus" class="text-xs font-bold text-blue-300 mt-1">লোড হচ্ছে...</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-red-400"><div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-red-500/20 text-red-300 flex items-center justify-center text-base"><i class="fa-solid fa-bangladeshi-taka-sign"></i></div><h4 class="text-[11px] text-slate-300">বকেয়া</h4><p id="gDueAmount" class="text-xs font-bold text-red-400 mt-1">০ ৳</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-amber-400"><div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-base"><i class="fa-solid fa-star"></i></div><h4 class="text-[11px] text-slate-300">মেধা</h4><p id="gOverallGrade" class="text-xs font-bold text-amber-300 mt-1">এ+</p></div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-chart-line text-gold-400"></i> প্রগ্রেস চার্ট</h4>
+            <canvas id="guardianProgressChart" height="120"></canvas>
+        </div>
+    </div>
+
+    <!-- Guardian Tab: Results -->
+    <div id="gTab_results" class="hidden space-y-4 guardian-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <div class="flex justify-between items-center border-b border-emerald-700/50 pb-2">
+                <h4 class="font-bold text-sm text-amber-300"><i class="fa-solid fa-file-signature text-gold-400 mr-1"></i> সাম্প্রতিক রেজাল্ট</h4>
+                <button onclick="printReportCard()" class="no-print text-[11px] bg-gold-500 hover:bg-gold-400 text-emerald-950 font-bold px-3 py-1 rounded-lg"><i class="fa-solid fa-print mr-1"></i>রিপোর্ট কার্ড</button>
+            </div>
+            <div id="gResultsContainer" class="space-y-2 text-xs"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div>
+        </div>
+    </div>
+
+    <!-- Guardian Tab: Fees -->
+    <div id="gTab_fees" class="hidden space-y-4 guardian-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-receipt text-gold-400 mr-1"></i> ফি পেমেন্ট হিস্টোরি</h4>
+            <div id="gFeeHistory" class="space-y-2 text-xs"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div>
+        </div>
+    </div>
+
+    <!-- Guardian Tab: Attendance -->
+    <div id="gTab_attendance" class="hidden space-y-4 guardian-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <div class="flex flex-col sm:flex-row justify-between items-center border-b border-emerald-700/50 pb-2 gap-2">
+                <h4 class="font-bold text-sm text-amber-300 flex items-center gap-2"><i class="fa-solid fa-calendar-days text-gold-400"></i> মাসিক উপস্থিতি ক্যালেন্ডার</h4>
+                <div class="flex items-center gap-2 text-xs text-slate-800">
+                    <select id="calendarMonthSelect" onchange="renderDynamicCalendar()" class="p-1.5 bg-slate-100 border rounded-lg font-semibold">
+                        <option value="0">জানুয়ারি</option><option value="1">ফেব্রুয়ারি</option><option value="2">মার্চ</option>
+                        <option value="3">এপ্রিল</option><option value="4">মে</option><option value="5">জুন</option>
+                        <option value="6">জুলাই</option><option value="7">আগস্ট</option><option value="8">সেপ্টেম্বর</option>
+                        <option value="9">অক্টোবর</option><option value="10">নভেম্বর</option><option value="11">ডিসেম্বর</option>
+                    </select>
+                    <select id="calendarYearSelect" onchange="renderDynamicCalendar()" class="p-1.5 bg-slate-100 border rounded-lg font-semibold">
+                        <option value="2026">২০২৬</option><option value="2027" selected>২০২৭</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-3 text-[11px] justify-center py-1">
+                <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-500 rounded-full"></span>খোলা/উপস্থিত</span>
+                <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full"></span>ছুটি/অনুপস্থিত</span>
+                <span class="flex items-center gap-1"><span class="w-3 h-3 bg-slate-600 rounded-full"></span>সাধারণ</span>
+            </div>
+            <div class="overflow-x-auto">
+                <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-gold-400 mb-1"><span class="text-red-400">রবি</span><span>সোম</span><span>মঙ্গল</span><span>বুধ</span><span>বৃহস্পতি</span><span>শুক্র</span><span>শনি</span></div>
+                <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1.5 text-xs"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guardian Tab: Documents -->
+    <div id="gTab_documents" class="hidden space-y-4 guardian-tab">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="glass-card p-5 rounded-2xl text-center space-y-2">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-id-card"></i></div>
+                <h4 class="font-bold text-sm text-amber-300">শিক্ষার্থী আইডি কার্ড</h4>
+                <p class="text-xs text-slate-300">প্রিন্ট করুন অথবা PDF সেভ করুন</p>
+                <button onclick="printIdCard()" class="w-full bg-gold-500 hover:bg-gold-400 text-emerald-950 font-bold py-2 rounded-xl text-xs"><i class="fa-solid fa-print mr-1"></i> প্রিন্ট করুন</button>
+            </div>
+            <div class="glass-card p-5 rounded-2xl text-center space-y-2">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-2xl"><i class="fa-solid fa-file-lines"></i></div>
+                <h4 class="font-bold text-sm text-amber-300">রিপোর্ট কার্ড</h4>
+                <p class="text-xs text-slate-300">সাম্প্রতিক পরীক্ষার ফলাফল প্রিন্ট</p>
+                <button onclick="printReportCard()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs"><i class="fa-solid fa-print mr-1"></i> প্রিন্ট করুন</button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Photo & Video Gallery Manager for Admin with Delete Option -->
-<div class="glass-card p-5 rounded-2xl space-y-3">
-    <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-        <i class="fa-solid fa-photo-film text-amber-400"></i> ৪. গ্যালারি ম্যানেজমেন্ট (যুক্ত ও ডিলিট করুন)
-    </h4>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-        <input type="text" id="adminGalleryUrl" placeholder="ছবি বা ভিডিও URL..." class="sm:col-span-2 p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
-        <button onclick="addGalleryItem()" class="bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 font-bold px-3 py-2 rounded-xl hover:opacity-90 transition">
-            গ্যালারিতে যুক্ত করুন
-        </button>
+<!-- ========== 6. ADMIN DASHBOARD ========== -->
+<div id="adminDashboard" class="hidden space-y-6 tab-content">
+    <div class="bg-gradient-to-r from-emerald-950 to-emerald-900 border border-gold-500/30 text-white p-5 rounded-3xl shadow-xl flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div>
+            <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-sliders mr-1"></i> কেন্দ্রীয় অ্যাডমিন কন্ট্রোল প্যানেল</h3>
+            <p class="text-xs text-emerald-200 mt-0.5">মাদ্রাসা ম্যানেজমেন্ট, ছাত্র, শিক্ষক ও নোটিশ পরিচালনা</p>
+        </div>
+        <span class="bg-emerald-950 px-3 py-1 rounded-xl text-xs font-semibold text-gold-400 border border-gold-500/40"><span class="pulse-dot inline-block w-2 h-2 bg-green-400 rounded-full mr-1"></span>অ্যাডমিন সেশন</span>
     </div>
-    
-    <!-- গ্যালারির ছবি ডিলিট করার লিস্ট -->
-    <div class="pt-2 border-t border-emerald-800 space-y-2">
-        <p class="font-bold text-emerald-200">গ্যালারির ছবিসমূহ:</p>
-        <div id="adminManageGalleryList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-40 overflow-y-auto">
-            <!-- গ্যালারি আইটেম ও ডিলিট বাটন এখানে শো করবে -->
+
+    <!-- Admin Tabs -->
+    <div class="flex overflow-x-auto scrollbar-thin border-b border-emerald-700/60 text-xs font-semibold no-print">
+        <button onclick="switchAdminTab('overview')" data-atab="overview" class="tab-btn active px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-gauge mr-1"></i>ওভারভিউ</button>
+        <button onclick="switchAdminTab('students')" data-atab="students" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-user-graduate mr-1"></i>ছাত্র</button>
+        <button onclick="switchAdminTab('teachers')" data-atab="teachers" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-chalkboard-user mr-1"></i>শিক্ষক</button>
+        <button onclick="switchAdminTab('results')" data-atab="results" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-file-signature mr-1"></i>রেজাল্ট</button>
+        <button onclick="switchAdminTab('fees')" data-atab="fees" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-receipt mr-1"></i>ফি</button>
+        <button onclick="switchAdminTab('posts')" data-atab="posts" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-pen-to-square mr-1"></i>পোস্ট</button>
+        <button onclick="switchAdminTab('gallery')" data-atab="gallery" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-photo-film mr-1"></i>গ্যালারি</button>
+        <button onclick="switchAdminTab('complaints')" data-atab="complaints" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-inbox mr-1"></i>অভিযোগ</button>
+        <button onclick="switchAdminTab('notices')" data-atab="notices" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-bullhorn mr-1"></i>নোটিশ</button>
+        <button onclick="switchAdminTab('calendar')" data-atab="calendar" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-calendar-check mr-1"></i>ক্যালেন্ডার</button>
+        <button onclick="switchAdminTab('reports')" data-atab="reports" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-chart-pie mr-1"></i>রিপোর্ট</button>
+    </div>
+
+    <!-- ====== Admin Overview ====== -->
+    <div id="aTab_overview" class="space-y-4 admin-tab">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-gold-400"><p id="admStatStudents" class="text-2xl font-bold text-gold-300 font-digital">০</p><p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-user-graduate mr-1"></i> ছাত্র</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-emerald-400"><p id="admStatTeachers" class="text-2xl font-bold text-emerald-300 font-digital">০</p><p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-chalkboard-user mr-1"></i> শিক্ষক</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-blue-400"><p id="admStatPosts" class="text-2xl font-bold text-blue-300 font-digital">০</p><p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-newspaper mr-1"></i> পোস্ট</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-red-400"><p id="admStatComplaints" class="text-2xl font-bold text-red-300 font-digital">০</p><p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-inbox mr-1"></i> অভিযোগ</p></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="glass-card p-5 rounded-2xl space-y-3"><h4 class="font-bold text-sm text-amber-300"><i class="fa-solid fa-chart-pie text-gold-400 mr-1"></i> ফি স্ট্যাটাস</h4><canvas id="adminFeeChart" height="150"></canvas></div>
+            <div class="glass-card p-5 rounded-2xl space-y-3"><h4 class="font-bold text-sm text-amber-300"><i class="fa-solid fa-users text-gold-400 mr-1"></i> ক্লাস বিতরণ</h4><canvas id="adminClassChart" height="150"></canvas></div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-3"><h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-clock-rotate-left text-gold-400 mr-1"></i> সাম্প্রতিক বকেয়া তালিকা</h4><div id="adminDueList" class="space-y-1 text-xs"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div></div>
+    </div>
+
+    <!-- ====== Admin Students ====== -->
+    <div id="aTab_students" class="hidden space-y-4 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-4">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-user-plus text-gold-400"></i> নতুন ছাত্র যোগ করুন</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div><label class="block font-semibold text-slate-200 mb-1">ইউজার আইডি (Nur21):</label><input type="text" id="addStudentId" placeholder="Nur21" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">নাম:</label><input type="text" id="addStudentName" placeholder="মুহাম্মদ আব্দুল্লাহ" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">শ্রেণি ও রোল:</label><input type="text" id="addStudentClass" placeholder="শ্রেণি: ১ম | রোল: ০৫" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">ঠিকানা:</label><input type="text" id="addStudentAddress" placeholder="নিউটাউন, দিনাজপুর" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">অভিভাবক মোবাইল:</label><input type="text" id="addStudentPhone" placeholder="০১৭..." class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">ছবি URL:</label><input type="text" id="addStudentPhotoUrl" placeholder="https://..." class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+            </div>
+            <button onclick="addNewStudent()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2"><i class="fa-solid fa-plus-circle"></i> নতুন ছাত্র সেভ করুন</button>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-emerald-700/50 pb-2">
+                <h4 class="font-bold text-sm text-amber-300"><i class="fa-solid fa-list text-gold-400 mr-1"></i> ছাত্র তালিকা (<span id="studentCountBadge">০</span>)</h4>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <input type="search" id="studentSearchInput" oninput="filterStudents()" placeholder="🔍 নাম/আইডি খুঁজুন" class="flex-grow sm:w-52 text-xs p-1.5 rounded-lg bg-emerald-950/80 border border-emerald-700 text-white">
+                    <button onclick="exportStudentsCSV()" class="text-[11px] bg-emerald-600 hover:bg-emerald-500 px-3 py-1 rounded-lg font-bold whitespace-nowrap"><i class="fa-solid fa-download mr-1"></i>CSV</button>
+                </div>
+            </div>
+            <div id="adminStudentList" class="space-y-2 max-h-96 overflow-y-auto text-xs scrollbar-thin"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-4">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-user-pen text-gold-400"></i> শিক্ষার্থী প্রোফাইল আপডেট</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div><label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থী:</label><select id="targetStudentId" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"></select></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">নাম:</label><input type="text" id="setStudentNameInput" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">উপস্থিতি:</label><select id="setAttendance" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"><option>উপস্থিত</option><option>অনুপস্থিত</option><option>ছুটিতে</option></select></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">ফি স্ট্যাটাস:</label><select id="setFeeStatus" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"><option>পরিশোধিত</option><option>বাকি আছে</option></select></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">বকেয়া (৳):</label><input type="number" id="setDueAmount" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">ছবি URL:</label><input type="text" id="setStudentPhoto" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+            </div>
+            <button onclick="updateStudentData()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs"><i class="fa-solid fa-cloud-arrow-up mr-1"></i> প্রোফাইল সেভ করুন</button>
+        </div>
+    </div>
+
+    <!-- ====== Admin Teachers ====== -->
+    <div id="aTab_teachers" class="hidden space-y-4 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-chalkboard-user text-gold-400 mr-1"></i> নতুন শিক্ষক যোগ করুন</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <input type="text" id="teacherName" placeholder="শিক্ষকের নাম" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                <input type="text" id="teacherSubject" placeholder="বিষয় (যেমন: আরবি, গণিত)" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                <input type="text" id="teacherPhone" placeholder="মোবাইল" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                <input type="text" id="teacherDesignation" placeholder="পদবি (যেমন: প্রধান শিক্ষক)" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+            </div>
+            <button onclick="addNewTeacher()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl text-xs"><i class="fa-solid fa-plus mr-1"></i> শিক্ষক যোগ করুন</button>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-2">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-list text-gold-400 mr-1"></i> শিক্ষক তালিকা</h4>
+            <div id="teacherList" class="space-y-2 max-h-64 overflow-y-auto text-xs scrollbar-thin"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div>
+        </div>
+    </div>
+
+    <!-- ====== Admin Results ====== -->
+    <div id="aTab_results" class="hidden space-y-4 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-file-signature text-gold-400 mr-1"></i> পরীক্ষার রেজাল্ট এন্ট্রি</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div><label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থী:</label><select id="resStudentSelect" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"></select></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">পরীক্ষার ধরন:</label><select id="resExamType" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"><option>প্রথম সাময়িক</option><option>দ্বিতীয় সাময়িক</option><option>বার্ষিক</option><option>দৈনন্দিন</option></select></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">বিষয়:</label><input type="text" id="resSubject" placeholder="বাংলা/আরবি" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">মার্ক/গ্রেড:</label><input type="text" id="resGrade" placeholder="80 / এ+" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">পূর্ণ নম্বর:</label><input type="number" id="resTotal" placeholder="100" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">তারিখ:</label><input type="date" id="resDate" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+            </div>
+            <button onclick="saveExamResult()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl text-xs"><i class="fa-solid fa-cloud-arrow-up mr-1"></i> রেজাল্ট সেভ করুন</button>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-2">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-list-check text-gold-400 mr-1"></i> সর্বশেষ রেজাল্ট এন্ট্রি</h4>
+            <div id="recentResultsList" class="space-y-1 text-xs max-h-64 overflow-y-auto scrollbar-thin"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div>
+        </div>
+    </div>
+
+    <!-- ====== Admin Fees ====== -->
+    <div id="aTab_fees" class="hidden space-y-4 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-money-bill-wave text-gold-400 mr-1"></i> ফি কালেকশন এন্ট্রি</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div><label class="block font-semibold text-slate-200 mb-1">শিক্ষার্থী:</label><select id="feeStudentSelect" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"></select></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">পরিমাণ (৳):</label><input type="number" id="feeAmount" placeholder="1500" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">মাস:</label><select id="feeMonth" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"><option>জানুয়ারি</option><option>ফেব্রুয়ারি</option><option>মার্চ</option><option>এপ্রিল</option><option>মে</option><option>জুন</option><option>জুলাই</option><option>আগস্ট</option><option>সেপ্টেম্বর</option><option>অক্টোবর</option><option>নভেম্বর</option><option>ডিসেম্বর</option></select></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">পেমেন্ট মাধ্যম:</label><select id="feeMethod" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"><option>ক্যাশ</option><option>bKash</option><option>Nagad</option><option>ব্যাংক</option></select></div>
+            </div>
+            <button onclick="collectFee()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl text-xs"><i class="fa-solid fa-check mr-1"></i> ফি কালেক্ট করুন</button>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-2">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-history text-gold-400 mr-1"></i> সর্বশেষ ফি পেমেন্ট</h4>
+            <div id="recentFeesList" class="space-y-1 text-xs max-h-64 overflow-y-auto scrollbar-thin"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div>
+        </div>
+    </div>
+
+    <!-- ====== Admin Posts ====== -->
+    <div id="aTab_posts" class="hidden space-y-3 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-pen-to-square text-gold-400 mr-1"></i> নতুন পোস্ট (ছবি/ভিডিও সহ)</h4>
+            <div class="space-y-3 text-xs">
+                <textarea id="adminPostText" rows="3" placeholder="পোস্টের বিবরণ লিখুন..." class="w-full p-3 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></textarea>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <input type="text" id="adminPostMedia" placeholder="ছবি বা ভিডিও URL" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                    <select id="adminMediaType" class="p-2 bg-emerald-950 border border-emerald-700 rounded-xl text-white"><option value="image">ছবি</option><option value="video">ভিডিও</option></select>
+                </div>
+                <button onclick="addNewAdminPost()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl text-xs"><i class="fa-solid fa-paper-plane mr-1"></i> পোস্ট পাবলিশ করুন</button>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-2">
+            <p class="font-bold text-emerald-200 text-sm">বিদ্যমান পোস্ট (ডিলিট):</p>
+            <div id="adminManagePostsList" class="space-y-2 max-h-48 overflow-y-auto text-xs scrollbar-thin"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div>
+        </div>
+    </div>
+
+    <!-- ====== Admin Gallery ====== -->
+    <div id="aTab_gallery" class="hidden space-y-3 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-photo-film text-gold-400 mr-1"></i> গ্যালারি ম্যানেজ</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <input type="text" id="adminGalleryUrl" placeholder="ছবি/ভিডিও URL..." class="sm:col-span-2 p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                <button onclick="addGalleryItem()" class="bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 font-bold px-3 py-2 rounded-xl">গ্যালারিতে যুক্ত করুন</button>
+            </div>
+            <div class="pt-2 border-t border-emerald-800 space-y-2">
+                <p class="font-bold text-emerald-200 text-sm">গ্যালারি আইটেম:</p>
+                <div id="adminManageGalleryList" class="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-60 overflow-y-auto scrollbar-thin"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== Admin Complaints ====== -->
+    <div id="aTab_complaints" class="hidden space-y-3 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-2">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center justify-between"><span><i class="fa-solid fa-inbox text-gold-400 mr-1"></i> অভিভাবক অভিযোগসমূহ</span><span id="complaintCount" class="bg-red-500/20 text-red-300 text-[10px] px-2 py-0.5 rounded-full font-bold border border-red-500/30">০টি</span></h4>
+            <div id="adminComplaintsList" class="space-y-2 max-h-96 overflow-y-auto text-xs scrollbar-thin"><p class="text-slate-400 text-center py-4">কোনো অভিযোগ নেই।</p></div>
+        </div>
+    </div>
+
+    <!-- ====== Admin Notices ====== -->
+    <div id="aTab_notices" class="hidden space-y-3 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-bullhorn text-gold-400 mr-1"></i> স্ক্রলিং নোটিশ</h4>
+            <div class="flex gap-2">
+                <input type="text" id="adminNoticeInput" placeholder="নতুন ঘোষণা..." class="flex-grow p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-xs text-white">
+                <button onclick="updateNoticeBar()" class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold px-4 rounded-xl text-xs">পাবলিশ</button>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-clipboard-list text-gold-400 mr-1"></i> ইভেন্ট যোগ করুন</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <input type="text" id="eventTitle" placeholder="ইভেন্ট নাম" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                <input type="date" id="eventDate" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+                <button onclick="addEvent()" class="bg-gold-500 text-emerald-950 font-bold rounded-xl">যোগ করুন</button>
+            </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl space-y-2">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2">চলমান ইভেন্ট</h4>
+            <div id="adminEventsList" class="space-y-1 text-xs"></div>
+        </div>
+    </div>
+
+    <!-- ====== Admin Calendar ====== -->
+    <div id="aTab_calendar" class="hidden space-y-3 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-calendar-check text-gold-400 mr-1"></i> ক্যালেন্ডার ছুটি ও উপস্থিতি</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div><label class="block font-semibold text-slate-200 mb-1">তারিখ:</label><input type="date" id="adminCalDate" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">অবস্থা:</label><select id="adminCalStatus" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white"><option value="open">খোলা (সবুজ)</option><option value="holiday">ছুটি (লাল)</option></select></div>
+                <div class="flex items-end"><button onclick="saveAdminCalendarDate()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl">সেভ করুন</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== Admin Reports ====== -->
+    <div id="aTab_reports" class="hidden space-y-3 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-chart-pie text-gold-400 mr-1"></i> রিপোর্ট ও এক্সপোর্ট</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <button onclick="exportStudentsCSV()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl"><i class="fa-solid fa-download mr-1"></i> ছাত্র তালিকা CSV</button>
+                <button onclick="exportFeesCSV()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl"><i class="fa-solid fa-download mr-1"></i> ফি ডেটা CSV</button>
+                <button onclick="window.print()" class="bg-gold-500 hover:bg-gold-400 text-emerald-950 font-bold py-2.5 rounded-xl"><i class="fa-solid fa-print mr-1"></i> পেজ প্রিন্ট</button>
+                <button onclick="exportResultsCSV()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl"><i class="fa-solid fa-download mr-1"></i> রেজাল্ট CSV</button>
+            </div>
         </div>
     </div>
 </div>
 
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-emerald-950 text-emerald-300 text-center py-6 text-xs mt-8 border-t border-emerald-800 no-print">
+    <div class="max-w-6xl mx-auto px-4 space-y-2">
+        <div class="flex flex-wrap justify-center gap-4 text-[11px]">
+            <button onclick="showSection('publicView')" class="hover:text-gold-400">হোম</button>
+            <button onclick="showSection('admissionSection')" class="hover:text-gold-400">ভর্তি</button>
+            <button onclick="showSection('complaintSection')" class="hover:text-gold-400">অভিযোগ</button>
+            <button onclick="showSection('loginSection')" class="hover:text-gold-400">লগইন</button>
+        </div>
+        <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong> | স্মার্ট ডিজিটাল এডুকেশন সিস্টেম © ২০২৭</p>
+        <p class="text-[10px] text-slate-500">Developed with ❤️ for Deeni Education</p>
+    </div>
+</footer>
+
+<!-- ==================== JAVASCRIPT ==================== -->
 <script>
-    // পেজ লোড হওয়ার সাথে সাথে পোস্ট ও গ্যালারি ফেচ করার জন্য
-    document.addEventListener("DOMContentLoaded", () => {
-        fetchAdminPostsForManagement();
-        fetchGalleryForManagement();
-    });
+    const firebaseConfig = {
+        apiKey: "AIzaSyDlX9EiOIisDR_n22nY47kZBWUvcvYEd3E",
+        authDomain: "misbah-feed0.firebaseapp.com",
+        databaseURL: "https://misbah-feed0-default-rtdb.firebaseio.com",
+        projectId: "misbah-feed0",
+        storageBucket: "misbah-feed0.firebasestorage.app",
+        messagingSenderId: "117643854786",
+        appId: "1:117643854786:web:d0fcc3f44a825e6f74d8c5b",
+        measurementId: "G-GWENW8Q1J6"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
 
-    // ১. অ্যাডমিন পোস্ট লোড ও লাইভ রেন্ডার করার ফাংশন
-    function fetchAdminPostsForManagement() {
-        database.ref('posts').on('value', (snapshot) => {
-            const data = snapshot.val();
-            const container = document.getElementById('adminManagePostsList');
-            if (!container) return;
-            container.innerHTML = '';
-            
-            if (data) {
-                Object.entries(data).reverse().forEach(([key, item]) => {
-                    const div = document.createElement('div');
-                    div.className = "p-2 bg-emerald-950 border border-emerald-700 rounded-xl flex justify-between items-center text-xs";
-                    div.innerHTML = `<span class="truncate pr-2 text-white">${item.text || 'ছবি/ভিডিও পোস্ট'}</span>
-                                     <button onclick="deleteAdminPost('${key}')" class="text-red-400 hover:text-red-300 px-2 py-1"><i class="fa-solid fa-trash"></i></button>`;
-                    container.appendChild(div);
-                });
-            } else {
-                container.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো পোস্ট নেই</p>';
+    // Set auth persistence
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
+
+    let currentUserRole = null;
+    let currentUserId = null;
+    let adminCalendarData = {};
+    let allStudentsCache = {};
+    let allPostsCache = {};
+    let allFeesCache = {};
+    let allResultsCache = {};
+    let guardianProgressChartInstance = null, adminFeeChartInstance = null, adminClassChartInstance = null;
+    let isLightTheme = false;
+
+    // ====== Toast & Alert helpers ======
+    function showToast(msg, type='success') {
+        Toastify({
+            text: msg,
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            backgroundColor: type==='error' ? '#dc2626' : type==='warning' ? '#f59e0b' : '#047857',
+            stopOnFocus: true,
+        }).showToast();
+    }
+    const swalConfirm = (title, text) => Swal.fire({
+        title, text, icon:'warning', showCancelButton:true,
+        confirmButtonColor:'#047857', cancelButtonColor:'#dc2626',
+        confirmButtonText:'হ্যাঁ', cancelButtonText:'বাতিল'
+    }).then(r => r.isConfirmed);
+
+    // ====== Theme ======
+    function toggleTheme() {
+        isLightTheme = !isLightTheme;
+        document.body.classList.toggle('light-theme', isLightTheme);
+        document.getElementById('themeBtn').innerHTML = isLightTheme ? '<i class="fa-solid fa-sun text-base"></i>' : '<i class="fa-solid fa-moon text-base"></i>';
+        localStorage.setItem('annoor-theme', isLightTheme ? 'light' : 'dark');
+    }
+    (function initTheme(){
+        if(localStorage.getItem('annoor-theme')==='light'){ isLightTheme=true; document.body.classList.add('light-theme'); }
+    })();
+
+    // ====== Clock ======
+    function startLiveClock() {
+        const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+        const toBn = s => String(s).split('').map(c=>bnNums[c]||c).join('');
+        setInterval(() => {
+            const now = new Date();
+            let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            const time = `${toBn(String(h).padStart(2,'0'))}:${toBn(String(m).padStart(2,'0'))}:${toBn(String(s).padStart(2,'0'))} ${ampm}`;
+            const ds = now.toLocaleDateString('bn-BD', { year:'numeric', month:'long', day:'numeric' });
+            const el = document.getElementById('liveClock');
+            if (el) el.innerText = `🕒 ${ds} | ${time}`;
+        }, 1000);
+    }
+
+    // ====== Init ======
+    window.onload = function() {
+        startLiveClock();
+        listenGlobalSettings();
+        loadCalendarDataFromFirebase();
+        loadPublicPostsFeed();
+        loadGalleryFromFirebase();
+        listenStudentList();
+        listenTeachers();
+        listenEvents();
+        loadFaqs();
+        setupNamazTimes();
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                if (user.email === 'hmabusayedmisbah242@gmail.com') {
+                    currentUserRole = 'admin'; currentUserId = 'Admin';
+                    setupNavAfterLogin(); showSection('adminDashboard'); fetchComplaintsForAdmin();
+                } else {
+                    currentUserRole = 'guardian';
+                    const prefix = user.email.split('@')[0];
+                    currentUserId = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+                    setupNavAfterLogin(); fetchStudentData(currentUserId); showSection('guardianDashboard');
+                }
+            }
+        });
+    };
+
+    // ====== Global Settings ======
+    function listenGlobalSettings() {
+        database.ref('settings/notice').on('value', (snap) => {
+            const v = snap.val(); if(v) document.getElementById('liveNoticeBar').innerText = v;
+        });
+        database.ref('settings/hadith').on('value', (snap) => {
+            const d = snap.val();
+            if(d){
+                document.getElementById('displayHadithText').innerText = `"${d.text}"`;
+                document.getElementById('displayHadithRef').innerText = `— ${d.ref}`;
             }
         });
     }
 
-    // ২. পোস্ট ডিলিট করার ফাংশন
-    function deleteAdminPost(id) {
-        if (confirm('আপনি কি নিশ্চিতভাবে এই পোস্টটি মুছে ফেলতে চান?')) {
-            database.ref('posts/' + id).remove().catch((error) => {
-                alert('পোস্ট ডিলিট করতে সমস্যা হয়েছে!');
-            });
-        }
+    // ====== Namaz (static fallback, easily editable) ======
+    function setupNamazTimes() {
+        const tl = { fajr:'৫:০০', dhuhr:'১:০০', asr:'৪:০০', maghrib:'৬:১০', isha:'৭:২০' };
+        database.ref('settings/namaz').once('value').then(snap => {
+            const data = snap.val() || tl;
+            const el = id => document.getElementById(id);
+            if(el('namazFajr')) el('namazFajr').innerText = data.fajr || tl.fajr;
+            if(el('namazDhuhr')) el('namazDhuhr').innerText = data.dhuhr || tl.dhuhr;
+            if(el('namazAsr')) el('namazAsr').innerText = data.asr || tl.asr;
+            if(el('namazMaghrib')) el('namazMaghrib').innerText = data.maghrib || tl.maghrib;
+            if(el('namazIsha')) el('namazIsha').innerText = data.isha || tl.isha;
+        }).catch(()=>{});
     }
 
-    // ৩. নতুন পোস্ট পাবলিশ করার ফাংশন
-    function addNewAdminPost() {
-        const text = document.getElementById('adminPostText').value;
-        const mediaUrl = document.getElementById('adminPostMedia').value;
-        const mediaType = document.getElementById('adminMediaType').value;
+    // ====== FAQs ======
+    function loadFaqs() {
+        const faqs = [
+            {q:'ভর্তি ফি কত?', a:'শ্রেণি ভেদে ভর্তি ফি ৩,০০০ থেকে ৫,০০০ টাকা।'},
+            {q:'মাসিক বেতন কত?', a:'প্লে-নার্সারি ৮০০৳, ১ম-৩য় ১২০০৳, হিফজ ১৫০০৳।'},
+            {q:'অভিভাবক পোর্টাল কীভাবে ব্যবহার করব?', a:'লগইনে আপনার সন্তানের আইডি ও পাসওয়ার্ড দিন, তারপর সব তথ্য দেখতে পাবেন।'},
+            {q:'ছুটির দিন কীভাবে জানব?', a:'পোর্টালে মাসিক ক্যালেন্ডার সেকশনে সব ছুটি মার্ক করা থাকে।'}
+        ];
+        const c = document.getElementById('faqList'); if(!c) return;
+        c.innerHTML = '';
+        faqs.forEach((f,i) => {
+            const div = document.createElement('div');
+            div.className = 'bg-emerald-950/60 rounded-xl overflow-hidden';
+            div.innerHTML = `
+                <button onclick="toggleFaq(${i})" class="w-full flex justify-between items-center p-3 text-left text-xs font-semibold text-gold-300 hover:bg-emerald-900/40">
+                    <span><i class="fa-solid fa-circle-question mr-2 text-gold-400"></i>${f.q}</span>
+                    <i class="fa-solid fa-chevron-down text-[10px]" id="faq-icon-${i}"></i>
+                </button>
+                <div id="faq-ans-${i}" class="hidden px-3 pb-3 text-[11px] text-slate-300">${f.a}</div>`;
+            c.appendChild(div);
+        });
+    }
+    function toggleFaq(i) {
+        const a = document.getElementById(`faq-ans-${i}`), ic = document.getElementById(`faq-icon-${i}`);
+        if(!a) return;
+        a.classList.toggle('hidden');
+        ic.style.transform = a.classList.contains('hidden') ? 'rotate(0)' : 'rotate(180deg)';
+    }
 
-        if (!text && !mediaUrl) {
-            alert('দয়া করে কিছু লিখে দিন অথবা মিডিয়া লিংক দিন!');
+    // ====== Section switching ======
+    function showSection(sectionId) {
+        ['publicView','loginSection','complaintSection','guardianDashboard','adminDashboard','admissionSection'].forEach(id => {
+            const el = document.getElementById(id); if(el) el.classList.add('hidden');
+        });
+        const target = document.getElementById(sectionId);
+        if (target) { target.classList.remove('hidden'); window.scrollTo({ top:0, behavior:'smooth' }); }
+    }
+
+    // ====== Login ======
+    function quickAdminDemo() {
+        document.getElementById('loginEmail').value = 'hmabusayedmisbah242@gmail.com';
+        document.getElementById('loginPassword').value = '123456';
+        showSection('loginSection');
+    }
+    function quickGuardianDemo() {
+        document.getElementById('loginEmail').value = 'Nur1';
+        document.getElementById('loginPassword').value = '123456';
+        showSection('loginSection');
+    }
+    function handleLogin(e) {
+        e.preventDefault();
+        const inputVal = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPassword').value.trim();
+        const errDiv = document.getElementById('loginError');
+        const btn = document.getElementById('loginSubmitBtn');
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-1"></i> লগইন হচ্ছে...'; btn.disabled = true;
+
+        let emailToUse = inputVal;
+        if (inputVal.toLowerCase().startsWith('nur')) emailToUse = inputVal.toLowerCase() + '@annoor.com';
+
+        auth.signInWithEmailAndPassword(emailToUse, pass)
+            .then(() => { errDiv.classList.add('hidden'); showToast('লগইন সফল!'); })
+            .catch(() => { errDiv.classList.remove('hidden'); showToast('ভুল আইডি/পাসওয়ার্ড', 'error'); })
+            .finally(() => { btn.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-1"></i> সাইন ইন'; btn.disabled = false; });
+    }
+    function forgotPassword() {
+        Swal.fire({ title:'পাসওয়ার্ড রিসেট', input:'email', inputLabel:'আপনার ইমেইল দিন', inputPlaceholder:'you@example.com',
+            showCancelButton:true, confirmButtonText:'পাঠান', cancelButtonText:'বাতিল', confirmButtonColor:'#047857'
+        }).then(r => {
+            if(r.isConfirmed && r.value) {
+                auth.sendPasswordResetEmail(r.value)
+                    .then(() => showToast('রিসেট লিংক পাঠানো হয়েছে!'))
+                    .catch(() => showToast('ইমেইল খুঁজে পাওয়া যায়নি', 'error'));
+            }
+        });
+    }
+    function logout() {
+        auth.signOut().then(() => {
+            currentUserRole = null; currentUserId = null;
+            document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('roleBadge').classList.add('hidden');
+            showSection('publicView'); showToast('লগআউট সম্পন্ন');
+        });
+    }
+    function setupNavAfterLogin() {
+        document.getElementById('logoutBtn').classList.remove('hidden');
+        document.getElementById('logoutBtn').style.display = 'flex';
+        const b = document.getElementById('roleBadge');
+        b.classList.remove('hidden');
+        b.innerText = currentUserRole === 'admin' ? 'অ্যাডমিন' : 'অভিভাবক (' + currentUserId + ')';
+    }
+
+    // ====== Announcement / notifications ======
+    function toggleNotifications() {
+        const d = document.getElementById('notifDropdown');
+        d.classList.toggle('hidden');
+    }
+    function pushNotification(msg) {
+        database.ref('notifications').push({ msg, ts: Date.now() });
+    }
+    database.ref('notifications').limitToLast(10).on('value', snaps => {
+        const list = document.getElementById('notifList');
+        if(!list) return;
+        const data = snaps.val() || {};
+        const entries = Object.values(data).reverse();
+        const badge = document.getElementById('notifBadge');
+        if(entries.length === 0) {
+            list.innerHTML = '<p class="text-center py-2 text-slate-500">কোনো নোটিফিকেশন নেই</p>';
+            if(badge) badge.classList.add('hidden');
             return;
         }
+        badge.classList.remove('hidden'); badge.innerText = entries.length;
+        list.innerHTML = entries.map(n => `<div class="p-2 bg-emerald-900/60 rounded-lg border border-emerald-800">${n.msg}</div>`).join('');
+    });
 
-        const postData = {
-            text: text,
-            mediaUrl: mediaUrl,
-            mediaType: mediaType,
-            timestamp: Date.now()
-        };
-
-        database.ref('posts').push(postData).then(() => {
-            document.getElementById('adminPostText').value = '';
-            document.getElementById('adminPostMedia').value = '';
-            alert('পোস্ট সফলভাবে পাবলিশ হয়েছে!');
+    // ====== Calendar ======
+    function loadCalendarDataFromFirebase() {
+        database.ref('calendarStatus').on('value', snap => {
+            adminCalendarData = snap.val() || {}; renderDynamicCalendar();
         });
     }
-
-    // ৪. গ্যালারি লোড ও ডিলিট করার ফাংশন
-    function fetchGalleryForManagement() {
-        database.ref('gallery').on('value', (snapshot) => {
-            const data = snapshot.val();
-            const container = document.getElementById('adminManageGalleryList');
-            if (!container) return;
-            container.innerHTML = '';
-            if (data) {
-                Object.entries(data).forEach(([key, url]) => {
-                    const div = document.createElement('div');
-                    div.className = "relative group rounded-lg overflow-hidden border border-emerald-700 h-20";
-                    div.innerHTML = `<img src="${url}" class="w-full h-full object-cover">
-                                     <button onclick="deleteGalleryItem('${key}')" class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-red-500"><i class="fa-solid fa-trash text-lg"></i></button>`;
-                    container.appendChild(div);
-                });
-            }
-        });
-    }
-
-    function deleteGalleryItem(id) {
-        database.ref('gallery/' + id).remove();
-    }
-
-    function addGalleryItem() {
-        const url = document.getElementById('adminGalleryUrl').value;
-        if (url) {
-            database.ref('gallery').push(url).then(() => {
-                document.getElementById('adminGalleryUrl').value = '';
-            });
+    function renderDynamicCalendar() {
+        const monthEl = document.getElementById('calendarMonthSelect');
+        const yearEl = document.getElementById('calendarYearSelect');
+        const grid = document.getElementById('calendarDaysGrid');
+        if(!monthEl || !yearEl || !grid) return;
+        const month = parseInt(monthEl.value), year = parseInt(yearEl.value);
+        grid.innerHTML = '';
+        const firstDay = new Date(year, month, 1).getDay();
+        const totalDays = new Date(year, month+1, 0).getDate();
+        for (let i=0; i<firstDay; i++) grid.appendChild(document.createElement('div'));
+        for (let day=1; day<=totalDays; day++) {
+            const div = document.createElement('div');
+            const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+            div.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold border border-emerald-700/50 bg-emerald-950/60 text-slate-200 shadow-sm";
+            div.innerText = day;
+            if (adminCalendarData[dateKey] === 'holiday') div.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-red-600 text-white shadow-md";
+            else if (adminCalendarData[dateKey] === 'open') div.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-emerald-500 text-white shadow-md";
+            grid.appendChild(div);
         }
     }
-</script>
+    function saveAdminCalendarDate() {
+        const dv = document.getElementById('adminCalDate').value;
+        const sv = document.getElementById('adminCalStatus').value;
+        if(!dv) return showToast('তারিখ নির্বাচন করুন', 'warning');
+        database.ref('calendarStatus/'+dv).set(sv).then(() => showToast('ক্যালেন্ডার আপডেটড'));
+    }
 
+    // ====== Students ======
+    function listenStudentList() {
+        database.ref('students').on('value', snap => {
+            const data = snap.val() || {};
+            allStudentsCache = data;
+            const keys = Object.keys(data);
 
-            <!-- Admin Calendar Attendance/Holiday Manager -->
-            <div class="glass-card p-5 rounded-2xl space-y-4">
-                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-check text-gold-400"></i> ৫. ক্যালেন্ডার ছুটি ও উপস্থিতি নিয়ন্ত্রণ (লাল/সবুজ মার্কিং)
-                </h4>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">তারিখ (YYYY-MM-DD):</label>
-                        <input type="date" id="adminCalDate" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">অবস্থা নির্বাচন:</label>
-                        <select id="adminCalStatus" class="w-full p-2.5 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
-                            <option value="open">মাদ্রাসা খোলা / উপস্থিত (সবুজ)</option>
-                            <option value="holiday">ছুটি / অনুপস্থিত (লাল)</option>
-                        </select>
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="saveAdminCalendarDate()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl transition">
-                            ক্যালেন্ডারে সেভ করুন
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Live Notice Manager -->
-            <div class="glass-card p-5 rounded-2xl space-y-3">
-                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-gold-400"></i> ৬. লাইভ স্ক্রলিং নোটিশ পরিবর্তন
-                </h4>
-                <div class="flex gap-2">
-                    <input type="text" id="adminNoticeInput" placeholder="এখানে নতুন ঘোষণা লিখুন..." class="flex-grow p-2.5 bg-emerald-950/80 border border-emerald-700 rounded-xl text-xs text-white">
-                    <button onclick="updateNoticeBar()" class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold px-4 rounded-xl text-xs transition">
-                        পাবলিশ
-                    </button>
-                </div>
-            </div>
-
-            <!-- View Complaints List -->
-            <div class="glass-card p-5 rounded-2xl space-y-3">
-                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center justify-between">
-                    <span><i class="fa-solid fa-inbox text-gold-400"></i> ৭. অভিভাবকদের জমা দেওয়া অভিযোগ ও পরামর্শসমূহ</span>
-                    <span id="complaintCount" class="bg-red-500/20 text-red-300 text-[10px] px-2 py-0.5 rounded-full font-bold border border-red-500/30">০টি</span>
-                </h4>
-                <div id="adminComplaintsList" class="space-y-2 max-h-60 overflow-y-auto text-xs">
-                    <p class="text-slate-400 text-center py-4">কোনো অভিযোগ জমা হয়নি।</p>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-       <footer class="bg-emerald-950 text-emerald-300 text-center py-4 text-xs mt-8 border-t border-emerald-800">
-        <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong> | স্মার্ট ডিজিটাল এডুকেশন সিস্টেম</p>
-    </footer>
-
-    <!-- JavaScript Controller & Firebase Script -->
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDlX9EiOIisDR_n22nY47kZBWUvcvYEd3E",
-            authDomain: "misbah-feed0.firebaseapp.com",
-            databaseURL: "https://misbah-feed0-default-rtdb.firebaseio.com",
-            projectId: "misbah-feed0",
-            storageBucket: "misbah-feed0.firebasestorage.app",
-            messagingSenderId: "117643854786",
-            appId: "1:117643854786:web:d0fcc3f44a825e6f74d8c5b",
-            measurementId: "G-GWENW8Q1J6"
-        };
-
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-
-        let currentUserRole = null;
-        let currentUserId = null;
-        let adminCalendarData = {};
-
-        // Dynamic System Listener
-        window.onload = function() {
-            startLiveClock();
-            listenGlobalSettings();
-            loadCalendarDataFromFirebase();
-            loadPublicPostsFeed();
-            loadGalleryFromFirebase();
-            listenStudentList();
-            
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    if (user.email === 'hmabusayedmisbah242@gmail.com') {
-                        currentUserRole = 'admin';
-                        currentUserId = 'Admin';
-                        setupNavAfterLogin();
-                        showSection('adminDashboard');
-                        fetchComplaintsForAdmin();
-                    } else {
-                        currentUserRole = 'guardian';
-                        const emailPrefix = user.email.split('@')[0];
-                        currentUserId = emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
-                        setupNavAfterLogin();
-                        fetchStudentData(currentUserId);
-                        showSection('guardianDashboard');
-                    }
-                }
-            });
-        };
-
-        // Stylish Live Digital Clock Function
-        function startLiveClock() {
-            setInterval(() => {
-                const now = new Date();
-                let hours = now.getHours();
-                let minutes = now.getMinutes();
-                let seconds = now.getSeconds();
-                let ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours ? hours : 12;
-                minutes = minutes < 10 ? '0' + minutes : minutes;
-                seconds = seconds < 10 ? '0' + seconds : seconds;
-                const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
-                const dateString = now.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
-                document.getElementById('liveClock').innerText = `🕒 ${dateString} | ${timeString}`;
-            }, 1000);
-        }
-
-        function listenGlobalSettings() {
-            database.ref('settings/notice').on('value', (snapshot) => {
-                const val = snapshot.val();
-                if(val) document.getElementById('liveNoticeBar').innerText = val;
-            });
-
-            database.ref('settings/hadith').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if(data) {
-                    document.getElementById('displayHadithText').innerText = `"${data.text}"`;
-                    document.getElementById('displayHadithRef').innerText = `— ${data.ref}`;
-                }
-            });
-        }
-
-        // Calendar Data Fetch and Render
-        function loadCalendarDataFromFirebase() {
-            database.ref('calendarStatus').on('value', (snapshot) => {
-                adminCalendarData = snapshot.val() || {};
-                renderDynamicCalendar();
-            });
-        }
-
-        function renderDynamicCalendar() {
-            const month = parseInt(document.getElementById('calendarMonthSelect').value);
-            const year = parseInt(document.getElementById('calendarYearSelect').value);
-            const grid = document.getElementById('calendarDaysGrid');
-            grid.innerHTML = '';
-
-            const firstDay = new Date(year, month, 1).getDay();
-            const totalDays = new Date(year, month + 1, 0).getDate();
-
-            for (let i = 0; i < firstDay; i++) {
-                const emptyDiv = document.createElement('div');
-                grid.appendChild(emptyDiv);
-            }
-
-            for (let day = 1; day <= totalDays; day++) {
-                const dayDiv = document.createElement('div');
-                const mFormatted = String(month + 1).padStart(2, '0');
-                const dFormatted = String(day).padStart(2, '0');
-                const dateKey = `${year}-${mFormatted}-${dFormatted}`;
-
-                dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold border border-emerald-700/50 bg-emerald-950/60 text-slate-200 shadow-sm";
-                dayDiv.innerText = day;
-
-                if (adminCalendarData[dateKey]) {
-                    if (adminCalendarData[dateKey] === 'holiday') {
-                        dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-red-600 text-white shadow-md";
-                    } else if (adminCalendarData[dateKey] === 'open') {
-                        dayDiv.className = "h-9 flex items-center justify-center rounded-xl text-xs font-bold bg-emerald-500 text-white shadow-md";
-                    }
-                }
-                grid.appendChild(dayDiv);
-            }
-        }
-
-        function saveAdminCalendarDate() {
-            const dateVal = document.getElementById('adminCalDate').value;
-            const statusVal = document.getElementById('adminCalStatus').value;
-            if(!dateVal) return alert('দয়া করে সঠিক তারিখ নির্বাচন করুন।');
-
-            database.ref('calendarStatus/' + dateVal).set(statusVal).then(() => {
-                alert('ক্যালেন্ডারের তারিখ সফলভাবে আপডেট করা হয়েছে!');
-            });
-        }
-
-        // Add New Student & Remove Student System (নতুন ফিচার)
-        function addNewStudent() {
-            const sId = document.getElementById('addStudentId').value.trim();
-            const sName = document.getElementById('addStudentName').value.trim();
-            const sClass = document.getElementById('addStudentClass').value.trim();
-            const sAddress = document.getElementById('addStudentAddress').value.trim();
-
-            if(!sId || !sName) return alert('দয়া করে ছাত্র আইডি এবং নাম প্রদান করুন!');
-
-            database.ref('students/' + sId).set({
-                name: sName,
-                classDetails: sClass || 'শ্রেণি: ১ম',
-                address: sAddress || 'দিনাজপুর',
-                attendance: 'উপস্থিত (Present)',
-                feeStatus: 'পরিশোধিত (Paid)',
-                dueAmount: '০'
-            }).then(() => {
-                alert('নতুন ছাত্র সফলভাবে যুক্ত হয়েছে!');
-                document.getElementById('addStudentId').value = '';
-                document.getElementById('addStudentName').value = '';
-            });
-        }
-
-        function deleteStudent(studentId) {
-            if(confirm(`আপনি কি নিশ্চিত যে ${studentId} ছাত্রটিকে সিস্টেম থেকে মুছে ফেলতে চান?`)) {
-                database.ref('students/' + studentId).remove().then(() => {
-                    alert('ছাত্র সফলভাবে মুছে ফেলা হয়েছে!');
-                });
-            }
-        }
-
-        function listenStudentList() {
-            database.ref('students').on('value', (snapshot) => {
-                const data = snapshot.val() || {};
-                const listContainer = document.getElementById('adminStudentList');
-                const selectDropdown = document.getElementById('targetStudentId');
-                
+            // List
+            const listContainer = document.getElementById('adminStudentList');
+            const badge = document.getElementById('studentCountBadge');
+            if (badge) badge.innerText = keys.length;
+            if (listContainer) {
                 listContainer.innerHTML = '';
-                selectDropdown.innerHTML = '';
-
-                const keys = Object.keys(data);
-                if(keys.length === 0) {
-                    listContainer.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো ছাত্রের ডাটা নেই।</p>';
-                    return;
-                }
-
+                if (keys.length === 0) listContainer.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো ছাত্রের ডাটা নেই।</p>';
                 keys.forEach(key => {
-                    const student = data[key];
-                    // Dropdown option
-                    const opt = document.createElement('option');
-                    opt.value = key;
-                    opt.innerText = `${key} - ${student.name || 'শিক্ষার্থী'}`;
-                    selectDropdown.appendChild(opt);
-
-                    // List item with Delete Button
+                    const s = data[key];
                     const item = document.createElement('div');
-                    item.className = "flex justify-between items-center p-2 bg-emerald-950/80 border border-emerald-700/60 rounded-xl";
-                    item.innerHTML = `
-                        <div>
-                            <span class="font-bold text-amber-300">${key}</span>: ${student.name || 'নাম নেই'}
-                        </div>
-                        <button onclick="deleteStudent('${key}')" class="bg-red-600 hover:bg-red-700 text-white text-[11px] px-2.5 py-1 rounded-lg transition">
-                            <i class="fa-solid fa-trash"></i> মুছে ফেলুন
-                        </button>`;
+                    item.className = 'student-item flex justify-between items-center p-2 bg-emerald-950/80 border border-emerald-700/60 rounded-xl';
+                    item.setAttribute('data-keywords', (key + ' ' + (s.name||'')).toLowerCase());
+                    item.innerHTML = `<div><span class="font-bold text-amber-300">${key}</span>: ${s.name||'নাম নেই'} <span class="text-[10px] text-slate-400">(${s.classDetails||''})</span></div>
+                        <div class="flex gap-1">
+                            <button onclick="showIdCardPreview('${key}')" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] px-2 py-1 rounded-lg"><i class="fa-solid fa-id-card"></i></button>
+                            <button onclick="deleteStudent('${key}')" class="bg-red-600 hover:bg-red-700 text-white text-[10px] px-2 py-1 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                        </div>`;
                     listContainer.appendChild(item);
                 });
-            });
-        }
-
-        // Photo/Video Gallery System
-        function addGalleryItem() {
-            const url = document.getElementById('adminGalleryUrl').value.trim();
-            if(!url) return alert('URL দিন!');
-            database.ref('gallery').push({ url: url }).then(() => {
-                alert('গ্যালারিতে যুক্ত হয়েছে!');
-                document.getElementById('adminGalleryUrl').value = '';
-            });
-        }
-
-        function loadGalleryFromFirebase() {
-            database.ref('gallery').on('value', (snapshot) => {
-                const data = snapshot.val();
-                const container = document.getElementById('galleryContainer');
-                if(data) {
-                    container.innerHTML = '';
-                    Object.values(data).forEach(item => {
-                        if(item.url.includes('youtube.com') || item.url.includes('youtu.be')) {
-                            const iframe = document.createElement('iframe');
-                            iframe.src = item.url;
-                            iframe.className = "w-full h-32 rounded-xl border border-gold-500/30 shadow-md";
-                            container.appendChild(iframe);
-                        } else {
-                            const img = document.createElement('img');
-                            img.src = item.url;
-                            img.className = "w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md";
-                            container.appendChild(img);
-                        }
-                    });
-                }
-            });
-        }
-
-        // ADMIN POST FEED, LIKE & COMMENT SYSTEM (অ্যাডমিন পোস্ট অপশন ও লাইক/কমেন্ট)
-        function addNewAdminPost() {
-            const text = document.getElementById('adminPostText').value.trim();
-            const media = document.getElementById('adminPostMedia').value.trim();
-            const mediaType = document.getElementById('adminMediaType').value;
-
-            if(!text) return alert('পোস্টের বিষয়বস্তু লিখুন!');
-
-            database.ref('posts').push({
-                text: text,
-                media: media || '',
-                mediaType: mediaType,
-                likes: 0,
-                timestamp: new Date().toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' })
-            }).then(() => {
-                alert('পোস্ট সফলভাবে পাবলিশ হয়েছে!');
-                document.getElementById('adminPostText').value = '';
-                document.getElementById('adminPostMedia').value = '';
-            });
-        }
-
-        function loadPublicPostsFeed() {
-            database.ref('posts').on('value', (snapshot) => {
-                const data = snapshot.val();
-                const container = document.getElementById('publicPostsFeed');
-                container.innerHTML = '';
-
-                if(data) {
-                    Object.entries(data).reverse().forEach(([postId, post]) => {
-                        const postDiv = document.createElement('div');
-                        postDiv.className = "p-4 bg-emerald-950/70 border border-emerald-700/60 rounded-2xl space-y-3 shadow-md";
-                        
-                        let mediaHtml = '';
-                        if(post.media) {
-                            if(post.mediaType === 'video') {
-                                mediaHtml = `<iframe src="${post.media}" class="w-full h-48 sm:h-64 rounded-xl border border-gold-500/30 mt-2" allowfullscreen></iframe>`;
-                            } else {
-                                mediaHtml = `<img src="${post.media}" class="w-full max-h-72 object-cover rounded-xl border border-gold-500/30 mt-2">`;
-                            }
-                        }
-
-                        // Comments html
-                        let commentsHtml = '';
-                        if(post.comments) {
-                            Object.values(post.comments).forEach(c => {
-                                commentsHtml += `<div class="bg-emerald-900/60 p-2 rounded-lg text-xs mt-1"><span class="font-bold text-amber-300">${c.user}:</span> ${c.text}</div>`;
-                            });
-                        }
-
-                        postDiv.innerHTML = `
-                            <div class="flex justify-between items-center text-xs border-b border-emerald-800 pb-2">
-                                <span class="font-bold text-gold-400"><i class="fa-solid fa-user-shield"></i> অ্যাডমিন পোস্ট</span>
-                                <span class="text-[10px] text-slate-400">${post.timestamp}</span>
-                            </div>
-                            <p class="text-xs sm:text-sm text-slate-100 leading-relaxed">${post.text}</p>
-                            ${mediaHtml}
-                            <div class="flex items-center gap-4 pt-2 text-xs border-t border-emerald-800/60">
-                                <button onclick="likePost('${postId}', ${post.likes || 0})" class="text-amber-300 hover:text-gold-400 font-semibold flex items-center gap-1">
-                                    <i class="fa-solid fa-heart text-red-500"></i> লাইক (${post.likes || 0})
-                                </button>
-                            </div>
-                            <div class="space-y-1 pt-1">
-                                ${commentsHtml}
-                                <div class="flex gap-2 pt-2">
-                                    <input type="text" id="commentInput_${postId}" placeholder="কমেন্ট লিখুন..." class="flex-grow p-1.5 bg-emerald-900 border border-emerald-700 rounded-lg text-xs text-white">
-                                    <button onclick="addComment('${postId}')" class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-3 rounded-lg text-xs">পাঠান</button>
-                                </div>
-                            </div>`;
-                        container.appendChild(postDiv);
-                    });
-                } else {
-                    container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">এখনো কোনো পোস্ট করা হয়নি।</p>';
-                }
-            });
-        }
-
-        function likePost(postId, currentLikes) {
-            database.ref(`posts/${postId}/likes`).set(currentLikes + 1);
-        }
-
-        function addComment(postId) {
-            const input = document.getElementById(`commentInput_${postId}`);
-            const commentText = input.value.trim();
-            if(!commentText) return;
-            const userName = currentUserRole === 'admin' ? 'অ্যাডমিন' : (currentUserId || 'ভিজিটর');
-
-            database.ref(`posts/${postId}/comments`).push({
-                user: userName,
-                text: commentText
-            }).then(() => {
-                input.value = '';
-            });
-        }
-
-        // Complaint Submission Box
-        function submitComplaint(event) {
-            event.preventDefault();
-            const name = document.getElementById('complaintName').value.trim();
-            const phone = document.getElementById('complaintPhone').value.trim();
-            const details = document.getElementById('complaintDetails').value.trim();
-
-            if(!name || !phone || !details) return alert('দয়া করে সকল তথ্য সঠিকভাবে পূরণ করুন।');
-
-            database.ref('complaints').push({
-                name: name,
-                phone: phone,
-                details: details,
-                timestamp: new Date().toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' })
-            }).then(() => {
-                alert('আপনার অভিযোগ/পরামর্শ সফলভাবে অ্যাডমিন প্যানেলে জমা হয়েছে। জাযাকাল্লাহ খাইরান!');
-                document.getElementById('complaintName').value = '';
-                document.getElementById('complaintPhone').value = '';
-                document.getElementById('complaintDetails').value = '';
-                showSection('publicView');
-            });
-        }
-
-        function fetchComplaintsForAdmin() {
-            database.ref('complaints').on('value', (snapshot) => {
-                const data = snapshot.val();
-                const container = document.getElementById('adminComplaintsList');
-                container.innerHTML = '';
-                if(data) {
-                    let count = Object.keys(data).length;
-                    document.getElementById('complaintCount').innerText = count + 'টি';
-                    Object.entries(data).reverse().forEach(([key, item]) => {
-                        const div = document.createElement('div');
-                        div.className = "p-3.5 bg-emerald-950/80 border border-emerald-700/60 rounded-xl space-y-1.5 shadow-sm relative";
-                        div.innerHTML = `
-                            <div class="flex justify-between items-start">
-                                <p class="font-bold text-amber-300">${item.name} <span class="text-xs font-normal text-slate-300">(${item.phone})</span></p>
-                                <button onclick="deleteComplaint('${key}')" class="text-red-400 hover:text-red-500 text-xs px-2 py-0.5 rounded"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                            <p class="text-slate-200 bg-emerald-900/60 p-2 rounded-lg border border-emerald-800">${item.details}</p>
-                            <p class="text-[10px] text-slate-400 text-right">${item.timestamp}</p>`;
-                        container.appendChild(div);
-                    });
-                } else {
-                    container.innerHTML = '<p class="text-slate-400 text-center py-4">কোনো অভিযোগ জমা হয়নি।</p>';
-                    document.getElementById('complaintCount').innerText = '০টি';
-                }
-            });
-        }
-
-        function deleteComplaint(id) {
-            if(confirm('আপনি কি এই অভিযোগটি মুছে ফেলতে চান?')) {
-                database.ref('complaints/' + id).remove();
-            }
-        }
-
-        function showSection(sectionId) {
-            document.getElementById('publicView').classList.add('hidden');
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('complaintSection').classList.add('hidden');
-            document.getElementById('guardianDashboard').classList.add('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
-
-            document.getElementById(sectionId).classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function quickAdminDemo() {
-            document.getElementById('loginEmail').value = 'hmabusayedmisbah242@gmail.com';
-            document.getElementById('loginPassword').value = '123456';
-            showSection('loginSection');
-        }
-
-        function quickGuardianDemo() {
-            document.getElementById('loginEmail').value = 'Nur1';
-            document.getElementById('loginPassword').value = '123456';
-            showSection('loginSection');
-        }
-
-        function handleLogin(event) {
-            event.preventDefault();
-            let inputVal = document.getElementById('loginEmail').value.trim();
-            const pass = document.getElementById('loginPassword').value.trim();
-            const errDiv = document.getElementById('loginError');
-
-            let emailToUse = inputVal;
-            if(inputVal.toLowerCase().startsWith('nur')) {
-                emailToUse = inputVal.toLowerCase() + '@annoor.com';
             }
 
-            auth.signInWithEmailAndPassword(emailToUse, pass)
-                .then(() => { errDiv.classList.add('hidden'); })
-                .catch(() => { errDiv.classList.remove('hidden'); });
-        }
-
-        function setupNavAfterLogin() {
-            document.getElementById('logoutBtn').classList.remove('hidden');
-            const badge = document.getElementById('roleBadge');
-            badge.classList.remove('hidden');
-            badge.innerText = currentUserRole === 'admin' ? 'অ্যাডমিন' : 'অভিভাবক (' + currentUserId + ')';
-        }
-
-        function logout() {
-            auth.signOut().then(() => {
-                currentUserRole = null;
-                currentUserId = null;
-                document.getElementById('logoutBtn').classList.add('hidden');
-                document.getElementById('roleBadge').classList.add('hidden');
-                showSection('publicView');
+            // Dropdowns
+            ['targetStudentId','resStudentSelect','feeStudentSelect'].forEach(id => {
+                const sel = document.getElementById(id);
+                if (!sel) return;
+                const cur = sel.value;
+                sel.innerHTML = '';
+                keys.forEach(k => {
+                    const o = document.createElement('option');
+                    o.value = k; o.innerText = `${k} - ${data[k].name||''}`;
+                    sel.appendChild(o);
+                });
+                if (cur) sel.value = cur;
             });
+
+            // Update stats
+            if (document.getElementById('statStudents')) document.getElementById('statStudents').innerText = keys.length;
+            if (document.getElementById('admStatStudents')) document.getElementById('admStatStudents').innerText = keys.length;
+            renderOverviewCharts();
+            renderAdminDueList();
+        });
+    }
+    function filterStudents() {
+        const q = document.getElementById('studentSearchInput').value.toLowerCase();
+        document.querySelectorAll('.student-item').forEach(item => {
+            item.style.display = item.getAttribute('data-keywords').includes(q) ? 'flex' : 'none';
+        });
+    }
+    function addNewStudent() {
+        const id = document.getElementById('addStudentId').value.trim();
+        const name = document.getElementById('addStudentName').value.trim();
+        const cls = document.getElementById('addStudentClass').value.trim();
+        const addr = document.getElementById('addStudentAddress').value.trim();
+        const phone = document.getElementById('addStudentPhone').value.trim();
+        const photo = document.getElementById('addStudentPhotoUrl').value.trim();
+        if (!id || !name) return showToast('আইডি ও নাম দিন', 'warning');
+        database.ref('students/'+id).set({
+            name, classDetails: cls || 'শ্রেণি: ১ম', address: addr || 'দিনাজপুর',
+            phone: phone || '', photo: photo || '',
+            attendance: 'উপস্থিত', feeStatus: 'পরিশোধিত', dueAmount: 0
+        }).then(() => {
+            showToast('ছাত্র যুক্ত হয়েছে');
+            ['addStudentId','addStudentName','addStudentClass','addStudentAddress','addStudentPhone','addStudentPhotoUrl'].forEach(x=>{const e=document.getElementById(x);if(e)e.value='';});
+            pushNotification(`নতুন ছাত্র যুক্ত: ${name} (${id})`);
+        });
+    }
+    async function deleteStudent(sid) {
+        if (await swalConfirm('ডিলিট?', `${sid} কে মুছে ফেলবেন?`)) {
+            database.ref('students/'+sid).remove().then(() => showToast('মুছে ফেলা হয়েছে'));
         }
+    }
+    function updateStudentData() {
+        const tid = document.getElementById('targetStudentId').value;
+        if (!tid) return showToast('শিক্ষার্থী নির্বাচন করুন', 'warning');
+        const obj = {
+            attendance: document.getElementById('setAttendance').value,
+            feeStatus: document.getElementById('setFeeStatus').value,
+        };
+        const n = document.getElementById('setStudentNameInput').value.trim(); if(n) obj.name = n;
+        const d = document.getElementById('setDueAmount').value; if(d) obj.dueAmount = +d;
+        const p = document.getElementById('setStudentPhoto').value.trim(); if(p) obj.photo = p;
+        database.ref('students/'+tid).update(obj).then(() => showToast(tid+' আপডেট সম্পন্ন'));
+    }
 
-        function fetchStudentData(uId) {
-            database.ref('students/' + uId).on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    document.getElementById('gStudentName').innerText = data.name || ('শিক্ষার্থী (' + uId + ')');
-                    document.getElementById('gStudentDetails').innerText = data.classDetails || `আইডি: ${uId} | মাদ্রাসা পোর্টাল`;
-                    document.getElementById('gDisplayId').innerText = uId;
-                    document.getElementById('gAttendance').innerText = data.attendance || 'উপস্থিত';
-                    document.getElementById('gFeeStatus').innerText = data.feeStatus || 'পরিশোধিত';
-                    document.getElementById('gDueAmount').innerText = (data.dueAmount || '০') + ' ৳';
-                    document.getElementById('gAddress').innerText = data.address || 'নিউটাউন, দিনাজপুর';
-                    if(data.photo) document.getElementById('gStudentPhoto').src = data.photo;
+    // ====== Teachers ======
+    function addNewTeacher() {
+        const name = document.getElementById('teacherName').value.trim();
+        if (!name) return showToast('শিক্ষকের নাম দিন', 'warning');
+        database.ref('teachers').push({
+            name,
+            subject: document.getElementById('teacherSubject').value.trim(),
+            phone: document.getElementById('teacherPhone').value.trim(),
+            designation: document.getElementById('teacherDesignation').value.trim()
+        }).then(() => {
+            showToast('শিক্ষক যুক্ত'); pushNotification(`শিক্ষক যুক্ত: ${name}`);
+            ['teacherName','teacherSubject','teacherPhone','teacherDesignation'].forEach(x=>{const e=document.getElementById(x);if(e)e.value='';});
+        });
+    }
+    function listenTeachers() {
+        database.ref('teachers').on('value', snap => {
+            const data = snap.val() || {};
+            const count = Object.keys(data).length;
+            if (document.getElementById('statTeachers')) document.getElementById('statTeachers').innerText = count;
+            if (document.getElementById('admStatTeachers')) document.getElementById('admStatTeachers').innerText = count;
+            const list = document.getElementById('teacherList');
+            if(!list) return;
+            list.innerHTML = '';
+            if (count === 0) { list.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো শিক্ষক নেই</p>'; return; }
+            Object.entries(data).forEach(([k,t]) => {
+                const item = document.createElement('div');
+                item.className = 'flex justify-between items-center p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl';
+                item.innerHTML = `<div><b class="text-amber-300">${t.name}</b> <span class="text-slate-400">(${t.designation||t.subject||''})</span><br><span class="text-[10px]">${t.phone||''}</span></div>
+                    <button onclick="deleteTeacher('${k}')" class="bg-red-600 text-white text-[10px] px-2 py-1 rounded-lg"><i class="fa-solid fa-trash"></i></button>`;
+                list.appendChild(item);
+            });
+        });
+    }
+    async function deleteTeacher(id) {
+        if (await swalConfirm('ডিলিট?', 'শিক্ষককে মুছে ফেলবেন?')) database.ref('teachers/'+id).remove();
+    }
 
-                    // Load Results
-                    const resContainer = document.getElementById('gResultsContainer');
-                    resContainer.innerHTML = '';
-                    if(data.results) {
-                        Object.values(data.results).reverse().forEach(res => {
-                            const rDiv = document.createElement('div');
-                            rDiv.className = "flex justify-between items-center py-2 border-b border-emerald-800/60";
-                            rDiv.innerHTML = `
-                                <div>
-                                    <span class="text-slate-200 font-semibold">${res.subject}:</span>
-                                    <span class="text-[10px] text-slate-400 block">${res.date || ''}</span>
-                                </div>
-                                <span class="font-bold text-amber-300 bg-emerald-950 px-2.5 py-1 rounded-lg border border-gold-500/30">${res.grade}</span>`;
-                            resContainer.appendChild(rDiv);
-                        });
+    // ====== Results ======
+    function saveExamResult() {
+        const sid = document.getElementById('resStudentSelect').value;
+        const exam = document.getElementById('resExamType').value;
+        const sub = document.getElementById('resSubject').value.trim();
+        const grade = document.getElementById('resGrade').value.trim();
+        const total = document.getElementById('resTotal').value;
+        const date = document.getElementById('resDate').value;
+        if (!sid || !sub || !grade) return showToast('সব তথ্য দিন', 'warning');
+        database.ref(`students/${sid}/results`).push({ exam, subject: sub, grade, total: total||'', date: date || new Date().toLocaleDateString('bn-BD'), ts: Date.now() })
+            .then(() => { showToast('রেজাল্ট সেভ'); ['resSubject','resGrade','resTotal','resDate'].forEach(x=>{document.getElementById(x).value='';}); loadRecentResults(); });
+    }
+    function loadRecentResults() {
+        const container = document.getElementById('recentResultsList');
+        if (!container) return;
+        container.innerHTML = '';
+        database.ref('students').once('value').then(snap => {
+            const data = snap.val() || {};
+            let rows = [];
+            Object.entries(data).forEach(([sid, s]) => {
+                if (s.results) Object.entries(s.results).forEach(([rid, r]) => {
+                    rows.push({ sid, sname: s.name || sid, ...r, rid });
+                });
+            });
+            rows.sort((a,b) => (b.ts||0) - (a.ts||0));
+            rows = rows.slice(0, 15);
+            if (rows.length === 0) { container.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো রেজাল্ট নেই</p>'; return; }
+            rows.forEach(r => {
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center p-2 bg-emerald-950/60 border border-emerald-700 rounded-lg';
+                div.innerHTML = `<div><b class="text-amber-300">${r.sname}</b> <span class="text-slate-400">(${r.exam||''})</span><br><span class="text-[10px]">${r.subject}: ${r.grade}</span></div>
+                    <button onclick="deleteResult('${r.sid}','${r.rid}')" class="text-red-400 text-[10px]"><i class="fa-solid fa-trash"></i></button>`;
+                container.appendChild(div);
+            });
+        });
+    }
+    async function deleteResult(sid, rid) {
+        if (await swalConfirm('মুছবেন?', 'রেজাল্ট এন্ট্রি?')) database.ref(`students/${sid}/results/${rid}`).remove();
+    }
+
+    // ====== Fees ======
+    function collectFee() {
+        const sid = document.getElementById('feeStudentSelect').value;
+        const amt = +document.getElementById('feeAmount').value;
+        const month = document.getElementById('feeMonth').value;
+        const method = document.getElementById('feeMethod').value;
+        if (!sid || !amt) return showToast('সব তথ্য দিন', 'warning');
+        const fee = { amount: amt, month, method, date: new Date().toLocaleDateString('bn-BD'), ts: Date.now() };
+        database.ref(`students/${sid}/fees`).push(fee).then(() => {
+            // Update due amount
+            const s = allStudentsCache[sid] || {};
+            const newDue = Math.max(0, (s.dueAmount||0) - amt);
+            database.ref(`students/${sid}`).update({ dueAmount: newDue, feeStatus: newDue > 0 ? 'বাকি আছে' : 'পরিশোধিত' });
+            showToast('ফি কালেক্ট সম্পন্ন');
+            ['feeAmount'].forEach(x => document.getElementById(x).value = '');
+            loadRecentFees();
+            pushNotification(`ফি জমা: ${sid} - ${amt}৳`);
+        });
+    }
+    function loadRecentFees() {
+        const container = document.getElementById('recentFeesList');
+        if (!container) return;
+        container.innerHTML = '';
+        database.ref('students').once('value').then(snap => {
+            const data = snap.val() || {};
+            let rows = [];
+            Object.entries(data).forEach(([sid, s]) => {
+                if (s.fees) Object.entries(s.fees).forEach(([fid, f]) => rows.push({ sid, sname: s.name || sid, ...f, fid }));
+            });
+            rows.sort((a,b) => (b.ts||0) - (a.ts||0));
+            rows = rows.slice(0, 15);
+            if (!rows.length) { container.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো ফি নেই</p>'; return; }
+            rows.forEach(r => {
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center p-2 bg-emerald-950/60 border border-emerald-700 rounded-lg';
+                div.innerHTML = `<div><b class="text-amber-300">${r.sname}</b> - ${r.amount}৳<br><span class="text-[10px]">${r.month} • ${r.method} • ${r.date}</span></div>`;
+                container.appendChild(div);
+            });
+        });
+    }
+
+    // ====== Complaints ======
+    function submitComplaint(e) {
+        e.preventDefault();
+        const name = document.getElementById('complaintName').value.trim();
+        const phone = document.getElementById('complaintPhone').value.trim();
+        const type = document.getElementById('complaintType').value;
+        const details = document.getElementById('complaintDetails').value.trim();
+        if (!name || !phone || !details) return showToast('সব তথ্য দিন', 'warning');
+        database.ref('complaints').push({
+            name, phone, type, details, status:'pending',
+            timestamp: new Date().toLocaleString('bn-BD', { timeZone:'Asia/Dhaka' })
+        }).then(() => {
+            showToast('অভিযোগ জমা হয়েছে');
+            ['complaintName','complaintPhone','complaintDetails'].forEach(x=>document.getElementById(x).value='');
+            pushNotification(`নতুন অভিযোগ: ${name}`);
+            showSection('publicView');
+        });
+    }
+    function fetchComplaintsForAdmin() {
+        database.ref('complaints').on('value', snap => {
+            const data = snap.val() || {};
+            const container = document.getElementById('adminComplaintsList');
+            if (!container) return;
+            const count = Object.keys(data).length;
+            document.getElementById('complaintCount').innerText = count + 'টি';
+            if (document.getElementById('admStatComplaints')) document.getElementById('admStatComplaints').innerText = count;
+            container.innerHTML = '';
+            if (count === 0) { container.innerHTML = '<p class="text-slate-400 text-center py-4">কোনো অভিযোগ নেই</p>'; return; }
+            Object.entries(data).reverse().forEach(([k, item]) => {
+                const div = document.createElement('div');
+                div.className = 'p-3 bg-emerald-950/80 border border-emerald-700/60 rounded-xl space-y-1.5';
+                div.innerHTML = `
+                    <div class="flex justify-between items-start gap-2">
+                        <div class="flex flex-wrap items-center gap-1">
+                            <p class="font-bold text-amber-300">${item.name}</p>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded ${item.status==='resolved'?'bg-green-500/20 text-green-300':'bg-amber-500/20 text-amber-300'}">${item.status==='resolved'?'সমাধান':'পেন্ডিং'}</span>
+                            <span class="text-[10px] text-slate-400">(${item.phone})</span>
+                        </div>
+                        <button onclick="deleteComplaint('${k}')" class="text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <p class="text-slate-200 bg-emerald-900/60 p-2 rounded-lg text-[11px]">${item.details}</p>
+                    ${item.reply ? `<p class="text-[11px] bg-blue-900/40 p-2 rounded-lg"><b class="text-blue-300">রিপ্লাই:</b> ${item.reply}</p>` : ''}
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="রিপ্লাই লিখুন..." id="reply_${k}" class="flex-grow p-1.5 text-[11px] rounded-lg bg-emerald-900 border border-emerald-700 text-white">
+                        <button onclick="replyComplaint('${k}')" class="text-[10px] bg-gold-500 text-emerald-950 px-2 rounded-lg font-bold">রিপ্লাই</button>
+                        <button onclick="markComplaintResolved('${k}')" class="text-[10px] bg-green-600 text-white px-2 rounded-lg font-bold">Resolved</button>
+                    </div>
+                    <p class="text-[10px] text-slate-400 text-right">${item.timestamp}</p>`;
+                container.appendChild(div);
+            });
+        });
+    }
+    async function deleteComplaint(id) {
+        if (await swalConfirm('মুছবেন?', 'এই অভিযোগটি?')) database.ref('complaints/'+id).remove();
+    }
+    function replyComplaint(id) {
+        const r = document.getElementById('reply_'+id).value.trim();
+        if (!r) return;
+        database.ref('complaints/'+id).update({ reply:r, status:'resolved' }).then(()=>showToast('রিপ্লাই পাঠানো'));
+    }
+    function markComplaintResolved(id) {
+        database.ref('complaints/'+id).update({ status:'resolved' }).then(()=>showToast('সমাধান চিহ্নিত'));
+    }
+
+    // ====== Posts ======
+    function addNewAdminPost() {
+        const text = document.getElementById('adminPostText').value.trim();
+        const media = document.getElementById('adminPostMedia').value.trim();
+        const mediaType = document.getElementById('adminMediaType').value;
+        if (!text && !media) return showToast('পোস্ট বিষয়বস্তু দিন', 'warning');
+        database.ref('posts').push({
+            text, media, mediaType, likes:0,
+            timestamp: new Date().toLocaleString('bn-BD', { timeZone:'Asia/Dhaka' }), ts: Date.now()
+        }).then(() => {
+            showToast('পোস্ট পাবলিশ'); pushNotification('নতুন পোস্ট প্রকাশিত');
+            ['adminPostText','adminPostMedia'].forEach(x=>document.getElementById(x).value='');
+        });
+    }
+    function loadPublicPostsFeed() {
+        database.ref('posts').on('value', snap => {
+            allPostsCache = snap.val() || {};
+            const container = document.getElementById('publicPostsFeed');
+            if (!container) return;
+            container.innerHTML = '';
+            if (document.getElementById('admStatPosts')) document.getElementById('admStatPosts').innerText = Object.keys(allPostsCache).length;
+            const entries = Object.entries(allPostsCache).reverse();
+            if (entries.length === 0) { container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">এখনো কোনো পোস্ট নেই</p>'; return; }
+            entries.forEach(([pid, post]) => {
+                const div = document.createElement('div');
+                div.className = 'post-item p-4 bg-emerald-950/70 border border-emerald-700/60 rounded-2xl space-y-3 shadow-md';
+                div.setAttribute('data-keywords', (post.text||'').toLowerCase());
+                let mediaHtml = '';
+                if (post.media) {
+                    mediaHtml = post.mediaType === 'video'
+                        ? `<iframe src="${post.media}" class="w-full h-48 sm:h-64 rounded-xl border border-gold-500/30 mt-2" allowfullscreen></iframe>`
+                        : `<img src="${post.media}" class="w-full max-h-72 object-cover rounded-xl border border-gold-500/30 mt-2" onerror="this.style.display='none'">`;
+                }
+                let comments = '';
+                if (post.comments) {
+                    Object.values(post.comments).forEach(c => {
+                        comments += `<div class="bg-emerald-900/60 p-2 rounded-lg text-xs mt-1"><b class="text-amber-300">${c.user}:</b> ${c.text}</div>`;
+                    });
+                }
+                div.innerHTML = `
+                    <div class="flex justify-between items-center text-xs border-b border-emerald-800 pb-2">
+                        <span class="font-bold text-gold-400"><i class="fa-solid fa-user-shield"></i> অ্যাডমিন পোস্ট</span>
+                        <span class="text-[10px] text-slate-400">${post.timestamp||''}</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-100 leading-relaxed">${post.text||''}</p>
+                    ${mediaHtml}
+                    <div class="flex items-center gap-4 pt-2 text-xs border-t border-emerald-800/60">
+                        <button onclick="likePost('${pid}', ${post.likes||0})" class="text-amber-300 hover:text-gold-400 font-semibold"><i class="fa-solid fa-heart text-red-500"></i> লাইক (${post.likes||0})</button>
+                    </div>
+                    <div class="space-y-1 pt-1">
+                        ${comments}
+                        <div class="flex gap-2 pt-2">
+                            <input type="text" id="commentInput_${pid}" placeholder="কমেন্ট..." class="flex-grow p-1.5 bg-emerald-900 border border-emerald-700 rounded-lg text-xs text-white">
+                            <button onclick="addComment('${pid}')" class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-3 rounded-lg text-xs">পাঠান</button>
+                        </div>
+                    </div>`;
+                container.appendChild(div);
+            });
+        });
+    }
+    function filterPosts() {
+        const q = document.getElementById('postSearchInput').value.toLowerCase();
+        document.querySelectorAll('.post-item').forEach(el => {
+            el.style.display = el.getAttribute('data-keywords').includes(q) ? 'block' : 'none';
+        });
+    }
+    function likePost(pid, cur) { database.ref(`posts/${pid}/likes`).set(cur+1); }
+    function addComment(pid) {
+        const inp = document.getElementById(`commentInput_${pid}`);
+        const text = inp.value.trim(); if (!text) return;
+        const user = currentUserRole === 'admin' ? 'অ্যাডমিন' : (currentUserId || 'ভিজিটর');
+        database.ref(`posts/${pid}/comments`).push({ user, text }).then(() => { inp.value = ''; });
+    }
+    function fetchAdminPostsForManagement() {
+        database.ref('posts').on('value', snap => {
+            const data = snap.val() || {};
+            const c = document.getElementById('adminManagePostsList');
+            if (!c) return;
+            c.innerHTML = '';
+            const entries = Object.entries(data).reverse();
+            if (!entries.length) { c.innerHTML = '<p class="text-slate-400 text-center py-2">পোস্ট নেই</p>'; return; }
+            entries.forEach(([k, item]) => {
+                const div = document.createElement('div');
+                div.className = 'p-2 bg-emerald-950 border border-emerald-700 rounded-xl flex justify-between items-center text-xs';
+                div.innerHTML = `<span class="truncate pr-2 text-white">${(item.text||'ছবি/ভিডিও').slice(0,60)}...</span>
+                    <button onclick="deleteAdminPost('${k}')" class="text-red-400 hover:text-red-300 px-2"><i class="fa-solid fa-trash"></i></button>`;
+                c.appendChild(div);
+            });
+        });
+    }
+    async function deleteAdminPost(id) {
+        if (await swalConfirm('ডিলিট?', 'পোস্টটি?')) database.ref('posts/'+id).remove();
+    }
+
+    // ====== Gallery ======
+    function loadGalleryFromFirebase() {
+        database.ref('gallery').on('value', snap => {
+            const data = snap.val() || {};
+            const container = document.getElementById('galleryContainer');
+            if (container) {
+                container.innerHTML = '';
+                Object.values(data).forEach(item => {
+                    if (!item.url) return;
+                    if (item.url.includes('youtube.com') || item.url.includes('youtu.be')) {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = item.url; iframe.className = 'w-full h-32 rounded-xl border border-gold-500/30';
+                        container.appendChild(iframe);
                     } else {
-                        resContainer.innerHTML = '<p class="text-slate-400 text-center py-2">রেজাল্ট আপডেট করা হয়নি।</p>';
+                        const img = document.createElement('img');
+                        img.src = item.url; img.className = 'w-full h-32 object-cover rounded-xl border border-gold-500/30';
+                        container.appendChild(img);
                     }
-                }
-            });
-        }
+                });
+            }
+            const manage = document.getElementById('adminManageGalleryList');
+            if (manage) {
+                manage.innerHTML = '';
+                Object.entries(data).forEach(([k, item]) => {
+                    const div = document.createElement('div');
+                    div.className = 'relative group rounded-lg overflow-hidden border border-emerald-700 h-20';
+                    div.innerHTML = `<img src="${item.url}" class="w-full h-full object-cover" onerror="this.style.background='#334155';this.alt='err'">
+                        <button onclick="deleteGalleryItem('${k}')" class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-red-500"><i class="fa-solid fa-trash text-lg"></i></button>`;
+                    manage.appendChild(div);
+                });
+            }
+        });
+    }
+    function addGalleryItem() {
+        const url = document.getElementById('adminGalleryUrl').value.trim();
+        if (!url) return showToast('URL দিন', 'warning');
+        database.ref('gallery').push({ url }).then(() => { showToast('গ্যালারিতে যুক্ত'); document.getElementById('adminGalleryUrl').value = ''; });
+    }
+    async function deleteGalleryItem(id) {
+        if (await swalConfirm('মুছবেন?', 'গ্যালারি আইটেম?')) database.ref('gallery/'+id).remove();
+    }
 
-        function updateStudentData() {
-            const tId = document.getElementById('targetStudentId').value;
-            const nameInput = document.getElementById('setStudentNameInput').value;
-            const att = document.getElementById('setAttendance').value;
-            const fee = document.getElementById('setFeeStatus').value;
-            const due = document.getElementById('setDueAmount').value;
-            const photo = document.getElementById('setStudentPhoto').value;
+    // ====== Events ======
+    function addEvent() {
+        const title = document.getElementById('eventTitle').value.trim();
+        const date = document.getElementById('eventDate').value;
+        if (!title || !date) return showToast('সব তথ্য দিন', 'warning');
+        database.ref('events').push({ title, date, ts: Date.now() }).then(() => {
+            showToast('ইভেন্ট যুক্ত');
+            ['eventTitle','eventDate'].forEach(x=>document.getElementById(x).value='');
+        });
+    }
+    function listenEvents() {
+        database.ref('events').on('value', snap => {
+            const data = snap.val() || {};
+            const pub = document.getElementById('eventsList');
+            if (pub) {
+                pub.innerHTML = '';
+                const entries = Object.entries(data);
+                if (!entries.length) pub.innerHTML = '<p class="text-xs text-slate-400 col-span-2 text-center py-2">কোনো ইভেন্ট নেই</p>';
+                entries.forEach(([k, e]) => {
+                    const div = document.createElement('div');
+                    div.className = 'p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs';
+                    div.innerHTML = `<p class="font-bold text-gold-300">${e.title}</p><p class="text-slate-300 mt-1">${e.date||''}</p>`;
+                    pub.appendChild(div);
+                });
+            }
+            const adm = document.getElementById('adminEventsList');
+            if (adm) {
+                adm.innerHTML = '';
+                Object.entries(data).forEach(([k,e]) => {
+                    const d = document.createElement('div');
+                    d.className = 'flex justify-between p-2 bg-emerald-950/80 border border-emerald-700 rounded-lg';
+                    d.innerHTML = `<span><b class="text-amber-300">${e.title}</b> — ${e.date}</span>
+                        <button onclick="deleteEvent('${k}')" class="text-red-400"><i class="fa-solid fa-trash"></i></button>`;
+                    adm.appendChild(d);
+                });
+            }
+        });
+    }
+    async function deleteEvent(id) {
+        if (await swalConfirm('মুছবেন?', 'ইভেন্টটি?')) database.ref('events/'+id).remove();
+    }
 
-            const resSub = document.getElementById('resSubject').value.trim();
-            const resGrd = document.getElementById('resGrade').value.trim();
-            const resDt = document.getElementById('resDate').value;
+    // ====== Notices ======
+    function updateNoticeBar() {
+        const t = document.getElementById('adminNoticeInput').value.trim();
+        if (!t) return;
+        database.ref('settings/notice').set(t).then(() => {
+            showToast('নোটিশ আপডেট');
+            document.getElementById('adminNoticeInput').value = '';
+        });
+    }
 
-            const updateObj = { attendance: att, feeStatus: fee };
-            if(nameInput) updateObj.name = nameInput;
-            if(due) updateObj.dueAmount = due;
-            if(photo) updateObj.photo = photo;
+    // ====== Guardian Data ======
+    function fetchStudentData(uid) {
+        database.ref('students/'+uid).on('value', snap => {
+            const data = snap.val();
+            if (!data) return;
+            document.getElementById('gStudentName').innerText = data.name || uid;
+            document.getElementById('gStudentDetails').innerText = data.classDetails || '';
+            document.getElementById('gDisplayId').innerText = uid;
+            document.getElementById('gAttendance').innerText = data.attendance || 'উপস্থিত';
+            document.getElementById('gFeeStatus').innerText = data.feeStatus || 'পরিশোধিত';
+            document.getElementById('gDueAmount').innerText = (data.dueAmount || 0) + ' ৳';
+            document.getElementById('gAddress').innerText = data.address || 'নিজামপুর, দিনাজপুর';
+            if (data.photo) document.getElementById('gStudentPhoto').src = data.photo;
 
-            database.ref('students/' + tId).update(updateObj).then(() => {
-                if(resSub && resGrd) {
-                    database.ref(`students/${tId}/results`).push({
-                        subject: resSub,
-                        grade: resGrd,
-                        date: resDt || new Date().toLocaleDateString('bn-BD')
+            // Results
+            const resContainer = document.getElementById('gResultsContainer');
+            if (resContainer) {
+                resContainer.innerHTML = '';
+                if (data.results) {
+                    Object.values(data.results).reverse().forEach(r => {
+                        const div = document.createElement('div');
+                        div.className = 'flex justify-between items-center py-2 border-b border-emerald-800/60';
+                        div.innerHTML = `<div><span class="text-slate-200 font-semibold">${r.subject}:</span>${r.exam?`<span class="text-[10px] text-slate-400 ml-1">(${r.exam})</span>`:''}<span class="text-[10px] text-slate-400 block">${r.date||''}</span></div>
+                            <span class="font-bold text-amber-300 bg-emerald-950 px-2.5 py-1 rounded-lg border border-gold-500/30">${r.grade}</span>`;
+                        resContainer.appendChild(div);
                     });
+                } else {
+                    resContainer.innerHTML = '<p class="text-slate-400 text-center py-2">রেজাল্ট নেই</p>';
                 }
-                alert(tId + ' এর তথ্য ও রেজাল্ট সফলভাবে সেভ হয়েছে!');
-                document.getElementById('resSubject').value = '';
-                document.getElementById('resGrade').value = '';
-            });
-        }
+                // Chart
+                const labels = Object.values(data.results||{}).map(r=>r.subject).slice(0, 6);
+                const values = Object.values(data.results||{}).map(r => parseFloat(r.grade) || (['এ+','A+'].includes(r.grade)?90:['এ','A'].includes(r.grade)?80:70)).slice(0,6);
+                renderGuardianChart(labels, values);
+            }
 
-        function updateNoticeBar() {
-            const noticeText = document.getElementById('adminNoticeInput').value;
-            if(!noticeText) return alert('অনুগ্রহ করে নোটিশের লেখা লিখুন');
-            database.ref('settings/notice').set(noticeText).then(() => {
-                alert('লাইভ নোটিশ সফলভাবে পরিবর্তন করা হয়েছে!');
-                document.getElementById('adminNoticeInput').value = '';
+            // Fees
+            const feeC = document.getElementById('gFeeHistory');
+            if (feeC) {
+                feeC.innerHTML = '';
+                if (data.fees) {
+                    Object.values(data.fees).reverse().forEach(f => {
+                        const div = document.createElement('div');
+                        div.className = 'flex justify-between p-2 border-b border-emerald-800/60';
+                        div.innerHTML = `<span>${f.month} • ${f.method||''}</span><span class="text-emerald-300 font-bold">${f.amount}৳</span>`;
+                        feeC.appendChild(div);
+                    });
+                } else {
+                    feeC.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো ফি পেমেন্ট নেই</p>';
+                }
+            }
+        });
+    }
+    function renderGuardianChart(labels, values) {
+        const ctx = document.getElementById('guardianProgressChart');
+        if (!ctx) return;
+        if (guardianProgressChartInstance) guardianProgressChartInstance.destroy();
+        guardianProgressChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: { labels: labels.length ? labels : ['বাংলা','আরবি','ইংরেজি','গণিত','বিজ্ঞান'],
+                datasets: [{ label: 'মার্ক', data: values.length ? values : [85,92,78,88,80], backgroundColor: '#fbbf24', borderRadius:8 }]},
+            options: { responsive: true, plugins:{ legend:{labels:{color:'#cbd5e1'}} }, scales:{ y:{beginAtZero:true, max:100, ticks:{color:'#94a3b8'}}, x:{ticks:{color:'#cbd5e1'}} } }
+        });
+    }
+
+    // ====== Charts (Admin) ======
+    function renderOverviewCharts() {
+        const feeCtx = document.getElementById('adminFeeChart');
+        const classCtx = document.getElementById('adminClassChart');
+        const students = Object.values(allStudentsCache);
+        const paid = students.filter(s => s.feeStatus === 'পরিশোধিত').length;
+        const due = students.filter(s => s.feeStatus !== 'পরিশোধিত').length;
+
+        if (feeCtx) {
+            if (adminFeeChartInstance) adminFeeChartInstance.destroy();
+            adminFeeChartInstance = new Chart(feeCtx, {
+                type:'doughnut',
+                data:{ labels:['পরিশোধিত','বাকি'], datasets:[{ data:[paid, due], backgroundColor:['#10b981','#ef4444'], borderWidth:0 }]},
+                options:{ plugins:{ legend:{labels:{color:'#cbd5e1'}} } }
             });
         }
-    </script>
+        if (classCtx) {
+            const classes = {};
+            students.forEach(s => {
+                const m = (s.classDetails||'').match(/শ্রেণি[:]?\s*([^\s|]+)/);
+                const k = m ? m[1] : 'অন্যান্য';
+                classes[k] = (classes[k]||0)+1;
+            });
+            const labels = Object.keys(classes), data = Object.values(classes);
+            if (adminClassChartInstance) adminClassChartInstance.destroy();
+            adminClassChartInstance = new Chart(classCtx, {
+                type:'bar',
+                data:{ labels: labels.length?labels:['নেই'], datasets:[{ label:'ছাত্র', data: data.length?data:[0], backgroundColor:'#3b82f6', borderRadius:6 }]},
+                options:{ plugins:{ legend:{display:false} }, scales:{ y:{beginAtZero:true, ticks:{color:'#94a3b8'}}, x:{ticks:{color:'#cbd5e1'}} } }
+            });
+        }
+    }
+    function renderAdminDueList() {
+        const c = document.getElementById('adminDueList');
+        if (!c) return;
+        const due = Object.entries(allStudentsCache).filter(([k,s]) => +s.dueAmount > 0);
+        c.innerHTML = '';
+        if (!due.length) { c.innerHTML = '<p class="text-slate-400 text-center py-2">কোনো বকেয়া নেই</p>'; return; }
+        due.sort((a,b) => b[1].dueAmount - a[1].dueAmount);
+        due.slice(0, 8).forEach(([k,s]) => {
+            const div = document.createElement('div');
+            div.className = 'flex justify-between p-2 bg-red-900/20 border border-red-500/30 rounded-lg';
+            div.innerHTML = `<span><b class="text-amber-300">${s.name}</b> (${k})</span><span class="text-red-300 font-bold">${s.dueAmount}৳</span>`;
+            c.appendChild(div);
+        });
+    }
+
+    // ====== Print helpers ======
+    function printIdCard() {
+        const name = document.getElementById('gStudentName')?.innerText || 'শিক্ষার্থী';
+        const id = document.getElementById('gDisplayId')?.innerText || 'Nur1';
+        const cls = document.getElementById('gStudentDetails')?.innerText || '';
+        const w = window.open('', '_blank', 'width=400,height=600');
+        w.document.write(`<html><head><title>ID Card</title>
+            <style>body{font-family:'Hind Siliguri',sans-serif;margin:0;padding:20px;}
+            .card{width:320px;height:200px;background:linear-gradient(135deg,#064e3b,#022c22);color:white;border-radius:16px;border:2px solid #fbbf24;padding:16px;box-sizing:border-box;margin:40px auto;position:relative;box-shadow:0 6px 20px rgba(0,0,0,0.3);}
+            .school{font-size:11px;color:#fbbf24;text-align:center;border-bottom:1px solid #fbbf24;padding-bottom:6px;margin-bottom:10px;font-weight:bold;}
+            .name{font-size:18px;font-weight:bold;color:#fde047;margin-bottom:6px;}
+            .info{font-size:11px;color:#d1fae5;margin-bottom:4px;}
+            .logo{position:absolute;bottom:12px;right:12px;width:48px;height:48px;border-radius:50%;background:#fbbf24;color:#022c22;text-align:center;line-height:48px;font-weight:bold;font-size:16px;}</style>
+            </head><body><div class="card">
+            <div class="school">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</div>
+            <div class="name">${name}</div>
+            <div class="info">${cls}</div>
+            <div class="info">আইডি: <b>${id}</b></div>
+            <div class="info">দিনাজপুর, বাংলাদেশ</div>
+            <div class="logo">AN</div>
+            </div></body></html>`);
+        w.document.close(); w.focus(); setTimeout(() => w.print(), 300);
+    }
+    function printReportCard() {
+        const name = document.getElementById('gStudentName')?.innerText || '';
+        const id = document.getElementById('gDisplayId')?.innerText || '';
+        const cls = document.getElementById('gStudentDetails')?.innerText || '';
+        const results = document.getElementById('gResultsContainer')?.innerHTML || '';
+        const w = window.open('', '_blank');
+        w.document.write(`<html><head><title>Report Card</title>
+            <style>body{font-family:'Hind Siliguri',sans-serif;padding:30px;color:#222;}
+            h1{color:#047857;border-bottom:3px solid #fbbf24;padding-bottom:8px;text-align:center;}
+            .info{margin:15px 0;padding:10px;background:#f0fdf4;border-radius:8px;}
+            table{width:100%;border-collapse:collapse;margin-top:15px;}
+            th{background:#047857;color:white;padding:8px;text-align:left;}
+            td{padding:8px;border-bottom:1px solid #ddd;}
+            .footer{margin-top:40px;text-align:right;}</style>
+            </head><body><h1>রিপোর্ট কার্ড</h1>
+            <div class="info"><b>শিক্ষার্থী:</b> ${name}<br><b>আইডি:</b> ${id}<br><b>${cls}</b></div>
+            <div>${results}</div>
+            <div class="footer">____________________<br>প্রধান শিক্ষক</div>
+            </body></html>`);
+        w.document.close(); w.focus(); setTimeout(() => w.print(), 300);
+    }
+
+    // ====== CSV exports ======
+    function downloadCSV(filename, rows) {
+        const csv = rows.map(r => r.map(v => `"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+        const blob = new Blob(['\uFEFF'+csv], { type:'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+        URL.revokeObjectURL(url); showToast('ডাউনলোড শুরু হয়েছে');
+    }
+    function exportStudentsCSV() {
+        const rows = [['ID','নাম','শ্রেণি','মোবাইল','ঠিকানা','উপস্থিতি','ফি','বকেয়া']];
+        Object.entries(allStudentsCache).forEach(([k,s]) => rows.push([k,s.name||'',s.classDetails||'',s.phone||'',s.address||'',s.attendance||'',s.feeStatus||'',s.dueAmount||0]));
+        downloadCSV('students.csv', rows);
+    }
+    function exportFeesCSV() {
+        const rows = [['শিক্ষার্থী আইডি','শিক্ষার্থী','মাস','পরিমাণ','মাধ্যম','তারিখ']];
+        Object.entries(allStudentsCache).forEach(([sid,s]) => {
+            if (s.fees) Object.values(s.fees).forEach(f => rows.push([sid, s.name||'', f.month||'', f.amount||'', f.method||'', f.date||'']));
+        });
+        downloadCSV('fees.csv', rows);
+    }
+    function exportResultsCSV() {
+        const rows = [['শিক্ষার্থী আইডি','নাম','পরীক্ষা','বিষয়','গ্রেড','তারিখ']];
+        Object.entries(allStudentsCache).forEach(([sid,s]) => {
+            if (s.results) Object.values(s.results).forEach(r => rows.push([sid, s.name||'', r.exam||'', r.subject||'', r.grade||'', r.date||'']));
+        });
+        downloadCSV('results.csv', rows);
+    }
+
+    // ====== Tabs ======
+    function switchAdminTab(name) {
+        document.querySelectorAll('[data-atab]').forEach(b => b.classList.toggle('active', b.dataset.atab === name));
+        document.querySelectorAll('.admin-tab').forEach(el => el.classList.add('hidden'));
+        const t = document.getElementById('aTab_'+name); if (t) t.classList.remove('hidden');
+        if (name === 'overview') renderOverviewCharts();
+        if (name === 'posts') fetchAdminPostsForManagement();
+        if (name === 'results') loadRecentResults();
+        if (name === 'fees') loadRecentFees();
+    }
+    function switchGuardianTab(name) {
+        document.querySelectorAll('[data-gtab]').forEach(b => b.classList.toggle('active', b.dataset.gtab === name));
+        document.querySelectorAll('.guardian-tab').forEach(el => el.classList.add('hidden'));
+        const t = document.getElementById('gTab_'+name); if (t) t.classList.remove('hidden');
+    }
+
+    // Re-render calendar after page load
+    setTimeout(() => renderDynamicCalendar(), 500);
+
+    // Auto-render on guardians tab visitors
+    setTimeout(() => renderOverviewCharts(), 800);
+</script>
 </body>
-                            </html>
+    </html>
