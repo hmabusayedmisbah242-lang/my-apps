@@ -510,38 +510,53 @@
                 </button>
             </div>
 
-            <!-- ADMIN POST SYSTEM (অ্যাডমিনের জন্য আনলিমিটেড পোস্ট করার সুবিধা) -->
-            <div class="glass-card p-5 rounded-2xl space-y-3">
-                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-pen-to-square text-gold-400"></i> ৩. নতুন পোস্ট আপডেট করুন (ছবি ও ভিডিও সহ)
-                </h4>
-                <div class="space-y-3 text-xs">
-                    <textarea id="adminPostText" rows="3" placeholder="এখানে পোস্টের বিবরণ লিখুন..." class="w-full p-3 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></textarea>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <input type="text" id="adminPostMedia" placeholder="ছবি বা ভিডিও লিংক (URL/YouTube Embed Link)" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                        <select id="adminMediaType" class="p-2 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
-                            <option value="image">ছবি (Image)</option>
-                            <option value="video">ভিডিও (Video Link/Embed)</option>
-                        </select>
-                    </div>
-                    <button onclick="addNewAdminPost()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-paper-plane"></i> পোস্ট পাবলিশ করুন
-                    </button>
-                </div>
-            </div>
+            <!-- ADMIN POST SYSTEM (অ্যাডমিনের জন্য আনলিমিটেড পোস্ট ও ডিলিট সুবিধা) -->
+<div class="glass-card p-5 rounded-2xl space-y-3">
+    <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-pen-to-square text-gold-400"></i> ৩. নতুন পোস্ট আপডেট ও ম্যানেজ করুন (ছবি ও ভিডিও সহ)
+    </h4>
+    <div class="space-y-3 text-xs">
+        <textarea id="adminPostText" rows="3" placeholder="এখানে পোস্টের বিবরণ লিখুন..." class="w-full p-3 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></textarea>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input type="text" id="adminPostMedia" placeholder="ছবি বা ভিডিও লিংক (URL/YouTube Embed Link)" class="p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+            <select id="adminMediaType" class="p-2 bg-emerald-950 border border-emerald-700 rounded-xl text-white">
+                <option value="image">ছবি (Image)</option>
+                <option value="video">ভিডিও (Video Link/Embed)</option>
+            </select>
+        </div>
+        <button onclick="addNewAdminPost()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i> পোস্ট পাবলিশ করুন
+        </button>
+    </div>
+    <!-- লাইভ পোস্ট লিস্ট ও ডিলিট অপশন দেখার জন্য কন্টেইনার -->
+    <div class="pt-3 border-t border-emerald-800 space-y-2">
+        <p class="font-bold text-emerald-200">বিদ্যমান পোস্টসমূহ (ডিলিট করতে পারবেন):</p>
+        <div id="adminManagePostsList" class="space-y-2 max-h-48 overflow-y-auto text-xs">
+            <p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p>
+        </div>
+    </div>
+</div>
 
-            <!-- Photo & Video Gallery Manager for Admin -->
-            <div class="glass-card p-5 rounded-2xl space-y-3">
-                <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-photo-film text-gold-400"></i> ৪. গ্যালারিতে ছবি ও ভিডিও অপশন এড করুন
-                </h4>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-                    <input type="text" id="adminGalleryUrl" placeholder="ছবি বা ভিডিও URL..." class="sm:col-span-2 p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
-                    <button onclick="addGalleryItem()" class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold px-3 py-2 rounded-xl">
-                        গ্যালারিতে যুক্ত করুন
-                    </button>
-                </div>
-            </div>
+<!-- Photo & Video Gallery Manager for Admin with Delete Option -->
+<div class="glass-card p-5 rounded-2xl space-y-3">
+    <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-photo-film text-gold-400"></i> ৪. গ্যালারি ম্যানেজমেন্ট (যুক্ত ও ডিলিট করুন)
+    </h4>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+        <input type="text" id="adminGalleryUrl" placeholder="ছবি বা ভিডিও URL..." class="sm:col-span-2 p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white">
+        <button onclick="addGalleryItem()" class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold px-3 py-2 rounded-xl">
+            গ্যালারিতে যুক্ত করুন
+        </button>
+    </div>
+    <!-- গ্যালারির ছবি ডিলিট করার লিস্ট -->
+    <div class="pt-2 border-t border-emerald-800 space-y-2">
+        <p class="font-bold text-emerald-200">গ্যালারির ছবিসমূহ:</p>
+        <div id="adminManageGalleryList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-40 overflow-y-auto">
+            <!-- গ্যালারি আইটেম ও ডিলিট বাটন এখানে শো করবে -->
+        </div>
+    </div>
+</div>
+
 
             <!-- Admin Calendar Attendance/Holiday Manager -->
             <div class="glass-card p-5 rounded-2xl space-y-4">
