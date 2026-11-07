@@ -139,8 +139,8 @@
     <button onclick="showSection('complaintSection')" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-200 hover:bg-amber-500/30 border border-amber-500/40 font-semibold transition shadow"><i class="fa-solid fa-comment-dots mr-1"></i> অভিযোগ বক্স</button>
     <button onclick="showSection('admissionSection')" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/40 font-semibold transition shadow"><i class="fa-solid fa-user-plus mr-1"></i> অনলাইন ভর্তি</button>
     <span class="text-slate-500 self-center">|</span>
-    <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 font-semibold">⚡ অ্যাডমিন</button>
-    <button onclick="quickGuardianDemo()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/30 font-semibold">⚡ অভিভাবক (Nur1)</button>
+    <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 font-semibold">⚡ অ্যাডমিন লগইন</button>
+    <button onclick="quickGuardianDemo()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/30 font-semibold">⚡ অভিভাবক লগইন</button>
 </div>
 
 <!-- MAIN CONTENT -->
@@ -154,7 +154,7 @@
         <div class="relative z-10 space-y-4">
             <span class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider inline-block shadow">স্মার্ট অনলাইন মাদ্রাসা পোর্টাল</span>
             <h2 class="text-2xl md:text-4xl font-extrabold text-amber-300 leading-snug drop-shadow">দুনিয়ার শিক্ষা, আখেরাতের প্রস্তুতি — আমাদের মূল লক্ষ্য</h2>
-            <p class="text-xs md:text-sm text-emerald-100 max-w-2xl leading-relaxed">আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী, তাহফিজ ও আধুনিক সমন্বিত শিক্ষায় শিশুদের চরিত্র গঠন ও মানসম্মত শিক্ষাদান করা হয়।</p>
+            <p class="text-xs md:text-sm text-emerald-100 max-w-2xl leading-relaxed">আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী, আধুনিক সমন্বিত শিক্ষায় শিশুদের চরিত্র গঠন ও মানসম্মত শিক্ষাদান করা হয়।</p>
             <div class="pt-2 flex flex-wrap gap-3">
                 <button onclick="showSection('loginSection')" class="bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-emerald-950 font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-xl transition"><i class="fa-solid fa-right-to-bracket mr-1"></i> লগইন করুন</button>
                 <button onclick="showSection('admissionSection')" class="bg-emerald-700/80 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg border border-emerald-500 transition"><i class="fa-solid fa-user-plus mr-1"></i> অনলাইনে ভর্তি</button>
@@ -191,11 +191,11 @@
                 <i class="fa-solid fa-mosque text-gold-400"></i><h3>আজকের নামাজের সময়সূচি</h3>
             </div>
             <div class="grid grid-cols-5 gap-1 text-center text-[11px] pt-1" id="namazTimesCard">
-                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ফজর</p><p class="text-gold-300 font-bold mt-1" id="namazFajr">৫:০০</p></div>
-                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">জোহর</p><p class="text-gold-300 font-bold mt-1" id="namazDhuhr">১:০০</p></div>
-                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">আসর</p><p class="text-gold-300 font-bold mt-1" id="namazAsr">৪:০০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ফজর</p><p class="text-gold-300 font-bold mt-1" id="namazFajr">৫:৩০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">জোহর</p><p class="text-gold-300 font-bold mt-1" id="namazDhuhr">১:৩০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">আসর</p><p class="text-gold-300 font-bold mt-1" id="namazAsr">৪:৩০</p></div>
                 <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">মাগরিব</p><p class="text-gold-300 font-bold mt-1" id="namazMaghrib">৬:১০</p></div>
-                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ইশা</p><p class="text-gold-300 font-bold mt-1" id="namazIsha">৭:২০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ইশা</p><p class="text-gold-300 font-bold mt-1" id="namazIsha">৭:৩০</p></div>
             </div>
         </div>
         <!-- Hadith -->
@@ -231,8 +231,8 @@
     <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
         <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-calendar-star text-gold-400"></i> আসন্ন ইভেন্ট ও প্রোগ্রাম</h3>
         <div id="eventsList" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">বার্ষিক ইসলামিক সম্মেলন</p><p class="text-slate-300 mt-1">১৪ ডিসেম্বর ২০২৬ • মাদ্রাসা প্রাঙ্গণ</p></div>
-            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">হিফজ সমাপনী অনুষ্ঠান</p><p class="text-slate-300 mt-1">২৫ জানুয়ারি ২০২৭ • প্রধান মিলনায়তন</p></div>
+            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">অভিভাবক সমাবেশ</p><p class="text-slate-300 mt-1">১৪  ২০২৬ • মাদ্রাসা প্রাঙ্গণ</p></div>
+            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">বার্ষিক প্রতিযোগিতা অনুষ্ঠান</p><p class="text-slate-300 mt-1">জানানো হবে ইনশাআল্লাহ • মাদ্রাসা প্রাঙ্গণ</p></div>
         </div>
     </div>
 
