@@ -74,7 +74,7 @@
         @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
         /* Print styles */
         @media print {
-            header, footer, .no-print, #quickNav, #mainNav, #announcementBar { display:none !important; }
+            header, footer, .no-print, #quickNav, #mainNav, #announcementBar, #backToTop, #whatsappBtn { display:none !important; }
             body { background: white !important; color: black !important; }
             .glass-card { background:white !important; border:1px solid #333 !important; box-shadow:none !important; }
         }
@@ -83,9 +83,60 @@
         .id-card { background: linear-gradient(135deg,#064e3b,#022c22); color:white; border:2px solid #fbbf24; }
         .pulse-dot { animation: pulseDot 1.5s ease-in-out infinite; }
         @keyframes pulseDot { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.3);opacity:0.6;} }
+
+        /* ========== Facebook-style loading bar ========== */
+        #nprogress-bar {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0; opacity: 0;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #fde047, #fbbf24);
+            box-shadow: 0 0 10px rgba(251,191,36,0.9), 0 0 6px rgba(251,191,36,0.6);
+            z-index: 99999;
+            transition: width 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+        /* ========== Back-to-top ========== */
+        #backToTop {
+            position: fixed; bottom: 90px; right: 20px;
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #022c22; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; border: none; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(251,191,36,0.5);
+            z-index: 9990; opacity: 0; transform: translateY(20px);
+            transition: opacity .3s, transform .3s;
+        }
+        #backToTop.show { opacity: 1; transform: translateY(0); }
+        /* ========== WhatsApp float ========== */
+        #whatsappBtn {
+            position: fixed; bottom: 25px; right: 20px;
+            width: 54px; height: 54px; border-radius: 50%;
+            background: #25d366; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; z-index: 9991; text-decoration: none;
+            box-shadow: 0 6px 20px rgba(37,211,102,0.5);
+            transition: transform .2s;
+            animation: waPulse 2s infinite;
+        }
+        #whatsappBtn:hover { transform: scale(1.1); }
+        @keyframes waPulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.7); }
+            50% { box-shadow: 0 0 0 14px rgba(37,211,102,0); }
+        }
+        /* ========== Skeleton loader ========== */
+        .skeleton {
+            background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col justify-between">
+
+<!-- Facebook-style top loading bar -->
+<div id="nprogress-bar"></div>
 
 <!-- HEADER -->
 <header class="bg-emerald-950/90 backdrop-blur-md text-white shadow-2xl sticky top-0 z-50 border-b border-gold-500/40 no-print">
@@ -98,7 +149,6 @@
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <!-- Notifications Bell -->
             <div class="relative">
                 <button onclick="toggleNotifications()" class="relative text-gold-300 hover:text-gold-400 p-2 rounded-full hover:bg-emerald-900/60 transition">
                     <i class="fa-solid fa-bell text-base"></i>
@@ -109,7 +159,6 @@
                     <div id="notifList" class="space-y-2 text-slate-300"><p class="text-center py-2 text-slate-500">কোনো নোটিফিকেশন নেই</p></div>
                 </div>
             </div>
-            <!-- Theme Toggle -->
             <button onclick="toggleTheme()" id="themeBtn" class="text-gold-300 hover:text-gold-400 p-2 rounded-full hover:bg-emerald-900/60 transition" title="Theme Palette">
                 <i class="fa-solid fa-moon text-base"></i>
             </button>
@@ -139,8 +188,8 @@
     <button onclick="showSection('complaintSection')" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-200 hover:bg-amber-500/30 border border-amber-500/40 font-semibold transition shadow"><i class="fa-solid fa-comment-dots mr-1"></i> অভিযোগ বক্স</button>
     <button onclick="showSection('admissionSection')" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/40 font-semibold transition shadow"><i class="fa-solid fa-user-plus mr-1"></i> অনলাইন ভর্তি</button>
     <span class="text-slate-500 self-center">|</span>
-    <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 font-semibold">⚡ অ্যাডমিন</button>
-    <button onclick="quickGuardianDemo()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/30 font-semibold">⚡ অভিভাবক (Nur1)</button>
+    <button onclick="quickAdminDemo()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 font-semibold">⚡ অ্যাডমিন লগইন</button>
+    <button onclick="quickGuardianDemo()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/30 font-semibold">⚡ অভিভাবক লগইন</button>
 </div>
 
 <!-- MAIN CONTENT -->
@@ -153,8 +202,8 @@
         <div class="absolute -right-8 -bottom-8 opacity-10 text-9xl"><i class="fa-solid fa-mosque"></i></div>
         <div class="relative z-10 space-y-4">
             <span class="bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider inline-block shadow">স্মার্ট অনলাইন মাদ্রাসা পোর্টাল</span>
-            <h2 class="text-2xl md:text-4xl font-extrabold text-amber-300 leading-snug drop-shadow">দুনিয়ার শিক্ষা, আখেরাতের প্রস্তুতি — আমাদের মূল লক্ষ্য</h2>
-            <p class="text-xs md:text-sm text-emerald-100 max-w-2xl leading-relaxed">আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী, তাহফিজ ও আধুনিক সমন্বিত শিক্ষায় শিশুদের চরিত্র গঠন ও মানসম্মত শিক্ষাদান করা হয়।</p>
+            <h2 id="heroTitle" class="text-2xl md:text-4xl font-extrabold text-amber-300 leading-snug drop-shadow">দুনিয়ার শিক্ষা, আখেরাতের প্রস্তুতি — আমাদের মূল লক্ষ্য</h2>
+            <p id="heroSubtitle" class="text-xs md:text-sm text-emerald-100 max-w-2xl leading-relaxed">আন-নুর ইন্টারন্যাশনাল মাদ্রাসায় নূরানী, আধুনিক সমন্বিত শিক্ষায় শিশুদের চরিত্র গঠন ও মানসম্মত শিক্ষাদান করা হয়।</p>
             <div class="pt-2 flex flex-wrap gap-3">
                 <button onclick="showSection('loginSection')" class="bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-emerald-950 font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-xl transition"><i class="fa-solid fa-right-to-bracket mr-1"></i> লগইন করুন</button>
                 <button onclick="showSection('admissionSection')" class="bg-emerald-700/80 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-lg border border-emerald-500 transition"><i class="fa-solid fa-user-plus mr-1"></i> অনলাইনে ভর্তি</button>
@@ -183,22 +232,20 @@
         </div>
     </div>
 
-    <!-- Namaz Times + Hadith + Events Row -->
+    <!-- Namaz Times + Hadith -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Namaz times -->
         <div class="glass-card p-5 rounded-2xl space-y-2 border border-gold-500/30">
             <div class="flex items-center gap-2 text-amber-300 font-bold text-sm border-b border-emerald-700/50 pb-1">
                 <i class="fa-solid fa-mosque text-gold-400"></i><h3>আজকের নামাজের সময়সূচি</h3>
             </div>
-            <div class="grid grid-cols-5 gap-1 text-center text-[11px] pt-1" id="namazTimesCard">
-                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ফজর</p><p class="text-gold-300 font-bold mt-1" id="namazFajr">৫:০০</p></div>
-                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">জোহর</p><p class="text-gold-300 font-bold mt-1" id="namazDhuhr">১:০০</p></div>
-                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">আসর</p><p class="text-gold-300 font-bold mt-1" id="namazAsr">৪:০০</p></div>
+            <div class="grid grid-cols-5 gap-1 text-center text-[11px] pt-1">
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ফজর</p><p class="text-gold-300 font-bold mt-1" id="namazFajr">৫:৩০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">জোহর</p><p class="text-gold-300 font-bold mt-1" id="namazDhuhr">১:৩০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">আসর</p><p class="text-gold-300 font-bold mt-1" id="namazAsr">৪:৩০</p></div>
                 <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">মাগরিব</p><p class="text-gold-300 font-bold mt-1" id="namazMaghrib">৬:১০</p></div>
-                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ইশা</p><p class="text-gold-300 font-bold mt-1" id="namazIsha">৭:২০</p></div>
+                <div class="bg-emerald-950/60 rounded-lg p-2"><p class="text-slate-300">ইশা</p><p class="text-gold-300 font-bold mt-1" id="namazIsha">৭:৩০</p></div>
             </div>
         </div>
-        <!-- Hadith -->
         <div class="glass-card p-5 rounded-2xl space-y-2 border border-gold-500/30">
             <div class="flex items-center gap-2 text-amber-300 font-bold text-sm border-b border-emerald-700/50 pb-1">
                 <i class="fa-solid fa-quote-left text-gold-400"></i><h3>দৈনন্দিন হাদিস ও বাণী</h3>
@@ -208,7 +255,7 @@
         </div>
     </div>
 
-    <!-- Features Grid -->
+    <!-- Features -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="glass-card p-5 rounded-2xl space-y-2 border-t-4 border-emerald-500">
             <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-book-quran"></i></div>
@@ -227,22 +274,25 @@
         </div>
     </div>
 
-    <!-- Events / Notices with countdown -->
+    <!-- Events -->
     <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
         <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-calendar-star text-gold-400"></i> আসন্ন ইভেন্ট ও প্রোগ্রাম</h3>
         <div id="eventsList" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">বার্ষিক ইসলামিক সম্মেলন</p><p class="text-slate-300 mt-1">১৪ ডিসেম্বর ২০২৬ • মাদ্রাসা প্রাঙ্গণ</p></div>
-            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">হিফজ সমাপনী অনুষ্ঠান</p><p class="text-slate-300 mt-1">২৫ জানুয়ারি ২০২৭ • প্রধান মিলনায়তন</p></div>
+            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">অভিভাবক সমাবেশ</p><p class="text-slate-300 mt-1">২০ নভেম্বর ২০২৬ • মাদ্রাসা প্রাঙ্গণ</p></div>
+            <div class="p-3 bg-emerald-950/70 rounded-xl border border-emerald-700 text-xs"><p class="font-bold text-gold-300">বার্ষিক প্রতিযোগিতা অনুষ্ঠান</p><p class="text-slate-300 mt-1">জানানো হবে ইনশাআল্লাহ • মাদ্রাসা প্রাঙ্গণ</p></div>
         </div>
     </div>
 
-    <!-- Gallery -->
+    <!-- Gallery (Islamic) -->
     <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
         <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-images text-gold-400"></i> মাদ্রাসা ফটো ও ভিডিও গ্যালারি</h3>
         <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=500" alt="Madrasa Campus" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
-            <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500" alt="Students Class" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
-            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500" alt="Education Activity" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md">
+            <img src="https://images.unsplash.com/photo-1519817650390-64a93db51149?w=500&auto=format" alt="মসজিদ" loading="lazy" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md hover:scale-105 transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=500&auto=format" alt="কুরআন" loading="lazy" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md hover:scale-105 transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=500&auto=format" alt="নামাজ" loading="lazy" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md hover:scale-105 transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=500&auto=format" alt="ইসলামিক স্থাপত্য" loading="lazy" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md hover:scale-105 transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1584286595398-a59f21d313f5?w=500&auto=format" alt="ক্যালিগ্রাফি" loading="lazy" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md hover:scale-105 transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?w=500&auto=format" alt="মসজিদ" loading="lazy" class="w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md hover:scale-105 transition cursor-pointer">
         </div>
     </div>
 
@@ -255,31 +305,31 @@
         <div id="publicPostsFeed" class="space-y-5"><p class="text-xs text-slate-400 text-center py-4">পোস্ট লোড হচ্ছে...</p></div>
     </div>
 
-    <!-- About Section -->
+    <!-- About -->
     <div class="glass-card p-6 rounded-2xl space-y-3 border border-emerald-700/50">
         <h3 class="text-sm font-bold text-amber-300 flex items-center gap-2"><i class="fa-solid fa-circle-info text-gold-400"></i> আমাদের সম্পর্কে</h3>
         <p class="text-xs md:text-sm text-slate-300 leading-relaxed">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা দিনাজপুরের একটি অন্যতম দ্বীনি ও আধুনিক শিক্ষাপ্রতিষ্ঠান, যেখানে শিশুদের কুরআন, হাদিস ও আধুনিক শিক্ষার সমন্বয়ে গড়ে তোলা হয়। আমাদের অভিজ্ঞ শিক্ষকমণ্ডলী ও সুশৃঙ্খল পরিবেশ শিক্ষার্থীদের নৈতিক ও একাডেমিক উৎকর্ষ নিশ্চিত করে।</p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-book text-gold-400 mr-1"></i><b class="text-gold-300">নূরানী বিভাগ</b><p class="text-slate-300 mt-1">শুদ্ধ কুরআন তিলাওয়াত ও প্রাথমিক ইসলামিক শিক্ষা।</p></div>
-            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-brain text-gold-400 mr-1"></i><b class="text-gold-300">হিফজ বিভাগ</b><p class="text-slate-300 mt-1">সম্পূর্ণ কুরআন হিফজের বিশেষ কোর্স।</p></div>
-            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-graduation-cap text-gold-400 mr-1"></i><b class="text-gold-300">আধুনিক শিক্ষা</b><p class="text-slate-300 mt-1">বাংলা, ইংরেজি, গণিত ও বিজ্ঞান বিষয়ে পাঠদান।</p></div>
+            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-book text-gold-400 mr-1"></i><b class="text-gold-300">নূরানী বিভাগ</b><p class="text-slate-300 mt-1">শুদ্ধ কুরআন তিলাওয়াত ও প্রাথমিক ইসলামিক শিক্ষা ২য় এবং ৩য় শ্রেণির শিক্ষার্থী।</p></div>
+            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-brain text-gold-400 mr-1"></i><b class="text-gold-300">হিফজ বিভাগ</b><p class="text-slate-300 mt-1">প্রশিক্ষণপ্রাপ্ত শিক্ষকমন্ডলী দ্বারা বাংলা, ইংরেজি, আরবি, লেখা সুন্দর করার সু-ব্যবস্থা</p></div>
+            <div class="bg-emerald-950/60 rounded-xl p-3 text-xs"><i class="fa-solid fa-graduation-cap text-gold-400 mr-1"></i><b class="text-gold-300">আধুনিক শিক্ষা</b><p class="text-slate-300 mt-1">বাংলা, ইংরেজি, গণিত, আরবি, সাধারণ জ্ঞান ও বিজ্ঞান বিষয়ে পাঠদান।</p></div>
         </div>
     </div>
 
-    <!-- FAQ Accordion -->
+    <!-- FAQ -->
     <div class="glass-card p-5 rounded-2xl space-y-2 border border-emerald-700/50">
         <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-circle-question text-gold-400"></i> সাধারণ জিজ্ঞাসা (FAQ)</h3>
         <div id="faqList" class="space-y-2"></div>
     </div>
 
-    <!-- Contact Section -->
+    <!-- Contact -->
     <div class="glass-card p-5 rounded-2xl space-y-3 border border-emerald-700/50">
         <h3 class="text-sm font-bold text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-address-book text-gold-400"></i> যোগাযোগ করুন</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div class="flex items-start gap-2"><i class="fa-solid fa-location-dot text-gold-400 mt-0.5"></i><p>৭ নং নিউটাউন, সদর, দিনাজপুর</p></div>
             <div class="flex items-start gap-2"><i class="fa-solid fa-phone text-gold-400 mt-0.5"></i><p>০১৭৯৭১১১৫৪২, ০১৭২২৯৮০৮৯৭</p></div>
             <div class="flex items-start gap-2"><i class="fa-solid fa-envelope text-gold-400 mt-0.5"></i><p>info@annoor-madrasa.edu.bd</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-clock text-gold-400 mt-0.5"></i><p>শনি–বৃহস্পতি, সকাল ৮টা – বিকাল ৪টা</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-clock text-gold-400 mt-0.5"></i><p>শনি–বৃহস্পতি, সকাল ০৮টা থেকে বিকেল ০৫টা পর্যন্ত</p></div>
         </div>
     </div>
 </div>
@@ -373,7 +423,6 @@
 
 <!-- ========== 5. GUARDIAN DASHBOARD ========== -->
 <div id="guardianDashboard" class="hidden space-y-6 tab-content">
-    <!-- Profile Header -->
     <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-5 md:p-6 rounded-3xl shadow-xl relative overflow-hidden border border-gold-500/30">
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 relative z-10">
             <img id="gStudentPhoto" src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=500" alt="Student" class="w-20 h-20 rounded-2xl border-2 border-gold-400 object-cover shadow-md flex-shrink-0">
@@ -387,7 +436,6 @@
         </div>
     </div>
 
-    <!-- Guardian Tabs -->
     <div class="flex overflow-x-auto scrollbar-thin border-b border-emerald-700/60 text-xs font-semibold no-print">
         <button onclick="switchGuardianTab('overview')" data-gtab="overview" class="tab-btn active px-4 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-gauge mr-1"></i>ওভারভিউ</button>
         <button onclick="switchGuardianTab('results')" data-gtab="results" class="tab-btn px-4 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-file-signature mr-1"></i>রেজাল্ট</button>
@@ -396,7 +444,6 @@
         <button onclick="switchGuardianTab('documents')" data-gtab="documents" class="tab-btn px-4 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-folder-open mr-1"></i>ডকুমেন্ট</button>
     </div>
 
-    <!-- Guardian Tab: Overview -->
     <div id="gTab_overview" class="space-y-4 guardian-tab">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div class="glass-card p-4 rounded-2xl text-center border-t-2 border-emerald-400"><div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-base"><i class="fa-solid fa-calendar-check"></i></div><h4 class="text-[11px] text-slate-300">উপস্থিতি</h4><p id="gAttendance" class="text-xs font-bold text-emerald-400 mt-1">লোড হচ্ছে...</p></div>
@@ -410,7 +457,6 @@
         </div>
     </div>
 
-    <!-- Guardian Tab: Results -->
     <div id="gTab_results" class="hidden space-y-4 guardian-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <div class="flex justify-between items-center border-b border-emerald-700/50 pb-2">
@@ -421,7 +467,6 @@
         </div>
     </div>
 
-    <!-- Guardian Tab: Fees -->
     <div id="gTab_fees" class="hidden space-y-4 guardian-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-receipt text-gold-400 mr-1"></i> ফি পেমেন্ট হিস্টোরি</h4>
@@ -429,7 +474,6 @@
         </div>
     </div>
 
-    <!-- Guardian Tab: Attendance -->
     <div id="gTab_attendance" class="hidden space-y-4 guardian-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <div class="flex flex-col sm:flex-row justify-between items-center border-b border-emerald-700/50 pb-2 gap-2">
@@ -442,13 +486,13 @@
                         <option value="9">অক্টোবর</option><option value="10">নভেম্বর</option><option value="11">ডিসেম্বর</option>
                     </select>
                     <select id="calendarYearSelect" onchange="renderDynamicCalendar()" class="p-1.5 bg-slate-100 border rounded-lg font-semibold">
-                        <option value="2026">২০২৬</option><option value="2027" selected>২০২৭</option>
+                        <option value="2026">২০২৬</option><option value="2027">২০২৭</option>
                     </select>
                 </div>
             </div>
             <div class="flex flex-wrap gap-3 text-[11px] justify-center py-1">
-                <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-500 rounded-full"></span>খোলা/উপস্থিত</span>
-                <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full"></span>ছুটি/অনুপস্থিত</span>
+                <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-500 rounded-full"></span>মাদ্রাসা খোলা</span>
+                <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full"></span>মাদ্রাসা ছুটি</span>
                 <span class="flex items-center gap-1"><span class="w-3 h-3 bg-slate-600 rounded-full"></span>সাধারণ</span>
             </div>
             <div class="overflow-x-auto">
@@ -458,7 +502,6 @@
         </div>
     </div>
 
-    <!-- Guardian Tab: Documents -->
     <div id="gTab_documents" class="hidden space-y-4 guardian-tab">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="glass-card p-5 rounded-2xl text-center space-y-2">
@@ -487,7 +530,6 @@
         <span class="bg-emerald-950 px-3 py-1 rounded-xl text-xs font-semibold text-gold-400 border border-gold-500/40"><span class="pulse-dot inline-block w-2 h-2 bg-green-400 rounded-full mr-1"></span>অ্যাডমিন সেশন</span>
     </div>
 
-    <!-- Admin Tabs -->
     <div class="flex overflow-x-auto scrollbar-thin border-b border-emerald-700/60 text-xs font-semibold no-print">
         <button onclick="switchAdminTab('overview')" data-atab="overview" class="tab-btn active px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-gauge mr-1"></i>ওভারভিউ</button>
         <button onclick="switchAdminTab('students')" data-atab="students" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-user-graduate mr-1"></i>ছাত্র</button>
@@ -500,9 +542,10 @@
         <button onclick="switchAdminTab('notices')" data-atab="notices" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-bullhorn mr-1"></i>নোটিশ</button>
         <button onclick="switchAdminTab('calendar')" data-atab="calendar" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-calendar-check mr-1"></i>ক্যালেন্ডার</button>
         <button onclick="switchAdminTab('reports')" data-atab="reports" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-chart-pie mr-1"></i>রিপোর্ট</button>
+        <button onclick="switchAdminTab('settings')" data-atab="settings" class="tab-btn px-3 py-2 whitespace-nowrap text-slate-300"><i class="fa-solid fa-gear mr-1"></i>সেটিংস</button>
     </div>
 
-    <!-- ====== Admin Overview ====== -->
+    <!-- Overview -->
     <div id="aTab_overview" class="space-y-4 admin-tab">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div class="glass-card p-4 rounded-2xl text-center stat-card border-t-2 border-gold-400"><p id="admStatStudents" class="text-2xl font-bold text-gold-300 font-digital">০</p><p class="text-[11px] text-slate-300 mt-1"><i class="fa-solid fa-user-graduate mr-1"></i> ছাত্র</p></div>
@@ -517,7 +560,7 @@
         <div class="glass-card p-5 rounded-2xl space-y-3"><h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-clock-rotate-left text-gold-400 mr-1"></i> সাম্প্রতিক বকেয়া তালিকা</h4><div id="adminDueList" class="space-y-1 text-xs"><p class="text-slate-400 text-center py-2">লোড হচ্ছে...</p></div></div>
     </div>
 
-    <!-- ====== Admin Students ====== -->
+    <!-- Students -->
     <div id="aTab_students" class="hidden space-y-4 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-4">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center gap-2"><i class="fa-solid fa-user-plus text-gold-400"></i> নতুন ছাত্র যোগ করুন</h4>
@@ -555,7 +598,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Teachers ====== -->
+    <!-- Teachers -->
     <div id="aTab_teachers" class="hidden space-y-4 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-chalkboard-user text-gold-400 mr-1"></i> নতুন শিক্ষক যোগ করুন</h4>
@@ -573,7 +616,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Results ====== -->
+    <!-- Results -->
     <div id="aTab_results" class="hidden space-y-4 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-file-signature text-gold-400 mr-1"></i> পরীক্ষার রেজাল্ট এন্ট্রি</h4>
@@ -593,7 +636,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Fees ====== -->
+    <!-- Fees -->
     <div id="aTab_fees" class="hidden space-y-4 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-money-bill-wave text-gold-400 mr-1"></i> ফি কালেকশন এন্ট্রি</h4>
@@ -611,7 +654,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Posts ====== -->
+    <!-- Posts -->
     <div id="aTab_posts" class="hidden space-y-3 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-pen-to-square text-gold-400 mr-1"></i> নতুন পোস্ট (ছবি/ভিডিও সহ)</h4>
@@ -630,7 +673,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Gallery ====== -->
+    <!-- Gallery -->
     <div id="aTab_gallery" class="hidden space-y-3 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-photo-film text-gold-400 mr-1"></i> গ্যালারি ম্যানেজ</h4>
@@ -645,7 +688,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Complaints ====== -->
+    <!-- Complaints -->
     <div id="aTab_complaints" class="hidden space-y-3 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-2">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2 flex items-center justify-between"><span><i class="fa-solid fa-inbox text-gold-400 mr-1"></i> অভিভাবক অভিযোগসমূহ</span><span id="complaintCount" class="bg-red-500/20 text-red-300 text-[10px] px-2 py-0.5 rounded-full font-bold border border-red-500/30">০টি</span></h4>
@@ -653,7 +696,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Notices ====== -->
+    <!-- Notices -->
     <div id="aTab_notices" class="hidden space-y-3 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-bullhorn text-gold-400 mr-1"></i> স্ক্রলিং নোটিশ</h4>
@@ -676,7 +719,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Calendar ====== -->
+    <!-- Calendar -->
     <div id="aTab_calendar" class="hidden space-y-3 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-calendar-check text-gold-400 mr-1"></i> ক্যালেন্ডার ছুটি ও উপস্থিতি</h4>
@@ -688,7 +731,7 @@
         </div>
     </div>
 
-    <!-- ====== Admin Reports ====== -->
+    <!-- Reports -->
     <div id="aTab_reports" class="hidden space-y-3 admin-tab">
         <div class="glass-card p-5 rounded-2xl space-y-3">
             <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-chart-pie text-gold-400 mr-1"></i> রিপোর্ট ও এক্সপোর্ট</h4>
@@ -700,6 +743,49 @@
             </div>
         </div>
     </div>
+
+    <!-- Settings (NEW) -->
+    <div id="aTab_settings" class="hidden space-y-4 admin-tab">
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-book-quran text-gold-400 mr-1"></i> হাদিস সম্পাদনা</h4>
+            <div class="space-y-2 text-xs">
+                <div><label class="block font-semibold text-slate-200 mb-1">হাদিস টেক্সট:</label>
+                    <textarea id="settingsHadithText" rows="2" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></textarea></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">রেফারেন্স:</label>
+                    <input type="text" id="settingsHadithRef" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <button onclick="saveHadithSettings()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2 rounded-xl">হাদিস সেভ করুন</button>
+            </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-mosque text-gold-400 mr-1"></i> নামাজের সময়সূচি</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
+                <div><label class="block font-semibold text-slate-200 mb-1">ফজর</label><input type="text" id="setNamazFajr" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">জোহর</label><input type="text" id="setNamazDhuhr" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">আসর</label><input type="text" id="setNamazAsr" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">মাগরিব</label><input type="text" id="setNamazMaghrib" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">ইশা</label><input type="text" id="setNamazIsha" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+            </div>
+            <button onclick="saveNamazSettings()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2 rounded-xl text-xs">নামাজের সময় সেভ করুন</button>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-circle-info text-gold-400 mr-1"></i> হিরো ব্যানার সম্পাদনা</h4>
+            <div class="space-y-2 text-xs">
+                <div><label class="block font-semibold text-slate-200 mb-1">ব্যানার শিরোনাম:</label>
+                    <input type="text" id="settingsHeroTitle" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></div>
+                <div><label class="block font-semibold text-slate-200 mb-1">ব্যানার সাব-টেক্সট:</label>
+                    <textarea id="settingsHeroSubtitle" rows="2" class="w-full p-2 bg-emerald-950/80 border border-emerald-700 rounded-xl text-white"></textarea></div>
+                <button onclick="saveHeroSettings()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 text-emerald-950 font-bold py-2 rounded-xl">ব্যানার সেভ করুন</button>
+            </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold text-sm text-amber-300 border-b border-emerald-700/50 pb-2"><i class="fa-solid fa-database text-gold-400 mr-1"></i> ডেটা ব্যাকআপ</h4>
+            <button onclick="backupAllData()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs"><i class="fa-solid fa-download mr-1"></i> সম্পূর্ণ ডেটা JSON ডাউনলোড</button>
+        </div>
+    </div>
+
 </div>
 
 </main>
@@ -713,13 +799,23 @@
             <button onclick="showSection('complaintSection')" class="hover:text-gold-400">অভিযোগ</button>
             <button onclick="showSection('loginSection')" class="hover:text-gold-400">লগইন</button>
         </div>
-        <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong> | স্মার্ট ডিজিটাল এডুকেশন সিস্টেম © ২০২৭</p>
-        <p class="text-[10px] text-slate-500">Developed with ❤️ for Deeni Education</p>
+        <p>পরিচালনায়: <strong>আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</strong> | স্মার্ট ডিজিটাল এডুকেশন সিস্টেম © ২০২৬</p>
+        <p class="text-[10px] text-slate-500">Developed with ❤️ HM Abu Sayed Misbah</p>
     </div>
 </footer>
 
+<!-- Floating action buttons -->
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="উপরে যান">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<a id="whatsappBtn" href="https://wa.me/8801797111542?text=আসসালামু%20আলাইকুম%2C%20আন-নুর%20মাদ্রাসা%20সম্পর্কে%20জানতে%20চাই।" target="_blank" rel="noopener" title="WhatsApp এ যোগাযোগ">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
+
 <!-- ==================== JAVASCRIPT ==================== -->
 <script>
+    // ==================== Firebase Init ====================
     const firebaseConfig = {
         apiKey: "AIzaSyDlX9EiOIisDR_n22nY47kZBWUvcvYEd3E",
         authDomain: "misbah-feed0.firebaseapp.com",
@@ -734,20 +830,44 @@
     const auth = firebase.auth();
     const database = firebase.database();
 
-    // Set auth persistence
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
 
+    // ==================== State ====================
     let currentUserRole = null;
     let currentUserId = null;
     let adminCalendarData = {};
     let allStudentsCache = {};
     let allPostsCache = {};
-    let allFeesCache = {};
-    let allResultsCache = {};
     let guardianProgressChartInstance = null, adminFeeChartInstance = null, adminClassChartInstance = null;
     let isLightTheme = false;
 
-    // ====== Toast & Alert helpers ======
+    // ==================== Loading Bar ====================
+    let __loadingTicker = null;
+    function startLoading() {
+        const bar = document.getElementById('nprogress-bar');
+        if (!bar) return;
+        clearInterval(__loadingTicker);
+        bar.style.opacity = '1';
+        bar.style.width = '0';
+        let p = 0;
+        __loadingTicker = setInterval(() => {
+            p += Math.random() * 12;
+            if (p > 88) p = 88;
+            bar.style.width = p + '%';
+        }, 180);
+    }
+    function finishLoading() {
+        const bar = document.getElementById('nprogress-bar');
+        if (!bar) return;
+        clearInterval(__loadingTicker);
+        bar.style.width = '100%';
+        setTimeout(() => {
+            bar.style.opacity = '0';
+            setTimeout(() => { bar.style.width = '0'; }, 350);
+        }, 200);
+    }
+
+    // ==================== Toast & Helpers ====================
     function showToast(msg, type='success') {
         Toastify({
             text: msg,
@@ -764,7 +884,16 @@
         confirmButtonText:'হ্যাঁ', cancelButtonText:'বাতিল'
     }).then(r => r.isConfirmed);
 
-    // ====== Theme ======
+    // ==================== Debounce ====================
+    function debounce(fn, delay = 250) {
+        let t;
+        return function (...args) {
+            clearTimeout(t);
+            t = setTimeout(() => fn.apply(this, args), delay);
+        };
+    }
+
+    // ==================== Theme ====================
     function toggleTheme() {
         isLightTheme = !isLightTheme;
         document.body.classList.toggle('light-theme', isLightTheme);
@@ -772,10 +901,15 @@
         localStorage.setItem('annoor-theme', isLightTheme ? 'light' : 'dark');
     }
     (function initTheme(){
-        if(localStorage.getItem('annoor-theme')==='light'){ isLightTheme=true; document.body.classList.add('light-theme'); }
+        if(localStorage.getItem('annoor-theme')==='light'){
+            isLightTheme=true;
+            document.body.classList.add('light-theme');
+            const b = document.getElementById('themeBtn');
+            if(b) b.innerHTML = '<i class="fa-solid fa-sun text-base"></i>';
+        }
     })();
 
-    // ====== Clock ======
+    // ==================== Live Clock ====================
     function startLiveClock() {
         const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
         const toBn = s => String(s).split('').map(c=>bnNums[c]||c).join('');
@@ -791,8 +925,26 @@
         }, 1000);
     }
 
-    // ====== Init ======
+    // ==================== Filter (debounced wrappers) ====================
+    const __filterStudentsDebounced = debounce(() => {
+        const q = (document.getElementById('studentSearchInput')?.value || '').toLowerCase();
+        document.querySelectorAll('.student-item').forEach(item => {
+            item.style.display = (item.getAttribute('data-keywords') || '').includes(q) ? 'flex' : 'none';
+        });
+    }, 180);
+    function filterStudents() { __filterStudentsDebounced(); }
+
+    const __filterPostsDebounced = debounce(() => {
+        const q = (document.getElementById('postSearchInput')?.value || '').toLowerCase();
+        document.querySelectorAll('.post-item').forEach(el => {
+            el.style.display = (el.getAttribute('data-keywords') || '').includes(q) ? 'block' : 'none';
+        });
+    }, 180);
+    function filterPosts() { __filterPostsDebounced(); }
+
+    // ==================== Init ====================
     window.onload = function() {
+        startLoading();
         startLiveClock();
         listenGlobalSettings();
         loadCalendarDataFromFirebase();
@@ -804,11 +956,56 @@
         loadFaqs();
         setupNamazTimes();
 
+        // Set current month/year in calendar selectors
+        const mEl = document.getElementById('calendarMonthSelect');
+        const yEl = document.getElementById('calendarYearSelect');
+        if (mEl) mEl.value = String(new Date().getMonth());
+        if (yEl) {
+            const curYear = new Date().getFullYear();
+            const hasCur = Array.from(yEl.options).some(o => o.value === String(curYear));
+            if (!hasCur) {
+                const opt = document.createElement('option');
+                opt.value = String(curYear);
+                opt.innerText = curYear;
+                yEl.appendChild(opt);
+            }
+            yEl.value = String(curYear);
+        }
+        setTimeout(() => renderDynamicCalendar(), 400);
+
+        // Close notifications on outside click
+        document.addEventListener('click', (e) => {
+            const notif = document.getElementById('notifDropdown');
+            const bell = document.querySelector('button[onclick="toggleNotifications()"]');
+            if (notif && !notif.contains(e.target) && bell && !bell.contains(e.target)) {
+                notif.classList.add('hidden');
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key.toLowerCase() === 'l') { e.preventDefault(); showSection('loginSection'); }
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); showSection('publicView'); }
+            if (e.key === 'Escape') {
+                const nd = document.getElementById('notifDropdown');
+                if (nd) nd.classList.add('hidden');
+            }
+        });
+
+        // Scroll for back-to-top
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (!btn) return;
+            if (window.scrollY > 300) btn.classList.add('show');
+            else btn.classList.remove('show');
+        }, { passive: true });
+
         auth.onAuthStateChanged((user) => {
             if (user) {
                 if (user.email === 'hmabusayedmisbah242@gmail.com') {
                     currentUserRole = 'admin'; currentUserId = 'Admin';
                     setupNavAfterLogin(); showSection('adminDashboard'); fetchComplaintsForAdmin();
+                    setTimeout(renderOverviewCharts, 150);
                 } else {
                     currentUserRole = 'guardian';
                     const prefix = user.email.split('@')[0];
@@ -816,24 +1013,39 @@
                     setupNavAfterLogin(); fetchStudentData(currentUserId); showSection('guardianDashboard');
                 }
             }
+            finishLoading();
         });
+
+        setTimeout(finishLoading, 1500);
     };
 
-    // ====== Global Settings ======
+    // ==================== Global Settings ====================
     function listenGlobalSettings() {
         database.ref('settings/notice').on('value', (snap) => {
-            const v = snap.val(); if(v) document.getElementById('liveNoticeBar').innerText = v;
+            const v = snap.val(); if (v) {
+                const el = document.getElementById('liveNoticeBar');
+                if (el) el.innerText = v;
+            }
         });
         database.ref('settings/hadith').on('value', (snap) => {
             const d = snap.val();
-            if(d){
-                document.getElementById('displayHadithText').innerText = `"${d.text}"`;
-                document.getElementById('displayHadithRef').innerText = `— ${d.ref}`;
+            if (d) {
+                const t = document.getElementById('displayHadithText');
+                const r = document.getElementById('displayHadithRef');
+                if (t) t.innerText = `"${d.text}"`;
+                if (r) r.innerText = `— ${d.ref}`;
             }
+        });
+        database.ref('settings/hero').on('value', (snap) => {
+            const h = snap.val(); if (!h) return;
+            const titleEl = document.getElementById('heroTitle');
+            const subEl = document.getElementById('heroSubtitle');
+            if (titleEl && h.title) titleEl.innerText = h.title;
+            if (subEl && h.subtitle) subEl.innerText = h.subtitle;
         });
     }
 
-    // ====== Namaz (static fallback, easily editable) ======
+    // ==================== Namaz Times ====================
     function setupNamazTimes() {
         const tl = { fajr:'৫:০০', dhuhr:'১:০০', asr:'৪:০০', maghrib:'৬:১০', isha:'৭:২০' };
         database.ref('settings/namaz').once('value').then(snap => {
@@ -847,7 +1059,7 @@
         }).catch(()=>{});
     }
 
-    // ====== FAQs ======
+    // ==================== FAQs ====================
     function loadFaqs() {
         const faqs = [
             {q:'ভর্তি ফি কত?', a:'শ্রেণি ভেদে ভর্তি ফি ৩,০০০ থেকে ৫,০০০ টাকা।'},
@@ -876,28 +1088,39 @@
         ic.style.transform = a.classList.contains('hidden') ? 'rotate(0)' : 'rotate(180deg)';
     }
 
-    // ====== Section switching ======
+    // ==================== Section Switch ====================
     function showSection(sectionId) {
+        startLoading();
         ['publicView','loginSection','complaintSection','guardianDashboard','adminDashboard','admissionSection'].forEach(id => {
             const el = document.getElementById(id); if(el) el.classList.add('hidden');
         });
         const target = document.getElementById(sectionId);
-        if (target) { target.classList.remove('hidden'); window.scrollTo({ top:0, behavior:'smooth' }); }
+        if (target) {
+            target.classList.remove('hidden');
+            window.scrollTo({ top:0, behavior:'smooth' });
+            target.classList.remove('tab-content');
+            void target.offsetWidth;
+            target.classList.add('tab-content');
+        }
+        setTimeout(finishLoading, 350);
     }
 
-    // ====== Login ======
+    // ==================== Auth / Login ====================
     function quickAdminDemo() {
         document.getElementById('loginEmail').value = 'hmabusayedmisbah242@gmail.com';
         document.getElementById('loginPassword').value = '123456';
         showSection('loginSection');
+        showToast('অ্যাডমিন ডেমো — পাসওয়ার্ড: 123456', 'warning');
     }
     function quickGuardianDemo() {
         document.getElementById('loginEmail').value = 'Nur1';
         document.getElementById('loginPassword').value = '123456';
         showSection('loginSection');
+        showToast('অভিভাবক ডেমো — পাসওয়ার্ড: 123456', 'warning');
     }
     function handleLogin(e) {
         e.preventDefault();
+        startLoading();
         const inputVal = document.getElementById('loginEmail').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
         const errDiv = document.getElementById('loginError');
@@ -910,7 +1133,7 @@
         auth.signInWithEmailAndPassword(emailToUse, pass)
             .then(() => { errDiv.classList.add('hidden'); showToast('লগইন সফল!'); })
             .catch(() => { errDiv.classList.remove('hidden'); showToast('ভুল আইডি/পাসওয়ার্ড', 'error'); })
-            .finally(() => { btn.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-1"></i> সাইন ইন'; btn.disabled = false; });
+            .finally(() => { btn.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-1"></i> সাইন ইন'; btn.disabled = false; finishLoading(); });
     }
     function forgotPassword() {
         Swal.fire({ title:'পাসওয়ার্ড রিসেট', input:'email', inputLabel:'আপনার ইমেইল দিন', inputPlaceholder:'you@example.com',
@@ -932,14 +1155,14 @@
         });
     }
     function setupNavAfterLogin() {
-        document.getElementById('logoutBtn').classList.remove('hidden');
-        document.getElementById('logoutBtn').style.display = 'flex';
+        const lo = document.getElementById('logoutBtn');
+        lo.classList.remove('hidden'); lo.style.display = 'flex';
         const b = document.getElementById('roleBadge');
         b.classList.remove('hidden');
         b.innerText = currentUserRole === 'admin' ? 'অ্যাডমিন' : 'অভিভাবক (' + currentUserId + ')';
     }
 
-    // ====== Announcement / notifications ======
+    // ==================== Notifications ====================
     function toggleNotifications() {
         const d = document.getElementById('notifDropdown');
         d.classList.toggle('hidden');
@@ -962,10 +1185,11 @@
         list.innerHTML = entries.map(n => `<div class="p-2 bg-emerald-900/60 rounded-lg border border-emerald-800">${n.msg}</div>`).join('');
     });
 
-    // ====== Calendar ======
+    // ==================== Calendar ====================
     function loadCalendarDataFromFirebase() {
         database.ref('calendarStatus').on('value', snap => {
-            adminCalendarData = snap.val() || {}; renderDynamicCalendar();
+            adminCalendarData = snap.val() || {};
+            renderDynamicCalendar();
         });
     }
     function renderDynamicCalendar() {
@@ -995,14 +1219,13 @@
         database.ref('calendarStatus/'+dv).set(sv).then(() => showToast('ক্যালেন্ডার আপডেটড'));
     }
 
-    // ====== Students ======
+    // ==================== Students ====================
     function listenStudentList() {
         database.ref('students').on('value', snap => {
             const data = snap.val() || {};
             allStudentsCache = data;
             const keys = Object.keys(data);
 
-            // List
             const listContainer = document.getElementById('adminStudentList');
             const badge = document.getElementById('studentCountBadge');
             if (badge) badge.innerText = keys.length;
@@ -1023,7 +1246,6 @@
                 });
             }
 
-            // Dropdowns
             ['targetStudentId','resStudentSelect','feeStudentSelect'].forEach(id => {
                 const sel = document.getElementById(id);
                 if (!sel) return;
@@ -1034,20 +1256,13 @@
                     o.value = k; o.innerText = `${k} - ${data[k].name||''}`;
                     sel.appendChild(o);
                 });
-                if (cur) sel.value = cur;
+                if (cur && keys.includes(cur)) sel.value = cur;
             });
 
-            // Update stats
             if (document.getElementById('statStudents')) document.getElementById('statStudents').innerText = keys.length;
             if (document.getElementById('admStatStudents')) document.getElementById('admStatStudents').innerText = keys.length;
             renderOverviewCharts();
             renderAdminDueList();
-        });
-    }
-    function filterStudents() {
-        const q = document.getElementById('studentSearchInput').value.toLowerCase();
-        document.querySelectorAll('.student-item').forEach(item => {
-            item.style.display = item.getAttribute('data-keywords').includes(q) ? 'flex' : 'none';
         });
     }
     function addNewStudent() {
@@ -1058,15 +1273,17 @@
         const phone = document.getElementById('addStudentPhone').value.trim();
         const photo = document.getElementById('addStudentPhotoUrl').value.trim();
         if (!id || !name) return showToast('আইডি ও নাম দিন', 'warning');
+        startLoading();
         database.ref('students/'+id).set({
             name, classDetails: cls || 'শ্রেণি: ১ম', address: addr || 'দিনাজপুর',
             phone: phone || '', photo: photo || '',
             attendance: 'উপস্থিত', feeStatus: 'পরিশোধিত', dueAmount: 0
         }).then(() => {
+            finishLoading();
             showToast('ছাত্র যুক্ত হয়েছে');
             ['addStudentId','addStudentName','addStudentClass','addStudentAddress','addStudentPhone','addStudentPhotoUrl'].forEach(x=>{const e=document.getElementById(x);if(e)e.value='';});
             pushNotification(`নতুন ছাত্র যুক্ত: ${name} (${id})`);
-        });
+        }).catch(() => { finishLoading(); showToast('সমস্যা হয়েছে', 'error'); });
     }
     async function deleteStudent(sid) {
         if (await swalConfirm('ডিলিট?', `${sid} কে মুছে ফেলবেন?`)) {
@@ -1086,7 +1303,57 @@
         database.ref('students/'+tid).update(obj).then(() => showToast(tid+' আপডেট সম্পন্ন'));
     }
 
-    // ====== Teachers ======
+    // ==================== ID Card Preview ====================
+    function showIdCardPreview(studentId) {
+        const s = allStudentsCache[studentId];
+        if (!s) return showToast('শিক্ষার্থী পাওয়া যায়নি', 'error');
+        const html = `
+            <div style="width:340px;height:210px;background:linear-gradient(135deg,#064e3b,#022c22);color:#fff;border-radius:16px;border:2px solid #fbbf24;padding:16px;box-sizing:border-box;margin:0 auto;font-family:'Hind Siliguri',sans-serif;position:relative;">
+                <div style="font-size:11px;color:#fbbf24;text-align:center;border-bottom:1px solid #fbbf24;padding-bottom:6px;margin-bottom:10px;font-weight:bold;">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</div>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    ${s.photo ? `<img src="${s.photo}" style="width:60px;height:60px;border-radius:10px;border:2px solid #fbbf24;object-fit:cover;">` : `<div style="width:60px;height:60px;border-radius:10px;border:2px solid #fbbf24;background:#065f46;display:flex;align-items:center;justify-content:center;font-size:24px;">👤</div>`}
+                    <div style="flex:1;">
+                        <div style="font-size:16px;font-weight:bold;color:#fde047;">${s.name || studentId}</div>
+                        <div style="font-size:10px;color:#d1fae5;margin-top:3px;">${s.classDetails || ''}</div>
+                        <div style="font-size:10px;color:#d1fae5;">আইডি: <b>${studentId}</b></div>
+                    </div>
+                </div>
+                <div style="position:absolute;bottom:12px;right:12px;width:44px;height:44px;border-radius:50%;background:#fbbf24;color:#022c22;text-align:center;line-height:44px;font-weight:bold;font-size:13px;">আন</div>
+                <div style="position:absolute;bottom:18px;left:16px;font-size:9px;color:#94a3b8;">৭ নং নিউটাউন, সদর, দিনাজপুর</div>
+            </div>`;
+        Swal.fire({
+            title: 'শিক্ষার্থী আইডি কার্ড',
+            html,
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa fa-print"></i> প্রিন্ট',
+            cancelButtonText: 'বন্ধ',
+            confirmButtonColor: '#047857'
+        }).then(r => {
+            if (r.isConfirmed) printIdCardFor(studentId);
+        });
+    }
+    function printIdCardFor(studentId) {
+        const s = allStudentsCache[studentId] || {};
+        const w = window.open('', '_blank', 'width=450,height=600');
+        w.document.write(`<html><head><title>ID Card - ${s.name || studentId}</title>
+            <style>body{font-family:'Hind Siliguri',sans-serif;margin:0;padding:20px;background:#f0fdf4;}
+            .card{width:340px;height:210px;background:linear-gradient(135deg,#064e3b,#022c22);color:#fff;border-radius:16px;border:2px solid #fbbf24;padding:16px;box-sizing:border-box;margin:40px auto;position:relative;}
+            .header{font-size:11px;color:#fbbf24;text-align:center;border-bottom:1px solid #fbbf24;padding-bottom:6px;margin-bottom:10px;font-weight:bold;}
+            .name{font-size:16px;font-weight:bold;color:#fde047;}
+            .info{font-size:10px;color:#d1fae5;margin-top:3px;}
+            .logo{position:absolute;bottom:12px;right:12px;width:44px;height:44px;border-radius:50%;background:#fbbf24;color:#022c22;text-align:center;line-height:44px;font-weight:bold;font-size:13px;}
+            </style></head><body><div class="card">
+            <div class="header">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</div>
+            <div class="name">${s.name || studentId}</div>
+            <div class="info">${s.classDetails || ''}</div>
+            <div class="info">আইডি: <b>${studentId}</b></div>
+            <div class="info">৭ নং নিউটাউন, সদর, দিনাজপুর</div>
+            <div class="logo">আন</div></div></body></html>`);
+        w.document.close(); w.focus();
+        setTimeout(() => w.print(), 400);
+    }
+
+    // ==================== Teachers ====================
     function addNewTeacher() {
         const name = document.getElementById('teacherName').value.trim();
         if (!name) return showToast('শিক্ষকের নাম দিন', 'warning');
@@ -1123,7 +1390,7 @@
         if (await swalConfirm('ডিলিট?', 'শিক্ষককে মুছে ফেলবেন?')) database.ref('teachers/'+id).remove();
     }
 
-    // ====== Results ======
+    // ==================== Results ====================
     function saveExamResult() {
         const sid = document.getElementById('resStudentSelect').value;
         const exam = document.getElementById('resExamType').value;
@@ -1133,7 +1400,11 @@
         const date = document.getElementById('resDate').value;
         if (!sid || !sub || !grade) return showToast('সব তথ্য দিন', 'warning');
         database.ref(`students/${sid}/results`).push({ exam, subject: sub, grade, total: total||'', date: date || new Date().toLocaleDateString('bn-BD'), ts: Date.now() })
-            .then(() => { showToast('রেজাল্ট সেভ'); ['resSubject','resGrade','resTotal','resDate'].forEach(x=>{document.getElementById(x).value='';}); loadRecentResults(); });
+            .then(() => {
+                showToast('রেজাল্ট সেভ');
+                ['resSubject','resGrade','resTotal','resDate'].forEach(x=>{const e=document.getElementById(x);if(e)e.value='';});
+                loadRecentResults();
+            });
     }
     function loadRecentResults() {
         const container = document.getElementById('recentResultsList');
@@ -1163,7 +1434,7 @@
         if (await swalConfirm('মুছবেন?', 'রেজাল্ট এন্ট্রি?')) database.ref(`students/${sid}/results/${rid}`).remove();
     }
 
-    // ====== Fees ======
+    // ==================== Fees ====================
     function collectFee() {
         const sid = document.getElementById('feeStudentSelect').value;
         const amt = +document.getElementById('feeAmount').value;
@@ -1172,12 +1443,11 @@
         if (!sid || !amt) return showToast('সব তথ্য দিন', 'warning');
         const fee = { amount: amt, month, method, date: new Date().toLocaleDateString('bn-BD'), ts: Date.now() };
         database.ref(`students/${sid}/fees`).push(fee).then(() => {
-            // Update due amount
             const s = allStudentsCache[sid] || {};
             const newDue = Math.max(0, (s.dueAmount||0) - amt);
             database.ref(`students/${sid}`).update({ dueAmount: newDue, feeStatus: newDue > 0 ? 'বাকি আছে' : 'পরিশোধিত' });
             showToast('ফি কালেক্ট সম্পন্ন');
-            ['feeAmount'].forEach(x => document.getElementById(x).value = '');
+            const amtEl = document.getElementById('feeAmount'); if (amtEl) amtEl.value = '';
             loadRecentFees();
             pushNotification(`ফি জমা: ${sid} - ${amt}৳`);
         });
@@ -1204,23 +1474,25 @@
         });
     }
 
-    // ====== Complaints ======
+    // ==================== Complaints ====================
     function submitComplaint(e) {
         e.preventDefault();
+        startLoading();
         const name = document.getElementById('complaintName').value.trim();
         const phone = document.getElementById('complaintPhone').value.trim();
         const type = document.getElementById('complaintType').value;
         const details = document.getElementById('complaintDetails').value.trim();
-        if (!name || !phone || !details) return showToast('সব তথ্য দিন', 'warning');
+        if (!name || !phone || !details) { finishLoading(); return showToast('সব তথ্য দিন', 'warning'); }
         database.ref('complaints').push({
             name, phone, type, details, status:'pending',
             timestamp: new Date().toLocaleString('bn-BD', { timeZone:'Asia/Dhaka' })
         }).then(() => {
+            finishLoading();
             showToast('অভিযোগ জমা হয়েছে');
-            ['complaintName','complaintPhone','complaintDetails'].forEach(x=>document.getElementById(x).value='');
+            ['complaintName','complaintPhone','complaintDetails'].forEach(x=>{const e=document.getElementById(x);if(e)e.value='';});
             pushNotification(`নতুন অভিযোগ: ${name}`);
             showSection('publicView');
-        });
+        }).catch(() => { finishLoading(); showToast('সমস্যা', 'error'); });
     }
     function fetchComplaintsForAdmin() {
         database.ref('complaints').on('value', snap => {
@@ -1228,7 +1500,7 @@
             const container = document.getElementById('adminComplaintsList');
             if (!container) return;
             const count = Object.keys(data).length;
-            document.getElementById('complaintCount').innerText = count + 'টি';
+            const ccEl = document.getElementById('complaintCount'); if (ccEl) ccEl.innerText = count + 'টি';
             if (document.getElementById('admStatComplaints')) document.getElementById('admStatComplaints').innerText = count;
             container.innerHTML = '';
             if (count === 0) { container.innerHTML = '<p class="text-slate-400 text-center py-4">কোনো অভিযোগ নেই</p>'; return; }
@@ -1268,7 +1540,46 @@
         database.ref('complaints/'+id).update({ status:'resolved' }).then(()=>showToast('সমাধান চিহ্নিত'));
     }
 
-    // ====== Posts ======
+    // ==================== Admission ====================
+    function submitAdmission(e) {
+        e.preventDefault();
+        startLoading();
+        const data = {
+            studentName: document.getElementById('admStudentName').value.trim(),
+            fatherName: document.getElementById('admFatherName').value.trim(),
+            motherName: document.getElementById('admMotherName').value.trim(),
+            birthDate: document.getElementById('admBirthDate').value,
+            classApplied: document.getElementById('admClass').value,
+            phone: document.getElementById('admPhone').value.trim(),
+            address: document.getElementById('admAddress').value.trim(),
+            notes: document.getElementById('admNotes').value.trim(),
+            status: 'pending',
+            submittedAt: new Date().toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' }),
+            ts: Date.now()
+        };
+        if (!data.studentName || !data.fatherName || !data.phone || !data.address) {
+            finishLoading();
+            return showToast('তারা চিহ্নিত ঘরগুলো পূরণ করুন', 'warning');
+        }
+        database.ref('admissions').push(data).then(() => {
+            finishLoading();
+            showToast('ভর্তি আবেদন সফলভাবে জমা হয়েছে! ✅');
+            Swal.fire({
+                title: 'আলহামদুলিল্লাহ!',
+                html: `<p class="text-sm">আপনার সন্তানের ভর্তি আবেদন জমা হয়েছে।<br><b>${data.studentName}</b> — ${data.classApplied}</p><p class="text-xs text-gray-500 mt-2">আমাদের টিম শীঘ্রই যোগাযোগ করবে।</p>`,
+                icon: 'success', confirmButtonText: 'ঠিক আছে', confirmButtonColor: '#047857'
+            });
+            pushNotification(`নতুন ভর্তি আবেদন: ${data.studentName}`);
+            ['admStudentName','admFatherName','admMotherName','admBirthDate','admPhone','admAddress','admNotes']
+                .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+            showSection('publicView');
+        }).catch(() => {
+            finishLoading();
+            showToast('জমা দিতে সমস্যা হয়েছে', 'error');
+        });
+    }
+
+    // ==================== Posts ====================
     function addNewAdminPost() {
         const text = document.getElementById('adminPostText').value.trim();
         const media = document.getElementById('adminPostMedia').value.trim();
@@ -1279,13 +1590,16 @@
             timestamp: new Date().toLocaleString('bn-BD', { timeZone:'Asia/Dhaka' }), ts: Date.now()
         }).then(() => {
             showToast('পোস্ট পাবলিশ'); pushNotification('নতুন পোস্ট প্রকাশিত');
-            ['adminPostText','adminPostMedia'].forEach(x=>document.getElementById(x).value='');
+            ['adminPostText','adminPostMedia'].forEach(x=>{const e=document.getElementById(x);if(e)e.value='';});
         });
     }
     function loadPublicPostsFeed() {
+        const container = document.getElementById('publicPostsFeed');
+        if (container && container.querySelector('p')?.innerText === 'পোস্ট লোড হচ্ছে...') {
+            container.innerHTML = '<div class="skeleton h-24 mb-3"></div><div class="skeleton h-24"></div>';
+        }
         database.ref('posts').on('value', snap => {
             allPostsCache = snap.val() || {};
-            const container = document.getElementById('publicPostsFeed');
             if (!container) return;
             container.innerHTML = '';
             if (document.getElementById('admStatPosts')) document.getElementById('admStatPosts').innerText = Object.keys(allPostsCache).length;
@@ -1298,8 +1612,8 @@
                 let mediaHtml = '';
                 if (post.media) {
                     mediaHtml = post.mediaType === 'video'
-                        ? `<iframe src="${post.media}" class="w-full h-48 sm:h-64 rounded-xl border border-gold-500/30 mt-2" allowfullscreen></iframe>`
-                        : `<img src="${post.media}" class="w-full max-h-72 object-cover rounded-xl border border-gold-500/30 mt-2" onerror="this.style.display='none'">`;
+                        ? `<iframe src="${post.media}" loading="lazy" class="w-full h-48 sm:h-64 rounded-xl border border-gold-500/30 mt-2" allowfullscreen></iframe>`
+                        : `<img src="${post.media}" loading="lazy" class="w-full max-h-72 object-cover rounded-xl border border-gold-500/30 mt-2" onerror="this.style.display='none'">`;
                 }
                 let comments = '';
                 if (post.comments) {
@@ -1316,6 +1630,7 @@
                     ${mediaHtml}
                     <div class="flex items-center gap-4 pt-2 text-xs border-t border-emerald-800/60">
                         <button onclick="likePost('${pid}', ${post.likes||0})" class="text-amber-300 hover:text-gold-400 font-semibold"><i class="fa-solid fa-heart text-red-500"></i> লাইক (${post.likes||0})</button>
+                        <button onclick="sharePost('${pid}')" class="text-blue-300 hover:text-blue-400 font-semibold"><i class="fa-solid fa-share-nodes"></i> শেয়ার</button>
                     </div>
                     <div class="space-y-1 pt-1">
                         ${comments}
@@ -1328,18 +1643,24 @@
             });
         });
     }
-    function filterPosts() {
-        const q = document.getElementById('postSearchInput').value.toLowerCase();
-        document.querySelectorAll('.post-item').forEach(el => {
-            el.style.display = el.getAttribute('data-keywords').includes(q) ? 'block' : 'none';
-        });
-    }
     function likePost(pid, cur) { database.ref(`posts/${pid}/likes`).set(cur+1); }
     function addComment(pid) {
         const inp = document.getElementById(`commentInput_${pid}`);
         const text = inp.value.trim(); if (!text) return;
         const user = currentUserRole === 'admin' ? 'অ্যাডমিন' : (currentUserId || 'ভিজিটর');
         database.ref(`posts/${pid}/comments`).push({ user, text }).then(() => { inp.value = ''; });
+    }
+    function sharePost(pid) {
+        const p = allPostsCache[pid];
+        if (!p) return;
+        const shareData = { title: 'আন-নুর ইন্টারন্যাশনাল মাদ্রাসা', text: p.text || '', url: location.href };
+        if (navigator.share) {
+            navigator.share(shareData).catch(() => {});
+        } else {
+            navigator.clipboard.writeText((p.text || '') + ' ' + location.href)
+                .then(() => showToast('লিংক কপি হয়েছে'))
+                .catch(() => showToast('কপি করা যায়নি', 'error'));
+        }
     }
     function fetchAdminPostsForManagement() {
         database.ref('posts').on('value', snap => {
@@ -1362,34 +1683,61 @@
         if (await swalConfirm('ডিলিট?', 'পোস্টটি?')) database.ref('posts/'+id).remove();
     }
 
-    // ====== Gallery ======
+    // ==================== Gallery ====================
+    const ISLAMIC_GALLERY_DEFAULTS = [
+        'https://images.unsplash.com/photo-1519817650390-64a93db51149?w=500&auto=format',
+        'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=500&auto=format',
+        'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=500&auto=format',
+        'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=500&auto=format',
+        'https://images.unsplash.com/photo-1584286595398-a59f21d313f5?w=500&auto=format',
+        'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=500&auto=format'
+    ];
     function loadGalleryFromFirebase() {
         database.ref('gallery').on('value', snap => {
             const data = snap.val() || {};
             const container = document.getElementById('galleryContainer');
+            const items = Object.values(data).filter(i => i && i.url);
+
             if (container) {
                 container.innerHTML = '';
-                Object.values(data).forEach(item => {
-                    if (!item.url) return;
-                    if (item.url.includes('youtube.com') || item.url.includes('youtu.be')) {
-                        const iframe = document.createElement('iframe');
-                        iframe.src = item.url; iframe.className = 'w-full h-32 rounded-xl border border-gold-500/30';
-                        container.appendChild(iframe);
-                    } else {
+                if (items.length === 0) {
+                    ISLAMIC_GALLERY_DEFAULTS.forEach(url => {
                         const img = document.createElement('img');
-                        img.src = item.url; img.className = 'w-full h-32 object-cover rounded-xl border border-gold-500/30';
+                        img.src = url;
+                        img.loading = 'lazy';
+                        img.className = 'w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md hover:scale-105 transition cursor-pointer';
                         container.appendChild(img);
-                    }
-                });
+                    });
+                } else {
+                    items.forEach(item => {
+                        if (item.url.includes('youtube.com') || item.url.includes('youtu.be')) {
+                            const iframe = document.createElement('iframe');
+                            iframe.src = item.url;
+                            iframe.loading = 'lazy';
+                            iframe.className = 'w-full h-32 rounded-xl border border-gold-500/30';
+                            iframe.allowFullscreen = true;
+                            container.appendChild(iframe);
+                        } else {
+                            const img = document.createElement('img');
+                            img.src = item.url;
+                            img.loading = 'lazy';
+                            img.className = 'w-full h-32 object-cover rounded-xl border border-gold-500/30 shadow-md hover:scale-105 transition cursor-pointer';
+                            img.onerror = () => { img.style.background = '#1e293b'; };
+                            container.appendChild(img);
+                        }
+                    });
+                }
             }
+
             const manage = document.getElementById('adminManageGalleryList');
             if (manage) {
                 manage.innerHTML = '';
                 Object.entries(data).forEach(([k, item]) => {
+                    if (!item || !item.url) return;
                     const div = document.createElement('div');
                     div.className = 'relative group rounded-lg overflow-hidden border border-emerald-700 h-20';
-                    div.innerHTML = `<img src="${item.url}" class="w-full h-full object-cover" onerror="this.style.background='#334155';this.alt='err'">
-                        <button onclick="deleteGalleryItem('${k}')" class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-red-500"><i class="fa-solid fa-trash text-lg"></i></button>`;
+                    div.innerHTML = `<img src="${item.url}" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#334155'">
+                        <button onclick="deleteGalleryItem('${k}')" class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-red-500 transition"><i class="fa-solid fa-trash text-lg"></i></button>`;
                     manage.appendChild(div);
                 });
             }
@@ -1404,14 +1752,14 @@
         if (await swalConfirm('মুছবেন?', 'গ্যালারি আইটেম?')) database.ref('gallery/'+id).remove();
     }
 
-    // ====== Events ======
+    // ==================== Events ====================
     function addEvent() {
         const title = document.getElementById('eventTitle').value.trim();
         const date = document.getElementById('eventDate').value;
         if (!title || !date) return showToast('সব তথ্য দিন', 'warning');
         database.ref('events').push({ title, date, ts: Date.now() }).then(() => {
             showToast('ইভেন্ট যুক্ত');
-            ['eventTitle','eventDate'].forEach(x=>document.getElementById(x).value='');
+            ['eventTitle','eventDate'].forEach(x=>{const e=document.getElementById(x);if(e)e.value='';});
         });
     }
     function listenEvents() {
@@ -1446,7 +1794,7 @@
         if (await swalConfirm('মুছবেন?', 'ইভেন্টটি?')) database.ref('events/'+id).remove();
     }
 
-    // ====== Notices ======
+    // ==================== Notices ====================
     function updateNoticeBar() {
         const t = document.getElementById('adminNoticeInput').value.trim();
         if (!t) return;
@@ -1456,11 +1804,16 @@
         });
     }
 
-    // ====== Guardian Data ======
+    // ==================== Guardian Data ====================
     function fetchStudentData(uid) {
         database.ref('students/'+uid).on('value', snap => {
             const data = snap.val();
-            if (!data) return;
+            if (!data) {
+                showToast(`${uid} আইডিতে কোনো শিক্ষার্থী পাওয়া যায়নি`, 'error');
+                const n = document.getElementById('gStudentName'); if (n) n.innerText = 'ডেটা পাওয়া যায়নি';
+                const d = document.getElementById('gStudentDetails'); if (d) d.innerText = 'অ্যাডমিনের সাথে যোগাযোগ করুন';
+                return;
+            }
             document.getElementById('gStudentName').innerText = data.name || uid;
             document.getElementById('gStudentDetails').innerText = data.classDetails || '';
             document.getElementById('gDisplayId').innerText = uid;
@@ -1470,7 +1823,6 @@
             document.getElementById('gAddress').innerText = data.address || 'নিজামপুর, দিনাজপুর';
             if (data.photo) document.getElementById('gStudentPhoto').src = data.photo;
 
-            // Results
             const resContainer = document.getElementById('gResultsContainer');
             if (resContainer) {
                 resContainer.innerHTML = '';
@@ -1485,13 +1837,11 @@
                 } else {
                     resContainer.innerHTML = '<p class="text-slate-400 text-center py-2">রেজাল্ট নেই</p>';
                 }
-                // Chart
                 const labels = Object.values(data.results||{}).map(r=>r.subject).slice(0, 6);
                 const values = Object.values(data.results||{}).map(r => parseFloat(r.grade) || (['এ+','A+'].includes(r.grade)?90:['এ','A'].includes(r.grade)?80:70)).slice(0,6);
-                renderGuardianChart(labels, values);
+                setTimeout(() => renderGuardianChart(labels, values), 100);
             }
 
-            // Fees
             const feeC = document.getElementById('gFeeHistory');
             if (feeC) {
                 feeC.innerHTML = '';
@@ -1511,7 +1861,7 @@
     function renderGuardianChart(labels, values) {
         const ctx = document.getElementById('guardianProgressChart');
         if (!ctx) return;
-        if (guardianProgressChartInstance) guardianProgressChartInstance.destroy();
+        if (guardianProgressChartInstance) { try { guardianProgressChartInstance.destroy(); } catch(e){} }
         guardianProgressChartInstance = new Chart(ctx, {
             type: 'bar',
             data: { labels: labels.length ? labels : ['বাংলা','আরবি','ইংরেজি','গণিত','বিজ্ঞান'],
@@ -1520,7 +1870,7 @@
         });
     }
 
-    // ====== Charts (Admin) ======
+    // ==================== Admin Charts ====================
     function renderOverviewCharts() {
         const feeCtx = document.getElementById('adminFeeChart');
         const classCtx = document.getElementById('adminClassChart');
@@ -1529,7 +1879,7 @@
         const due = students.filter(s => s.feeStatus !== 'পরিশোধিত').length;
 
         if (feeCtx) {
-            if (adminFeeChartInstance) adminFeeChartInstance.destroy();
+            if (adminFeeChartInstance) { try { adminFeeChartInstance.destroy(); } catch(e){} }
             adminFeeChartInstance = new Chart(feeCtx, {
                 type:'doughnut',
                 data:{ labels:['পরিশোধিত','বাকি'], datasets:[{ data:[paid, due], backgroundColor:['#10b981','#ef4444'], borderWidth:0 }]},
@@ -1544,7 +1894,7 @@
                 classes[k] = (classes[k]||0)+1;
             });
             const labels = Object.keys(classes), data = Object.values(classes);
-            if (adminClassChartInstance) adminClassChartInstance.destroy();
+            if (adminClassChartInstance) { try { adminClassChartInstance.destroy(); } catch(e){} }
             adminClassChartInstance = new Chart(classCtx, {
                 type:'bar',
                 data:{ labels: labels.length?labels:['নেই'], datasets:[{ label:'ছাত্র', data: data.length?data:[0], backgroundColor:'#3b82f6', borderRadius:6 }]},
@@ -1567,28 +1917,10 @@
         });
     }
 
-    // ====== Print helpers ======
+    // ==================== Guardian ID / Report Print ====================
     function printIdCard() {
-        const name = document.getElementById('gStudentName')?.innerText || 'শিক্ষার্থী';
-        const id = document.getElementById('gDisplayId')?.innerText || 'Nur1';
-        const cls = document.getElementById('gStudentDetails')?.innerText || '';
-        const w = window.open('', '_blank', 'width=400,height=600');
-        w.document.write(`<html><head><title>ID Card</title>
-            <style>body{font-family:'Hind Siliguri',sans-serif;margin:0;padding:20px;}
-            .card{width:320px;height:200px;background:linear-gradient(135deg,#064e3b,#022c22);color:white;border-radius:16px;border:2px solid #fbbf24;padding:16px;box-sizing:border-box;margin:40px auto;position:relative;box-shadow:0 6px 20px rgba(0,0,0,0.3);}
-            .school{font-size:11px;color:#fbbf24;text-align:center;border-bottom:1px solid #fbbf24;padding-bottom:6px;margin-bottom:10px;font-weight:bold;}
-            .name{font-size:18px;font-weight:bold;color:#fde047;margin-bottom:6px;}
-            .info{font-size:11px;color:#d1fae5;margin-bottom:4px;}
-            .logo{position:absolute;bottom:12px;right:12px;width:48px;height:48px;border-radius:50%;background:#fbbf24;color:#022c22;text-align:center;line-height:48px;font-weight:bold;font-size:16px;}</style>
-            </head><body><div class="card">
-            <div class="school">আন-নুর ইন্টারন্যাশনাল মাদ্রাসা</div>
-            <div class="name">${name}</div>
-            <div class="info">${cls}</div>
-            <div class="info">আইডি: <b>${id}</b></div>
-            <div class="info">দিনাজপুর, বাংলাদেশ</div>
-            <div class="logo">AN</div>
-            </div></body></html>`);
-        w.document.close(); w.focus(); setTimeout(() => w.print(), 300);
+        const uid = document.getElementById('gDisplayId')?.innerText || 'Nur1';
+        printIdCardFor(uid);
     }
     function printReportCard() {
         const name = document.getElementById('gStudentName')?.innerText || '';
@@ -1600,19 +1932,17 @@
             <style>body{font-family:'Hind Siliguri',sans-serif;padding:30px;color:#222;}
             h1{color:#047857;border-bottom:3px solid #fbbf24;padding-bottom:8px;text-align:center;}
             .info{margin:15px 0;padding:10px;background:#f0fdf4;border-radius:8px;}
-            table{width:100%;border-collapse:collapse;margin-top:15px;}
-            th{background:#047857;color:white;padding:8px;text-align:left;}
-            td{padding:8px;border-bottom:1px solid #ddd;}
             .footer{margin-top:40px;text-align:right;}</style>
             </head><body><h1>রিপোর্ট কার্ড</h1>
             <div class="info"><b>শিক্ষার্থী:</b> ${name}<br><b>আইডি:</b> ${id}<br><b>${cls}</b></div>
             <div>${results}</div>
             <div class="footer">____________________<br>প্রধান শিক্ষক</div>
             </body></html>`);
-        w.document.close(); w.focus(); setTimeout(() => w.print(), 300);
+        w.document.close(); w.focus();
+        setTimeout(() => w.print(), 400);
     }
 
-    // ====== CSV exports ======
+    // ==================== CSV Export ====================
     function downloadCSV(filename, rows) {
         const csv = rows.map(r => r.map(v => `"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
         const blob = new Blob(['\uFEFF'+csv], { type:'text/csv;charset=utf-8' });
@@ -1640,27 +1970,111 @@
         downloadCSV('results.csv', rows);
     }
 
-    // ====== Tabs ======
+    // ==================== Admin Settings ====================
+    function loadSiteSettings() {
+        const map = {
+            'settings/hadith/text': 'settingsHadithText',
+            'settings/hadith/ref': 'settingsHadithRef',
+            'settings/namaz/fajr': 'setNamazFajr',
+            'settings/namaz/dhuhr': 'setNamazDhuhr',
+            'settings/namaz/asr': 'setNamazAsr',
+            'settings/namaz/maghrib': 'setNamazMaghrib',
+            'settings/namaz/isha': 'setNamazIsha',
+            'settings/hero/title': 'settingsHeroTitle',
+            'settings/hero/subtitle': 'settingsHeroSubtitle'
+        };
+        Object.entries(map).forEach(([path, id]) => {
+            database.ref(path).once('value').then(snap => {
+                const el = document.getElementById(id);
+                if (el && snap.val() != null) el.value = snap.val();
+            });
+        });
+    }
+    function saveHadithSettings() {
+        const text = document.getElementById('settingsHadithText').value.trim();
+        const ref = document.getElementById('settingsHadithRef').value.trim();
+        if (!text) return showToast('হাদিস লিখুন', 'warning');
+        database.ref('settings/hadith').set({ text, ref }).then(() => {
+            showToast('হাদিস আপডেট হয়েছে ✅');
+            pushNotification('নতুন হাদিস আপডেট');
+        });
+    }
+    function saveNamazSettings() {
+        const obj = {
+            fajr: document.getElementById('setNamazFajr').value.trim() || '৫:০০',
+            dhuhr: document.getElementById('setNamazDhuhr').value.trim() || '১:০০',
+            asr: document.getElementById('setNamazAsr').value.trim() || '৪:০০',
+            maghrib: document.getElementById('setNamazMaghrib').value.trim() || '৬:১০',
+            isha: document.getElementById('setNamazIsha').value.trim() || '৭:২০'
+        };
+        database.ref('settings/namaz').set(obj).then(() => {
+            showToast('নামাজের সময় আপডেট ✅');
+            setupNamazTimes();
+        });
+    }
+    function saveHeroSettings() {
+        const title = document.getElementById('settingsHeroTitle').value.trim();
+        const subtitle = document.getElementById('settingsHeroSubtitle').value.trim();
+        if (!title) return showToast('শিরোনাম দিন', 'warning');
+        database.ref('settings/hero').set({ title, subtitle }).then(() => {
+            showToast('হিরো ব্যানার আপডেট ✅');
+        });
+    }
+    function backupAllData() {
+        startLoading();
+        Promise.all([
+            database.ref('students').once('value'),
+            database.ref('teachers').once('value'),
+            database.ref('posts').once('value'),
+            database.ref('complaints').once('value'),
+            database.ref('admissions').once('value'),
+            database.ref('gallery').once('value'),
+            database.ref('events').once('value'),
+            database.ref('settings').once('value')
+        ]).then(snaps => {
+            const data = {
+                exported_at: new Date().toISOString(),
+                students: snaps[0].val(),
+                teachers: snaps[1].val(),
+                posts: snaps[2].val(),
+                complaints: snaps[3].val(),
+                admissions: snaps[4].val(),
+                gallery: snaps[5].val(),
+                events: snaps[6].val(),
+                settings: snaps[7].val()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `annoor-backup-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            finishLoading();
+            showToast('ব্যাকআপ ডাউনলোড হয়েছে ✅');
+        }).catch(() => { finishLoading(); showToast('সমস্যা হয়েছে', 'error'); });
+    }
+
+    // ==================== Tabs ====================
     function switchAdminTab(name) {
         document.querySelectorAll('[data-atab]').forEach(b => b.classList.toggle('active', b.dataset.atab === name));
         document.querySelectorAll('.admin-tab').forEach(el => el.classList.add('hidden'));
-        const t = document.getElementById('aTab_'+name); if (t) t.classList.remove('hidden');
-        if (name === 'overview') renderOverviewCharts();
-        if (name === 'posts') fetchAdminPostsForManagement();
-        if (name === 'results') loadRecentResults();
-        if (name === 'fees') loadRecentFees();
+        const t = document.getElementById('aTab_' + name);
+        if (t) t.classList.remove('hidden');
+        if (name === 'overview') { setTimeout(renderOverviewCharts, 100); setTimeout(renderAdminDueList, 100); }
+        if (name === 'posts') { fetchAdminPostsForManagement(); }
+        if (name === 'results') { loadRecentResults(); }
+        if (name === 'fees') { loadRecentFees(); }
+        if (name === 'settings') { loadSiteSettings(); }
+        startLoading();
+        setTimeout(finishLoading, 250);
     }
     function switchGuardianTab(name) {
         document.querySelectorAll('[data-gtab]').forEach(b => b.classList.toggle('active', b.dataset.gtab === name));
         document.querySelectorAll('.guardian-tab').forEach(el => el.classList.add('hidden'));
-        const t = document.getElementById('gTab_'+name); if (t) t.classList.remove('hidden');
+        const t = document.getElementById('gTab_' + name);
+        if (t) t.classList.remove('hidden');
     }
-
-    // Re-render calendar after page load
-    setTimeout(() => renderDynamicCalendar(), 500);
-
-    // Auto-render on guardians tab visitors
-    setTimeout(() => renderOverviewCharts(), 800);
 </script>
 </body>
-                                                                                                                                                                                     </html>
+                                                  </html>
