@@ -1348,7 +1348,7 @@
             <div class="info">${s.classDetails || ''}</div>
             <div class="info">আইডি: <b>${studentId}</b></div>
             <div class="info">৭ নং নিউটাউন, সদর, দিনাজপুর</div>
-            <div class="logo">আন</div></div></body></html>`);
+            <div class="logo">1000053910.jpg</div></div></body></html>`);
         w.document.close(); w.focus();
         setTimeout(() => w.print(), 400);
     }
@@ -1653,7 +1653,7 @@
     function sharePost(pid) {
         const p = allPostsCache[pid];
         if (!p) return;
-        const shareData = { title: 'আন-নুর ইন্টারন্যাশনাল মাদ্রাসা', text: p.text || '', url: location.href };
+        const shareData = { title: 'আন-নূর ইন্টারন্যাশনাল মাদ্রাসা', text: p.text || '', url: location.href };
         if (navigator.share) {
             navigator.share(shareData).catch(() => {});
         } else {
@@ -1820,7 +1820,7 @@
             document.getElementById('gAttendance').innerText = data.attendance || 'উপস্থিত';
             document.getElementById('gFeeStatus').innerText = data.feeStatus || 'পরিশোধিত';
             document.getElementById('gDueAmount').innerText = (data.dueAmount || 0) + ' ৳';
-            document.getElementById('gAddress').innerText = data.address || 'নিজামপুর, দিনাজপুর';
+            document.getElementById('gAddress').innerText = data.address || '০৭ নম্বর উপশহর, সদর , দিনাজপুর';
             if (data.photo) document.getElementById('gStudentPhoto').src = data.photo;
 
             const resContainer = document.getElementById('gResultsContainer');
